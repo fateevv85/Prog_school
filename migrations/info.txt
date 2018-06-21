@@ -1,0 +1,8 @@
+Migration create
+
+php yii migrate/create task_add_columns
+
+Run migration
+
+php yii migrate
+
