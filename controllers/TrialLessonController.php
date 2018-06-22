@@ -146,7 +146,7 @@ class TrialLessonController extends LessonTypeController
      */
     public function actionUpdate($id)
     {
-        return $this->updateLessonTypeEntity($id,'trial-lesson');    
+        return $this->updateLessonTypeEntity($id,'trial-lesson');
     }
 
     /**

@@ -46,10 +46,10 @@ class Product extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'city_id' => 'City ID',
-            'amo_view' => 'Amo View',
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Name'),
+            'city_id' => Yii::t('app', 'City ID'),
+            'amo_view' => Yii::t('app', 'Show in AMO'),
         ];
     }
 
@@ -69,8 +69,9 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasOne(City::className(), ['city_id' => 'city_id']);
     }
 
-    public function getCityName() {
-        return City::find()->where(['city_id'=>$this->city_id]);
+    public function getCityName()
+    {
+        return City::find()->where(['city_id' => $this->city_id]);
     }
 
     public function getCities()
@@ -82,7 +83,6 @@ class Product extends \yii\db\ActiveRecord
     {
         return [1,2];
     }*/
-
 
 
 }

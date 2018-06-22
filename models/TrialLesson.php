@@ -69,6 +69,7 @@ class TrialLesson extends LessonTypeModel
             'lead_link' => Yii::t('app', 'Lead Link'),
             'duration' => Yii::t('app', 'Duration'),
             'course_date_start' => Yii::t('app', 'Course Date Start'),
+            'city_id' => Yii::t('app', 'City ID'),
         ];
     }
     public function getCRMLeadsLink()

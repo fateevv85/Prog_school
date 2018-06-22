@@ -22,11 +22,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'cost')->textInput() ?>
 
-    <?php
-    echo(
-    $form->field($model, 'cities')->checkboxList($model->citiesList)->label('Города')
-    );
-    ?>
+    <?= $form->field($model, 'cities')->checkboxList($model->citiesList) ?>
+
+    <?= $form->field($model, 'product_id')->dropDownList(\app\components\MenuHelper::getDropDownList()) ?>
 
   <div class="form-group">
       <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

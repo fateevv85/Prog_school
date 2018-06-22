@@ -9,7 +9,7 @@ $config = [
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'modules' => [
-       'gridview' =>  [
+        'gridview' => [
             'class' => '\kartik\grid\Module'
         ],
     ],
@@ -84,10 +84,11 @@ $config = [
             'translations' => [
                 'app*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@app/vendor/yiisoft/yii2/messages',
+//                    'basePath' => '@app/vendor/yiisoft/yii2/messages',
+                    'basePath' => '@app/messages',
                     //'sourceLanguage' => 'en-US',
                     'fileMap' => [
-                        'app'       => 'app.php',
+                        'app' => 'app.php',
                         'app/error' => 'error.php',
                     ],
                 ],
@@ -109,9 +110,9 @@ $config = [
             ],
         ],
         */
-        
+
     ],
-    
+
     'params' => $params,
 ];
 

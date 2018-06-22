@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\tables\Product;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\CourseTypes;
@@ -16,6 +17,7 @@ use app\models\CourseTypes;
  * @property integer $lessons_num
  * @property string $cost
  * @property string $city_id
+ * @property integer $product_id
  *
  * @property City $city
  * @property CourseInCity[] $courseInCities
@@ -43,6 +45,7 @@ class Course extends \yii\db\ActiveRecord
             [['lessons_num', 'city_id'], 'integer'],
             [['cost'], 'number'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'city_id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['city_id' => 'id']],
         ];
     }
 
@@ -58,7 +61,9 @@ class Course extends \yii\db\ActiveRecord
             'synopses_link' => Yii::t('app', 'Synopses Link'),
             'lessons_num' => Yii::t('app', 'Lessons Num'),
             'cost' => Yii::t('app', 'Cost'),
-            'citiesString' => 'Города',
+            'citiesString' => Yii::t('app', 'Cities'),
+            'cities' => Yii::t('app', 'Cities'),
+            'product_id' => Yii::t('app', 'Product')
             // 'city_id' => Yii::t('app', 'City ID'),
         ];
     }

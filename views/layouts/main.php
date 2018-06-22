@@ -45,15 +45,15 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Продукты', 'items' => \app\components\MenuHelper::getMenu()],
-            ['label' => 'Настройки', 'url' => [Url::to('site/settings')], 'visible' => !Yii::$app->user->isGuest],
+            ['label' => Yii::t('app', 'Products'), 'items' => \app\components\MenuHelper::getMenu()],
+            ['label' => Yii::t('app', 'Settings'), 'url' => [Url::to('site/settings')], 'visible' => !Yii::$app->user->isGuest],
             Yii::$app->user->isGuest ? (
-            ['label' => 'Войти', 'url' => ['/site/login']]
+            ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()

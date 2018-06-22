@@ -57,7 +57,7 @@ class Lesson extends LessonTypeModel
             'lesson_id' => Yii::t('app', 'Lesson ID'),
             //'cost' => Yii::t('app', 'Cost'),
             'group_id' => Yii::t('app', 'Select Group'),
-            'lesson_id' => Yii::t('app', 'Lesson'),
+//            'lesson_id' => Yii::t('app', 'Lesson'),
             'lecture_hall_id' => Yii::t('app', 'Select Lecture Hall'),
             'course_id' => Yii::t('app', 'Select Course'),
             'teacher_id' => Yii::t('app', 'Select Teacher'),
@@ -66,6 +66,7 @@ class Lesson extends LessonTypeModel
             'duration' => Yii::t('app', 'Duration'),
             'lead_link' => Yii::t('app', 'Lead Link'),
             'cost' => Yii::t('app', 'Cost'),
+            'city_id' => Yii::t('app', 'City ID'),
         ];
     }
     public function getCRMLeadsLink()
