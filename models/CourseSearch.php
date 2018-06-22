@@ -20,7 +20,8 @@ class CourseSearch extends Course
     {
         return [
             [['cost'], 'number'],
-            [['course_id', 'lessons_num'], 'integer'],
+//            [['course_id', 'lessons_num'], 'integer'],
+            [['course_id', 'lessons_num', 'product_id'], 'integer'],
             [['title', 'description', 'synopses_link'], 'safe'],
         ];
     }
@@ -82,6 +83,7 @@ class CourseSearch extends Course
             'course_id' => $this->course_id,
             'lessons_num' => $this->lessons_num,
             'cost' => $this->cost,
+            'product_id' => $this->product_id,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

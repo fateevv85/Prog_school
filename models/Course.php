@@ -45,7 +45,7 @@ class Course extends \yii\db\ActiveRecord
             [['lessons_num', 'city_id'], 'integer'],
             [['cost'], 'number'],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'city_id']],
-            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['city_id' => 'id']],
+            [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
 
@@ -193,6 +193,13 @@ class Course extends \yii\db\ActiveRecord
         return City::getCitiesForCurrentUser();
     }
 
+    public function getProductName()
+    {
+
+        $product = Product::findOne($this->product_id);
+        return $product->name;
+
+    }
 
     /*
     public function getCity()

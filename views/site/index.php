@@ -21,11 +21,15 @@ $this->title = 'Codabra';
         <li>
           <a href="<?= Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60)]) ?>">Платные
             занятия</a></li>
+
           <?php
-          if (!Yii::$app->user->isGuest) {
+/*          if (!Yii::$app->user->isGuest) {
               echo('<li><a href="site/settings">Настройки</a></li>');
           }
-          ?>
+          */
+//var_dump(\app\components\MenuHelper::getDropDownList());
+?>
+
         <!--li><a href="site/calendar">Календарь</a></li-->
       </ul>
     </div>

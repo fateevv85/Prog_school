@@ -11,6 +11,7 @@ return [
 	'Lessons Num' => 'Количество занятий',
 
     'Products' => 'Продукты',
+    'Product' => 'Продукт',
     'Name' => 'Название',
     'Show in AMO' => 'Отобразить в АМО',
     'City ID' => 'Город',
@@ -68,14 +69,12 @@ return [
     'Update Lecture Hall: ' => 'Обновить данные',
     'Update Group: ' => 'Обновить данные',
     'Update Group:' => 'Обновить данные',
-    'Update Group:' => 'Обновить данные',
     'Update Group' => 'Обновить данные',
     
     'Apply' => 'Готово',
     'Clear' => 'Отмена',
     
     'Cities' => 'Города',
-    'City ID' => 'Город',
     'Create City' => 'Добавить город',
     'City Title' => 'Название города',
     
@@ -97,8 +96,7 @@ return [
     'Username' => 'Логин',
     'Password' => 'Пароль',
     'Info' => 'Дополнительная информация',
-    'City Title' => 'Город',
-    
+
     'Reset Grid' => 'Отменить фильтрацию',
     'Remember Me' => 'Запомнить меня',
 

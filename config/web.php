@@ -87,10 +87,11 @@ $config = [
 //                    'basePath' => '@app/vendor/yiisoft/yii2/messages',
                     'basePath' => '@app/messages',
                     //'sourceLanguage' => 'en-US',
+                    /*
                     'fileMap' => [
                         'app' => 'app.php',
                         'app/error' => 'error.php',
-                    ],
+                    ],*/
                 ],
             ],
         ],

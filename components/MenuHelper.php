@@ -4,6 +4,7 @@ namespace app\components;
 
 
 use app\models\tables\Product;
+use yii\helpers\Url;
 
 class MenuHelper
 {
@@ -23,7 +24,8 @@ class MenuHelper
         foreach ($items as $item) {
             $result[] = [
                 'label' => $item['name'],
-                'url' => ['#'],
+//                'url' => ['#'],
+                'url' => Url::to(['course/index', 'CourseSearch[product_id]' => $item['id']]),
                 '<li class="divider"></li>',
             ];
         }
@@ -39,7 +41,7 @@ class MenuHelper
         $result = [];
 
         foreach ($items as $item) {
-            $result[] = $item['name'];
+            $result[$item['id']] = $item['name'];
         }
 
         return $result;

@@ -82,6 +82,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'headerOptions'=>['style'=>'white-space: normal;'],
                 'options' => ['width' => '70']
+            ],
+            [
+                'attribute'=>'product_id',
+                'format'=>'text', // Возможные варианты: raw, html
+                'content'=>function($data){
+//                    return $data->product_id;
+                    return $data->getProductName();
+                },
+                'headerOptions'=>['style'=>'white-space: normal;'],
+                'options' => ['width' => '70']
             ]
         ],
     ];

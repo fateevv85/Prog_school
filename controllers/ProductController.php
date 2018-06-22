@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\tables\ProductSearch;
 use Yii;
 use app\models\tables\Product;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,7 +70,8 @@ class ProductController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->city_id = Yii::$app->request->post('Product')['city_id'][0];
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+//            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(Url::to(['product/index']));
         }
 
         return $this->render('create', [
