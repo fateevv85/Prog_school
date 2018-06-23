@@ -27,7 +27,7 @@ $this->title = 'Codabra';
               echo('<li><a href="site/settings">Настройки</a></li>');
           }
           */
-//var_dump(\app\components\MenuHelper::getDropDownList());
+//var_dump(Yii::getAlias('@bower'));
 ?>
 
         <!--li><a href="site/calendar">Календарь</a></li-->

@@ -110,7 +110,15 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (\yii\db\Exception $exception) {
+//            var_dump($exception);
+//            return $this->redirect(Url::to(['site/error']));
+            return $this->render('error', [
+                'message' => $exception,
+            ]);
+        }
 
         return $this->redirect(['index']);
     }

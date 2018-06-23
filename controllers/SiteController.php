@@ -124,14 +124,17 @@ class SiteController extends Controller
     {
         return $this->render('settings');
     }
+
     public function actionCalendar()
     {
         return $this->render('calendar');
     }
+
     public function actionSay($message = 'hi')
     {
         return $this->render('say', ['message' => $message]);
     }
+
     public function actionEntry()
     {
         $model = new EntryForm();
@@ -140,7 +143,7 @@ class SiteController extends Controller
             // данные в $model удачно проверены
 
             // делаем что-то полезное с $model ...
- 
+
             return $this->render('entry-confirm', ['model' => $model]);
         } else {
             // либо страница отображается первый раз, либо есть ошибка в данных
