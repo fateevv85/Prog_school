@@ -18,7 +18,9 @@ use yii\widgets\ActiveForm;
 
     $model->city_id = Yii::$app->user->identity->city_id;
 
-    echo $form->field($model, 'city_id')->checkboxList($model->getCities(), ['separator' => '<br>']) ?>
+//    echo $form->field($model, 'city_id')->checkboxList($model->getCities(), ['separator' => '<br>']);
+
+    echo $form->field($model, 'city_id')->radioList($model->getCities(), ['separator' => '<br>']) ?>
 
     <?= $form->field($model, 'amo_view')->checkbox(['label' => 'Отобразить в AMO', 'labelOptions' => []]) ?>
 

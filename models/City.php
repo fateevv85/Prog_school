@@ -67,6 +67,7 @@ class City extends \yii\db\ActiveRecord
         $cities = array();
         if ($identity->role === 'main_admin') {
             $cities = self::getAllCities();
+            unset($cities[array_search('Основной', $cities)]);
         } else if ($identity->role === 'regional_admin') {
             if (is_numeric($identity->city_id)) {
                 $city = self::findOne($identity->city_id);

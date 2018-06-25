@@ -13,6 +13,8 @@ $this->title = 'Codabra';
 
 <div class="container-fluid">
   <div class="row">
+    <div class="col-md-10 text-center">«Привет👋 и добро пожаловать в альфу системы 🐲 Dragon v. 0.7»
+    </div>
     <div class="col-md-2">
       <ul class="nav nav-pills nav-stacked">
         <li>
@@ -23,17 +25,15 @@ $this->title = 'Codabra';
             занятия</a></li>
 
           <?php
-/*          if (!Yii::$app->user->isGuest) {
-              echo('<li><a href="site/settings">Настройки</a></li>');
-          }
-          */
-//var_dump(Yii::getAlias('@bower'));
-?>
+          /*          if (!Yii::$app->user->isGuest) {
+                        echo('<li><a href="site/settings">Настройки</a></li>');
+                    }
+                    */
+          ?>
 
         <!--li><a href="site/calendar">Календарь</a></li-->
       </ul>
     </div>
-    <div class="col-md-10">«Привет👋 и добро пожаловать в альфу системы 🐲 Dragon v. 0.5»
-    </div>
+
   </div>
 </div>

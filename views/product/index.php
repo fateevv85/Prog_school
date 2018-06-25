@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'label' => Yii::t('app', 'City'),
+//                'attribute' => 'city_id',
                 'value' => function ($model) {
                     return $model->cityName->title;
                 }

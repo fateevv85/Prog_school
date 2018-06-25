@@ -79,10 +79,4 @@ class Product extends \yii\db\ActiveRecord
         return City::getCitiesForCurrentUser();
     }
 
-    /*public function getCities()
-    {
-        return [1,2];
-    }*/
-
-
 }
