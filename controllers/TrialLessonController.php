@@ -21,6 +21,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\httpclient\Client;
 use yii\helpers\Url;
+
 /**
  * TrialLessonController implements the CRUD actions for TrialLesson model.
  */
@@ -29,10 +30,10 @@ class TrialLessonController extends LessonTypeController
     /**
      * @inheritdoc
      */
-     
-     public function behaviors()
+
+    public function behaviors()
     {
-        
+
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -62,7 +63,6 @@ class TrialLessonController extends LessonTypeController
     {
         $searchModel = new TrialLessonSearch();
         $params = Yii::$app->request->queryParams;
-
         $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
@@ -70,23 +70,25 @@ class TrialLessonController extends LessonTypeController
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionDateChange()
     {
         $params = Yii::$app->request->post();
         $trialLesson = $this->findModel($params['id']);
         $trialLesson->date_start = $params['value'];
         $trialLesson->save();
-        
+
         $request = Yii::$app->request;
         return $this->redirect($request->post()['redirect']);
     }
+
     public function actionTimeChange()
     {
         $params = Yii::$app->request->post();
         $trialLesson = $this->findModel($params['id']);
         $trialLesson->time_start = $params['value'];
         $trialLesson->save();
-        
+
         $request = Yii::$app->request;
         return $this->redirect($request->post()['redirect']);
     }
@@ -110,13 +112,13 @@ class TrialLessonController extends LessonTypeController
      */
     public function actionCreate()
     {
-        
+
         $model = new TrialLesson();
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['view', 'id' => $trialLesson->trial_lesson_id]);
             $params = self::getLessonEntityParams($model);
-            $params['link'] =  Url::toRoute(['trial-lesson/index', 'TrialLessonSearch[trial_lesson_id]' => $model->trial_lesson_id], true);
+            $params['link'] = Url::toRoute(['trial-lesson/index', 'TrialLessonSearch[trial_lesson_id]' => $model->trial_lesson_id], true);
             $result = GoogleCalendarHelper::callConsoleMethod('createEvent', $params);
             //для франшизы, добавление параметра город в соответствии с городом создающего пользователя, будет использоваться для фильтрации занятий по городу
             $userRole = User::getCurrentUserRole();
@@ -124,9 +126,9 @@ class TrialLessonController extends LessonTypeController
                 $identity = Yii::$app->user->identity;
                 if (isset($identity->city_id)) {
                     $model->city_id = $identity->city_id;
-                }  
+                }
             }
-            if ( isset($result['eventId']) && !empty($result['eventId']) ) {
+            if (isset($result['eventId']) && !empty($result['eventId'])) {
                 $model->calendar_event_id = $result['eventId'];
             }
             $model->save();
@@ -146,7 +148,7 @@ class TrialLessonController extends LessonTypeController
      */
     public function actionUpdate($id)
     {
-        return $this->updateLessonTypeEntity($id,'trial-lesson');
+        return $this->updateLessonTypeEntity($id, 'trial-lesson');
     }
 
     /**
@@ -155,13 +157,13 @@ class TrialLessonController extends LessonTypeController
      * @param integer $id
      * @return mixed
      */
-     public function actionDeleteSelected()
-    {   
+    public function actionDeleteSelected()
+    {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             $ids = $request->post()['ids'];
             if (!empty($ids)) {
-                foreach($ids as $id) {
+                foreach ($ids as $id) {
                     $model = $this->findModel($id);
                     $params = array();
                     $params['calendarName'] = self::getLessonCalendarName($model);
@@ -171,45 +173,47 @@ class TrialLessonController extends LessonTypeController
                 }
             }
         }
-       return $this->redirect($request->post()['redirect']);
+        return $this->redirect($request->post()['redirect']);
     }
+
     public function actionCopySelected()
-    {   
+    {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             $ids = $request->post()['ids'];
             if (!empty($ids)) {
-                foreach($ids as $id) {
+                foreach ($ids as $id) {
                     $model = $this->findModel($id);
                     $data = $model->attributes;
                     $newModel = new TrialLesson();
                     $id = $newModel->trial_lesson_id;
-                    
+
                     if (isset($data['calendar_event_id'])) {
                         unset($data['calendar_event_id']);
                     }
-                    
+
                     $newModel->setAttributes($data);
                     $newModel->trial_lesson_id = $id;
                     $newModel->save();
-                    
+
                     $params = self::getLessonEntityParams($newModel);
-                    $params['link'] =  Url::toRoute(['trial-lesson/index', 'TrialLessonSearch[trial_lesson_id]' => $newModel->trial_lesson_id], true);
+                    $params['link'] = Url::toRoute(['trial-lesson/index', 'TrialLessonSearch[trial_lesson_id]' => $newModel->trial_lesson_id], true);
                     $result = GoogleCalendarHelper::callConsoleMethod('createEvent', $params);
                     $newModel->calendar_event_id = $result['eventId'];
                     $newModel->save();
                 }
             }
-        } 
+        }
         return $this->redirect($request->post()['redirect']);
     }
+
     public function actionDelete($id)
-    {   
-        
+    {
+
         $model = $this->findModel($id);
         $result = GoogleCalendarHelper::deleteEventById($model->calendar_event_id);
         $model->delete();
-        
+
         return $this->redirect(['index']);
     }
 
@@ -228,7 +232,6 @@ class TrialLessonController extends LessonTypeController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-   
-    
+
+
 }

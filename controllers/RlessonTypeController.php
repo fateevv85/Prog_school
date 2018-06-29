@@ -21,6 +21,7 @@ class RlessonTypeController extends MyActiveController
 
         return $actions;
     }
+
     public function prepareDataProvider()
     {
         date_default_timezone_set('Europe/Moscow');

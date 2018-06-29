@@ -11,6 +11,4 @@ namespace app\controllers;
 class RlessonController extends RlessonTypeController
 {
     public $modelClass = 'app\models\Lesson';
-    
-   
 }

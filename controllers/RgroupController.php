@@ -18,7 +18,8 @@ class RgroupController extends MyActiveController
         $actions['decpnum'] = [$this, 'decpnum'];
         return $actions;
     }*/
-    
+
+   //запись на курс, widget -> \src\lib\codabra-landing\paid.ts -> registerToCourse: function
     public function actionDecpnum()
     {
         $request = Yii::$app->request;
