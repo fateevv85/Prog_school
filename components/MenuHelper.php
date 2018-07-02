@@ -23,7 +23,6 @@ class MenuHelper
 
         $result = [];
 
-
         foreach ($items as $item) {
             $courses = ArrayHelper::getColumn(\app\models\Course::find()->where(['product_id' => $item['id']])->asArray()->all(), 'course_id');
 
@@ -32,13 +31,13 @@ class MenuHelper
                     'label' => $item['name'],
                     'url' => Url::to(['lesson/index',
                         'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
-                        'LessonSearch[course_id]' => $courses
+                        'LessonSearch[course_id]' => $courses,
+                        'product_name' => $item['name']
                     ]),
                     '<li class="divider"></li>',
                 ];
             }
         }
-
 
         return $result;
     }
