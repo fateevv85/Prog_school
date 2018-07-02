@@ -195,10 +195,8 @@ class Course extends \yii\db\ActiveRecord
 
     public function getProductName()
     {
-
         $product = Product::findOne($this->product_id);
         return $product->name;
-
     }
 
     /*

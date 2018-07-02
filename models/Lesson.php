@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 
 use yii\helpers\ArrayHelper;
-use app\models\Lesson;
 use app\models\Teacher;
 use app\models\LectureHall;
 use app\models\Group;
 use app\models\Course;
 use app\models\LessonTypeModel;
+
 /**
  * This is the model class for table "lesson".
  *
@@ -69,10 +69,11 @@ class Lesson extends LessonTypeModel
             'city_id' => Yii::t('app', 'City ID'),
         ];
     }
+
     public function getCRMLeadsLink()
     {
         $studentGroupTitle = $this->getGroupName();
-         return "https://codabra.amocrm.ru/leads/list/?filter%5Bcf%5D%5B216568%5D=$studentGroupTitle";
+        return "https://codabra.amocrm.ru/leads/list/?filter%5Bcf%5D%5B216568%5D=$studentGroupTitle";
     }
     //Курсы
     /*public static function getCoursesList()
@@ -83,12 +84,12 @@ class Lesson extends LessonTypeModel
         return ArrayHelper::map($courses, 'course_id', 'title');
     }*/
     /****public static function getCoursesCostList()
-    {
-        $courses = Course::find()
-            ->all();
-     
-        return ArrayHelper::map($courses, 'course_id', 'cost');
-    }*/
+     * {
+     * $courses = Course::find()
+     * ->all();
+     *
+     * return ArrayHelper::map($courses, 'course_id', 'cost');
+     * }*/
     /*public static function getCoursesDescList()
     {
         $courses = Course::find()
@@ -205,7 +206,7 @@ class Lesson extends LessonTypeModel
     }
     */
     //Группы
-    
+
     /*public static function getGroupsList()
     {
         $groups = Group::find()
@@ -277,9 +278,10 @@ class Lesson extends LessonTypeModel
         $course = $this->course;
         return $course ? $course->cost : '';
     }
+
     public function fields()
     {
-        return ['lesson_id', 'date_start', 'time_start',  'group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'lead_link', 'calendar_event_id'];
+        return ['lesson_id', 'date_start', 'time_start', 'group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'lead_link', 'calendar_event_id'];
     }
 
     public function extraFields()

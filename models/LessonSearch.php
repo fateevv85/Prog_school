@@ -18,9 +18,9 @@ class LessonSearch extends Lesson
     public function rules()
     {
         return [
-            [['lesson_id', 'group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
-            [['cost'], 'number'],
-            [['date_start', 'time_start'], 'safe'],
+            [['lesson_id', 'group_id', 'lecture_hall_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
+//            [['cost'], 'number'],
+            [['date_start', 'time_start', 'course_id'], 'safe'],
         ];
     }
 
@@ -43,10 +43,10 @@ class LessonSearch extends Lesson
     public function search($params)
     {
         $query = Lesson::find();
-        
+
         //у авторизованных пользователей показываем данные только по их городу
         $query = \app\custom\CustomSearch::filterByUserCity($query);
-        
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -74,9 +74,9 @@ class LessonSearch extends Lesson
             'time_start' => $this->time_start,
             'city_id' => $this->city_id,
         ]);
-        
-        if ( !is_null($this->date_start) ) {
-            if (strpos($this->date_start, ' - ') !== false ) {
+
+        if (!is_null($this->date_start)) {
+            if (strpos($this->date_start, ' - ') !== false) {
                 list($start_date, $end_date) = explode(' - ', $this->date_start);
                 $start_date = Yii::$app->formatter->asDate($start_date, 'yyyy-MM-dd');
                 $end_date = Yii::$app->formatter->asDate($end_date, 'yyyy-MM-dd');
@@ -84,7 +84,7 @@ class LessonSearch extends Lesson
             } else if (!empty($this->date_start)) {
                 $start_date = Yii::$app->formatter->asDate($this->date_start, 'yyyy-MM-dd');
                 $query->andFilterWhere(['like', 'date_start', $start_date]);
-            } 
+            }
         }
         $query->andFilterWhere(['like', 'cost', $this->cost]);
 

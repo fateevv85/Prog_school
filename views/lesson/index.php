@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="lesson-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);
+    ?>
 
 <p class="controls-block">
         <?php
@@ -114,6 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions'=>['style'=>'white-space: normal;'],
                 'contentOptions'=>['style'=>'width: 10px;'],
             ],
+//            'lesson_id',
             [
                 'attribute'=>'group_id',
                 'label'=>'Группа',
@@ -136,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions'=>['style'=>'white-space: normal;'],
                 'contentOptions'=>['style'=>'width: 20%;'],
             ],
-            [
+            /*[
                 'attribute'=>'course_id',
                 'label'=>'Стоимость курса',
                 'format'=>'text', // Возможные варианты: raw, html
@@ -145,7 +147,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'headerOptions'=>['style'=>'white-space: normal;'],
                 'contentOptions'=>['style'=>'width: 100px;'],
-            ],
+            ],*/
             [
                 'attribute' => 'date_start',
                 'filter' => DateRangePicker::widget($daterange),

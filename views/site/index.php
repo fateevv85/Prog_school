@@ -30,10 +30,8 @@ $this->title = 'Codabra';
                     }
                     */
           ?>
-
         <!--li><a href="site/calendar">Календарь</a></li-->
       </ul>
     </div>
-
   </div>
 </div>

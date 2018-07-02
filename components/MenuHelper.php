@@ -4,6 +4,8 @@ namespace app\components;
 
 
 use app\models\tables\Product;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 class MenuHelper
@@ -21,14 +23,21 @@ class MenuHelper
 
         $result = [];
 
+
         foreach ($items as $item) {
+            $courses = ArrayHelper::getColumn(\app\models\Course::find()->where(['product_id' => $item['id']])->asArray()->all(), 'course_id');
+
             $result[] = [
                 'label' => $item['name'],
-//                'url' => ['#'],
-                'url' => Url::to(['course/index', 'CourseSearch[product_id]' => $item['id']]),
+                'url' => Url::to(['lesson/index',
+                    'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+                    'LessonSearch[course_id]' => $courses
+                ]),
                 '<li class="divider"></li>',
             ];
         }
+
+
         return $result;
     }
 
