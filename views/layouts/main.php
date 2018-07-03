@@ -38,7 +38,7 @@ AppAsset::register($this);
         'brandLabel' => '🐲  Dragon alpha',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-default navbar-fixed-top',
         ],
     ]);
 
