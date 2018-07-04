@@ -83,4 +83,9 @@ class City extends \yii\db\ActiveRecord
             ->all();
         return ArrayHelper::map($cities, 'city_id', 'title');
     }
+
+    public static function getCityName($city_id) {
+        $city = static::find()->where(['city_id'=>$city_id])->one();
+        return $city->title;
+    }
 }

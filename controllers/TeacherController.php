@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Lesson;
+use app\models\TrialLesson;
 use Yii;
 use app\models\Teacher;
 use app\models\TeacherSearch;
@@ -44,8 +46,55 @@ class TeacherController extends MyAppController
      */
     public function actionView($id)
     {
+        if ($post = Yii::$app->request->post()) {
+
+            $dateStart = $post['dateStart'];
+            $dateEnd = $post['dateEnd'];
+
+            if ($post['lessons']) {
+                if (in_array('paid', $post['lessons'])) {
+//                    $paid = Lesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd])->all();
+                    $dataProviderPaid = new \yii\data\ActiveDataProvider([
+                        'query' => Lesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
+                        'pagination' => [
+                            'pageSize' => 20,
+                        ],
+                    ]);
+                }
+
+                if (in_array('trial', $post['lessons'])) {
+//                    $trial = TrialLesson::find()->where(['teacher_id' => $id])->all();
+                    $dataProviderTrial = new \yii\data\ActiveDataProvider([
+                        'query' => TrialLesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
+                        'pagination' => [
+                            'pageSize' => 20,
+                        ],
+                    ]);
+                }
+            }
+        }
+
+//        $post = Yii::$app->request->post();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'post' => $post,
+//            'paid' => $paid,
+//            'trial' => $trial,
+//            'dateStart' => $dateStart,
+//            'dateEnd' => $dateEnd,
+            'dataProviderPaid' => $dataProviderPaid,
+            'dataProviderTrial' => $dataProviderTrial
+        ]);
+    }
+
+    public function actionSummary($id)
+    {
+
+        $post = Yii::$app->request->post();
+
+        return $this->render('summary', [
+            'model' => $this->findModel($id),
+            'post' => $post
         ]);
     }
 
@@ -80,7 +129,7 @@ class TeacherController extends MyAppController
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['view', 'id' => $model->teacher_id]);
-             return $this->redirect(['teacher/index']);
+            return $this->redirect(['teacher/index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

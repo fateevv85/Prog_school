@@ -6,9 +6,9 @@ return [
     'Create Course' => 'Создать',
     'Course ID' => 'ID Курса',
     'Title' => 'Название',
-	'Description' => 'Описание',
-	'Synopses Link' => 'Ссылка на материалы',
-	'Lessons Num' => 'Количество занятий',
+    'Description' => 'Описание',
+    'Synopses Link' => 'Ссылка на материалы',
+    'Lessons Num' => 'Количество занятий',
 
     'Products' => 'Продукты',
     'Product' => 'Продукт',
@@ -25,33 +25,34 @@ return [
     'Trial Lesson ID' => 'ID Пробного занятия',
     'Group ID' => 'ID Группы',
     'Lesson ID' => 'ID Занятия',
-	'Lecture Hall ID' => 'ID Площадки',
-	'Settings' => 'Настройки',
-    
+    'Lecture Hall ID' => 'ID Площадки',
+    'Settings' => 'Настройки',
+
     'Teachers' => 'Преподаватели',
+    'Teacher summary' => 'Сводка по преподавателю',
     'Create Teacher' => 'Добавить Преподавателя',
     'Teacher ID' => 'ID Преподавателя',
     'First Name' => 'Имя',
-	'Middle Name' => 'Отчество',
-	'Last Name' => 'Фамилия',
-	'Resume' => 'Резюме',
-	'Photo' => 'Ссылка на фото',
-				
-                
+    'Middle Name' => 'Отчество',
+    'Last Name' => 'Фамилия',
+    'Resume' => 'Резюме',
+    'Photo' => 'Ссылка на фото',
+
+
     'Lecture Halls' => 'Площадки',
     'Create Lecture Hall' => 'Добавить площадку',
     'City' => 'Город',
     'Metro Station' => 'Станция метро',
-	'Street' => 'Улица',
-	'Address' => 'Дом, корпус, офис',
-    
+    'Street' => 'Улица',
+    'Address' => 'Дом, корпус, офис',
+
     'Groups' => 'Группы учащихся',
     'Create Group' => 'Создать группу',
     'Participants Num' => 'Записано учеников',
     'Participants Num Max' => 'Вместимость',
     'Date Start' => 'Дата начала',
     'Time Start' => 'Время начала',
-    
+
     'Select Teacher' => 'Преподаватель',
     'Select Course' => 'Курс обучения',
     'Select City' => 'Город',
@@ -64,20 +65,21 @@ return [
     'Create' => 'Создать',
     'Update' => 'Изменить',
     'Delete' => 'Удалить',
+    'Show' => 'Показать',
     'Update Teacher: ' => 'Обновить данные',
     'Update Course:' => 'Обновить данные',
     'Update Lecture Hall: ' => 'Обновить данные',
     'Update Group: ' => 'Обновить данные',
     'Update Group:' => 'Обновить данные',
     'Update Group' => 'Обновить данные',
-    
+
     'Apply' => 'Готово',
     'Clear' => 'Отмена',
-    
+
     'Cities' => 'Города',
     'Create City' => 'Добавить город',
     'City Title' => 'Название города',
-    
+
     'Course Date Start' => 'Дата старта полного курса',
     'Lessons' => 'Платные занятия',
     'Lesson' => 'Платное занятие',
@@ -89,7 +91,7 @@ return [
     'Course' => 'Курс',
     'Teacher' => 'Преподаватель',
     'Duration' => 'Продолжительность (минуты)',
-    
+
     'Users' => 'Пользователи',
     'Create User' => 'Добавить Пользователя',
     'Full Name' => 'Имя',
@@ -100,15 +102,5 @@ return [
     'Reset Grid' => 'Отменить фильтрацию',
     'Remember Me' => 'Запомнить меня',
 
-    
-    
-    
-    
-   
-    
-    
-    
 
-
-    
 ];

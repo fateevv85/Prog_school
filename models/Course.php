@@ -140,15 +140,15 @@ class Course extends \yii\db\ActiveRecord
 
     public function setCities($citiesIds)
     {
-
-
         $prevCities = $this->cities;
         $prevCitiesIds = array();
+
         if (is_array($prevCities) && count($prevCities) > 0) {
             foreach ($prevCities as $city) {
                 $prevCitiesIds[] = $city->city_id;
             }
         }
+
         $toDelete = array_diff($prevCitiesIds, $citiesIds);
         $toAdd = array_diff($citiesIds, $prevCitiesIds);
 
