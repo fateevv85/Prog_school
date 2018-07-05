@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\tables\Product */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app','Products'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-view">
@@ -31,7 +31,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'city_id',
-            'amo_view',
+            [
+                  'label' =>Yii::t('app','Show paid in AMO'),
+                    'format'=>'html',
+                    'value' => function ($data) {
+      if ($data->amo_paid_view == 1) {
+          return '</i><i class="fas fa-eye"></i> Да';
+      }
+          return '<i class="far fa-eye-slash"></i> Нет';
+                    }
+                ],
+            [
+                'label' =>Yii::t('app','Show trial in AMO'),
+                'format'=>'html',
+                'value' => function ($data) {
+                    if ($data->amo_trial_view == 1) {
+                        return '<i class="fas fa-eye"></i> Да';
+                    }
+                    return '<i class="far fa-eye-slash fa-size-5x"></i> Нет';
+                }
+            ],
         ],
     ]) ?>
 

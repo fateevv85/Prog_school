@@ -138,9 +138,9 @@ $this->params['breadcrumbs'][] = $this->title;
               [
                   'attribute' => 'group_id',
                   'label' => 'Группа',
-                  'format' => 'text', // Возможные варианты: raw, html
+                  'format' => 'html', // Возможные варианты: raw, html
                   'content' => function ($data) {
-                      return $data->getGroupName();
+                      return Html::a($data->getGroupName(), ['group/view', 'id' => $data->group_id]);
                   },
                   'filter' => TrialLesson::getGroupsList(),
                   'headerOptions' => ['style' => 'white-space: normal;'],
@@ -158,9 +158,12 @@ $this->params['breadcrumbs'][] = $this->title;
               [
                   'attribute' => 'lecture_hall_id',
                   'label' => 'Адрес',
-                  'format' => 'text', // Возможные варианты: raw, html
+                  'format' => 'html', // Возможные варианты: raw, html
                   'content' => function ($data) {
-                      return $data->getLectureHallAddress();
+                      $string = $data->getLectureHallAddress();
+                      $mapLink = preg_match('#(?P<link>http?s:\/\/.+)#', $string, $matches);
+                      $address = preg_replace('#http?s:\/\/.+#', "\n ", $string);
+                      return $address . Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
                   },
                   'filter' => TrialLesson::getLectureHallsList(),
 
@@ -213,17 +216,6 @@ $this->params['breadcrumbs'][] = $this->title;
                   'options' => ['width' => '100']
               ],
               [
-                  'attribute' => 'participants_num_max',
-                  'label' => 'Вмести- мость',
-                  'format' => 'text', // Возможные варианты: raw, html
-                  'content' => function ($data) {
-                      return $data->getParticipantsNumMax();
-                  },
-                  'headerOptions' => ['style' => 'white-space: normal;'],
-                  'contentOptions' => ['style' => 'width: 50px;'],
-                  'filter' => TrialLesson::getParticipantsNumsMaxList()
-              ],
-              [
                   'attribute' => 'participants_num',
                   'label' => 'Записано учеников',
                   'format' => 'text', // Возможные варианты: raw, html
@@ -234,6 +226,18 @@ $this->params['breadcrumbs'][] = $this->title;
                   'contentOptions' => ['style' => 'width: 50px;'],
                   'filter' => TrialLesson::getParticipantsNumsList()
               ],
+              [
+                  'attribute' => 'participants_num_max',
+                  'label' => 'Вмести- мость',
+                  'format' => 'text', // Возможные варианты: raw, html
+                  'content' => function ($data) {
+                      return $data->getParticipantsNumMax();
+                  },
+                  'headerOptions' => ['style' => 'white-space: normal;'],
+                  'contentOptions' => ['style' => 'width: 50px;'],
+                  'filter' => TrialLesson::getParticipantsNumsMaxList()
+              ],
+
 
               //'lesson_id',
               //'lecture_hall_id',

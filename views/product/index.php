@@ -34,8 +34,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->cityName->title;
                 }
             ],
-            'amo_view',
-
+            [
+                'label' =>Yii::t('app','Show paid in AMO'),
+                'format'=>'html',
+                'content' => function ($data) {
+                    if ($data->amo_paid_view == 1) {
+                        return '</i><i class="fas fa-eye"></i> Да';
+                    }
+                    return '<i class="far fa-eye-slash"></i> Нет';
+                }
+            ],
+            [
+                'label' =>Yii::t('app','Show trial in AMO'),
+                'format'=>'html',
+                'content' => function ($data) {
+                    if ($data->amo_trial_view == 1) {
+                        return '<i class="fas fa-eye"></i> Да';
+                    }
+                    return '<i class="far fa-eye-slash fa-size-5x"></i> Нет';
+                }
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

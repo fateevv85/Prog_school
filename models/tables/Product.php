@@ -34,7 +34,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'city_id'], 'required'],
-            [['city_id', 'amo_view'], 'integer'],
+            [['city_id', 'amo_paid_view', 'amo_trial_view'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['city_id' => 'city_id']],
         ];
@@ -49,7 +49,8 @@ class Product extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'city_id' => Yii::t('app', 'City ID'),
-            'amo_view' => Yii::t('app', 'Show in AMO'),
+            'amo_paid_view' => Yii::t('app', 'Show paid in AMO'),
+            'amo_trial_view' => Yii::t('app', 'Show trial in AMO'),
         ];
     }
 

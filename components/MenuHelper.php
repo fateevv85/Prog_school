@@ -5,7 +5,6 @@ namespace app\components;
 
 use app\models\tables\Product;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 class MenuHelper

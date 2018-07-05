@@ -18,15 +18,19 @@ use yii\widgets\ActiveForm;
 
     $model->city_id = Yii::$app->user->identity->city_id;
 
-//    echo $form->field($model, 'city_id')->checkboxList($model->getCities(), ['separator' => '<br>']);
+    //    echo $form->field($model, 'city_id')->checkboxList($model->getCities(), ['separator' => '<br>']);
 
     echo $form->field($model, 'city_id')->radioList($model->getCities(), ['separator' => '<br>']) ?>
 
-    <?= $form->field($model, 'amo_view')->checkbox(['label' => 'Отобразить в AMO', 'labelOptions' => []]) ?>
+  <label>Отобразить занятия в АМО:</label>
 
-  <div class="form-group">
-      <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
-  </div>
+    <?= $form->field($model, 'amo_paid_view')->checkbox(['label' => 'платные', 'checked ' => true]) ?>
+
+    <?= $form->field($model, 'amo_trial_view')->checkbox(['label' => 'пробные']) ?>
+
+</div>
+<div class="form-group">
+    <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
 
     <?php ActiveForm::end(); ?>
 

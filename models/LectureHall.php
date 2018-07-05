@@ -54,13 +54,14 @@ class LectureHall extends \yii\db\ActiveRecord
             'link_yandex_map' => Yii::t('app', 'link Yandex Map'),
         ];
     }
-     public static function getAddresses()
+
+    public static function getAddresses()
     {
         $halls = self::find()
             ->all();
         $names = array();
-        foreach($halls as $key => $hall) {
-            $names[$hall['lecture_hall_id']]  = self::getAddress($hall);
+        foreach ($halls as $key => $hall) {
+            $names[$hall['lecture_hall_id']] = self::getAddress($hall);
             //$names[$hall['lecture_hall_id']]  = $hall->city . ', ' .  $hall->street . ' ' . $hall->address;
             /*$item = array();
             $item['teacher_id'] = $teacher['teacher_id'];
@@ -69,46 +70,50 @@ class LectureHall extends \yii\db\ActiveRecord
         }
         return $names;
     }
+
     public static function getPlaces()
     {
         $halls = self::find()
             ->all();
         $names = array();
-        foreach($halls as $key => $hall) {
-            $names[$hall['lecture_hall_id']]  = self::getAddress($hall);
+        foreach ($halls as $key => $hall) {
+            $names[$hall['lecture_hall_id']] = self::getAddress($hall);
         }
         return $names;
     }
+
     public static function getCities()
     {
         $halls = self::find()
             ->all();
         $names = array();
-        foreach($halls as $key => $hall) {
-            $names[$hall['lecture_hall_id']]  = $hall->city;
+        foreach ($halls as $key => $hall) {
+            $names[$hall['lecture_hall_id']] = $hall->city;
         }
         return $names;
     }
+
     public static function getHallsForCurrentUser()
     {
         $identity = Yii::$app->user->identity;
-        if ( is_null($identity) ) {
+        if (is_null($identity)) {
             return self::getPlaces();
         }
         return self::getHallsByIdentity($identity);
     }
+
     public static function getHallsByIdentity($identity)
     {
         $cities = array();
-        if ( $identity->role === 'main_admin' ) {
+        if ($identity->role === 'main_admin') {
             return self::getPlaces();
         } else if ($identity->role === 'regional_admin') {
-            if ( is_numeric($identity->city_id) ) {
+            if (is_numeric($identity->city_id)) {
                 $halls = self::find()->where(['city_id' => $identity->city_id])->all();
                 if (count($halls) > 0) {
                     $names = array();
-                    foreach($halls as $key => $hall) {
-                        $names[$hall['lecture_hall_id']]  = self::getAddress($hall);
+                    foreach ($halls as $key => $hall) {
+                        $names[$hall['lecture_hall_id']] = self::getAddress($hall);
                     }
                     return $names;
                     //$halls[ $hall['lecture_hall_id'] ] = self::getAddress($hall);
@@ -118,8 +123,9 @@ class LectureHall extends \yii\db\ActiveRecord
         return $names;
         //print_r($identity->role);die;
     }
+
     public static function getAddress($hall)
-    {   
+    {
         $address = '';
         if ($hall) {
             if (!empty($hall->getCityTitle())) {
@@ -129,28 +135,31 @@ class LectureHall extends \yii\db\ActiveRecord
                 $address .= ', м. ' .  $hall->metro_station;
             }*/
             if (isset($hall->place_description)) {
-                $address .= ', ' .  $hall->place_description;
+                $address .= ', ' . $hall->place_description;
             }
         }
         return $address;
         //return $hall->getCityTitle() . ', м. ' .  $hall->metro_station .', ' .  $hall->place_description;
     }
-     public static function getPlace($hall)
+
+    public static function getPlace($hall)
     {
-        return  $hall->place_description;
+        return $hall->place_description;
         //return  $hall->street . ', ' . $hall->address;
     }
-    
+
     public function getCity()
     {
         return $this->hasOne(City::className(), ['city_id' => 'city_id']);
     }
+
     public function getCityTitle()
     {
         $city = $this->city;
-     
+
         return $city ? $city->title : '';
     }
+
     /*public static function getCitiesList()
     {
         $cities = City::find()

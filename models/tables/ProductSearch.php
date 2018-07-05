@@ -18,7 +18,7 @@ class ProductSearch extends Product
     public function rules()
     {
         return [
-            [['id', 'city_id', 'amo_view'], 'integer'],
+            [['id', 'city_id', 'amo_paid_view', 'amo_trial_view'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -62,7 +62,8 @@ class ProductSearch extends Product
         $query->andFilterWhere([
             'id' => $this->id,
             'city_id' => $this->city_id,
-            'amo_view' => $this->amo_view,
+            'amo_paid_view' => $this->amo_paid_view,
+            'amo_trial_view' => $this->amo_trial_view,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
