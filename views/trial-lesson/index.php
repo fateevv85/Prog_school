@@ -1,18 +1,10 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
-use yii\helpers\BaseUrl;
-//use kartik\date\DatePicker;
-use yii\widgets\InputWidget;
-//use kartik\date\DatePicker;
-
 use kartik\daterange\DateRangePicker;
-//use kartik\widgets\ActiveForm;
-
 use app\models\TrialLesson;
 
 /* @var $this yii\web\View */
@@ -28,13 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
       <?php if ($name = Yii::$app->request->get('product_name')) : ?>
-        <a href="<?= Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
-            'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
-            'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-warning" role="button"
-           aria-pressed="true">Платные занятия</a>
-        <a href="#" class="btn btn-default active" role="button"
-           aria-pressed="true">Пробные
-          занятия</a>
+        <div class="btn-group">
+          <a href="<?= Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+              'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
+              'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-default" role="button"
+             aria-pressed="true">Платные занятия</a>
+          <a href="#" class="btn btn-default active" role="button"
+             aria-pressed="true">Пробные
+            занятия</a>
+        </div>
         <h4> для продукта "<?= $name ?>" </h4>
       <?php else: ?>
         <h1><?= Html::encode($this->title) ?></h1>

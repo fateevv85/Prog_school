@@ -8,8 +8,10 @@ use Yii;
 use app\models\Teacher;
 use app\models\TeacherSearch;
 //use yii\web\Controller;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * TeacherController implements the CRUD actions for Teacher model.
@@ -51,25 +53,25 @@ class TeacherController extends MyAppController
             $dateStart = $post['dateStart'];
             $dateEnd = $post['dateEnd'];
 
+            function options($id, $dateStart, $dateEnd, $lessonType)
+            {
+                return [
+                    'query' => $lessonType::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
+                    'pagination' => [
+                        'pageSize' => 20,
+                    ],
+                ];
+            }
+
             if ($post['lessons']) {
-                if (in_array('paid', $post['lessons'])) {
-//                    $paid = Lesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd])->all();
-                    $dataProviderPaid = new \yii\data\ActiveDataProvider([
-                        'query' => Lesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
-                        'pagination' => [
-                            'pageSize' => 20,
-                        ],
-                    ]);
+                if (ArrayHelper::isIn('paid', $post) || ArrayHelper::isIn('paid', $post['lessons'])) {
+                    $dataProviderPaid = new ActiveDataProvider(
+                        options($id, $dateStart, $dateEnd, Lesson::className()));
                 }
 
-                if (in_array('trial', $post['lessons'])) {
-//                    $trial = TrialLesson::find()->where(['teacher_id' => $id])->all();
-                    $dataProviderTrial = new \yii\data\ActiveDataProvider([
-                        'query' => TrialLesson::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
-                        'pagination' => [
-                            'pageSize' => 20,
-                        ],
-                    ]);
+                if (ArrayHelper::isIn('trial', $post['lessons'])) {
+                    $dataProviderTrial = new ActiveDataProvider(
+                        options($id, $dateStart, $dateEnd, TrialLesson::className()));
                 }
             }
         }
@@ -77,7 +79,7 @@ class TeacherController extends MyAppController
 //        $post = Yii::$app->request->post();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'post' => $post,
+//            'post' => $post,
 //            'paid' => $paid,
 //            'trial' => $trial,
 //            'dateStart' => $dateStart,

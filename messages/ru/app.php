@@ -31,7 +31,7 @@ return [
     'Teachers' => 'Преподаватели',
     'Teacher summary' => 'Сводка по преподавателю',
     'Create Teacher' => 'Добавить Преподавателя',
-    'Teacher ID' => 'ID Преподавателя',
+    'Teacher ID' => 'ID',
     'First Name' => 'Имя',
     'Middle Name' => 'Отчество',
     'Last Name' => 'Фамилия',

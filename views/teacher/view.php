@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use \yii\widgets\ActiveForm;
-use kartik\builder\Form;
 use \yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -49,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw', // Возможные варианты: raw, html
                 'value' => function ($data) {
                     if ($data->photo) {
-//                        return Html::a(" Открыть в новом окне", $data->photo, ['target' => '_blank', 'class' => 'fas fa-external-link-alt']);
                         return Html::a("Открыть <i class=\"fas fa-external-link-alt\"></i>", $data->photo, ['target' => '_blank']);
                     }
                     return 'Нет фотографии';
@@ -69,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);
 
+    //Виджет выбора даты с указанием даты начала и конца одновременно, фича- пред-выбранные периоды 'presetDropdown'=>true
     /*      $addon = <<< HTML
       <span class="input-group-addon">
           <i class="glyphicon glyphicon-calendar"></i>
@@ -139,7 +138,10 @@ HTML;
 //            'presetDropdown' => true,
             'pluginOptions' => [
                 'singleDatePicker' => true,
-                'showDropdowns' => true
+                'showDropdowns' => true,
+                'locale' => [
+                    'format' => 'DD.MM.YYYY'
+                ]
             ],
             'options' => [
                 'required' => true,
@@ -150,15 +152,15 @@ HTML;
 
     echo '<div class="row">';
 
-    echo preHtml('Дата с') . widgetDate('dateStart', '2017-01-01') . $addon;
+    echo preHtml('Начало периода:') . widgetDate('dateStart', '01.01.2017') . $addon;
 
-    echo preHtml('Дата по') . widgetDate('dateEnd', '2018-07-31') . $addon;
+    echo preHtml('Конец периода:') . widgetDate('dateEnd', '31.07.2018') . $addon;
 
     echo '</div>';
 
 
     echo Html::tag('div',
-        Html::label('Показать занятия', null, [
+        Html::label('Выбрать занятия:', null, [
             'class' => 'control-label col-xs-12',
             'style' => 'padding-left:0px'
         ]) .
@@ -169,7 +171,7 @@ HTML;
 //            'separator' => '<br>',
             'class' => 'btn-group',
             'data-toggle' => 'buttons',
-//            'unselect' => 'paid',
+            'unselect' => 'paid',
             'item' => function ($index, $label, $name, $checked, $value) {
                 if ($value == 'paid') {
                     $active = 'active';
@@ -180,79 +182,18 @@ HTML;
         ]),
         ['class' => 'form-group']);
 
-    echo Html::submitButton(\Yii::t('app', 'Show'),
-        ['class' => 'btn btn-success']);
+    echo Html::tag('div', Html::submitButton(\Yii::t('app', 'Show'),
+        ['class' => 'btn btn-success']), ['class' => 'form-group']);
 
     $form::end();
 
-
-    //    var_dump($post);
-
-
-    //    var_dump($dateStart);
-    //    var_dump($dateEnd);
-
-
-    /*$dataProvider = new \yii\data\ActiveDataProvider([
-        'query' => \app\models\Lesson::find()->where(['teacher_id' => 6]),
-        'pagination' => [
-            'pageSize' => 20,
-        ],
-    ]);*/
-
-    /*if ($dataProviderPaid) {
-        echo \yii\widgets\ListView::widget([
-            'dataProvider' => $dataProviderPaid,
-            'itemView' => '_list',
-        ]);
-    }*/
-
-    function widgetGrid($dataProvider, $lessonIdColumn) {
-      return \yii\grid\GridView::widget([
-          'dataProvider' => $dataProvider,
-          'columns' => [
-              ['class' => 'yii\grid\SerialColumn'],
-              'lesson_id',
-              [
-                  'attribute' => 'group_id',
-                  'format' => 'text', // Возможные варианты: raw, html
-                  'content' => function ($data) {
-                      return $data->getGroupName();
-                  },
-                  'headerOptions' => ['style' => 'white-space: normal;'],
-                  'contentOptions' => ['style' => 'width: 100px;'],
-              ],
-              [
-                  'attribute' => 'course_id',
-                  'format' => 'text', // Возможные варианты: raw, html
-                  'content' => function ($data) {
-                      return '<a href="' . Url::to(['course/view', 'id' => $data->course_id]) . '">' . $data->getCourseName() . '</a>';
-                  },
-                  'headerOptions' => ['style' => 'white-space: normal;'],
-                  'contentOptions' => ['style' => 'width: 20%;'],
-              ],
-              'date_start',
-              [
-                  'attribute' => 'city_id',
-                  'label' => 'Город',
-                  'format' => 'text', // Возможные варианты: raw, html
-                  'content' => function ($data) {
-                      return $data->getCityTitle();
-                  },
-                  'headerOptions' => ['style' => 'white-space: normal;'],
-              ],
-          ],
-      ]);
-    }
-
-
-    if ($dataProviderPaid) {
-        echo "<h3>Платные уроки: {$dataProviderPaid->totalCount}</h3>";
-        echo \yii\grid\GridView::widget([
-            'dataProvider' => $dataProviderPaid,
+    function widgetGrid($dataProvider, $lessonIdColumn)
+    {
+        return \yii\grid\GridView::widget([
+            'dataProvider' => $dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                'lesson_id',
+                $lessonIdColumn,
                 [
                     'attribute' => 'group_id',
                     'format' => 'text', // Возможные варианты: raw, html
@@ -281,51 +222,28 @@ HTML;
                     },
                     'headerOptions' => ['style' => 'white-space: normal;'],
                 ],
+                [
+                    'label' => Yii::t('app', 'Product'),
+                    'content' => function ($data) {
+          return \app\models\Course::findOne(['course_id'=>$data->course_id])->getProductName();
+                    }
+                ]
             ],
         ]);
+    }
+
+    if ($dataProviderPaid) {
+        echo "<h3>Платные занятия: {$dataProviderPaid->totalCount}</h3>";
+        echo widgetGrid($dataProviderPaid, 'lesson_id');
     }
 
     if ($dataProviderTrial) {
-        echo "<h3>Пробные уроки: {$dataProviderTrial->totalCount}</h3>";
-        echo \yii\grid\GridView::widget([
-            'dataProvider' => $dataProviderTrial,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                'trial_lesson_id',
-                [
-                    'attribute' => 'group_id',
-                    'format' => 'text', // Возможные варианты: raw, html
-                    'content' => function ($data) {
-                        return $data->getGroupName();
-                    },
-//                    'filter' => TrialLesson::getGroupsList(),
-                    'headerOptions' => ['style' => 'white-space: normal;'],
-                    'contentOptions' => ['style' => 'width: 100px;'],
-                ],
-                [
-                    'attribute' => 'course_id',
-                    'format' => 'text', // Возможные варианты: raw, html
-                    'content' => function ($data) {
-                        return '<a href="' . Url::to(['course/view', 'id' => $data->course_id]) . '">' . $data->getCourseName() . '</a>';
-                    },
-                    'headerOptions' => ['style' => 'white-space: normal;'],
-                    'contentOptions' => ['style' => 'width: 20%;'],
-                ],
-                'date_start',
-                [
-                    'attribute' => 'city_id',
-                    'label' => 'Город',
-                    'format' => 'text', // Возможные варианты: raw, html
-                    'content' => function ($data) {
-                        return $data->getCityTitle();
-                    },
-                    'headerOptions' => ['style' => 'white-space: normal;'],
-                ],
-            ],
-        ]);
+        echo "<h3>Пробные занятия: {$dataProviderTrial->totalCount}</h3>";
+        echo widgetGrid($dataProviderTrial, 'trial_lesson_id');
     }
 
-    //    var_dump($dataProviderPaid);
+
+//    var_dump($dataProviderPaid);
     ?>
 
 </div>

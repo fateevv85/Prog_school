@@ -28,12 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php // echo $this->render('_search', ['model' => $searchModel]);?>
 
       <?php if ($name = Yii::$app->request->get('product_name')) : ?>
-        <a href="#" class="btn btn-default active" role="button" aria-pressed="true">Платные занятия</a>
-        <a href="<?= Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
-            'TrialLessonSearch[course_id]' => Yii::$app->request->get('LessonSearch')['course_id'],
-            'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-warning" role="button"
-           aria-pressed="true">Пробные
-          занятия</a>
+        <div class="btn-group">
+          <a href="#" class="btn btn-default active" role="button" aria-pressed="true">Платные занятия</a>
+          <a href="<?= Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+              'TrialLessonSearch[course_id]' => Yii::$app->request->get('LessonSearch')['course_id'],
+              'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-default" role="button"
+             aria-pressed="true">Пробные
+            занятия</a>
+        </div>
         <h4> для продукта "<?= $name ?>" </h4>
       <?php else: ?>
         <h1><?= Html::encode($this->title) ?></h1>
