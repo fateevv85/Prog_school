@@ -1,18 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
-use yii\helpers\BaseUrl;
-//use kartik\date\DatePicker;
-use yii\widgets\InputWidget;
-//use kartik\date\DatePicker;
-
+use app\components\WidgetHelper;
 use kartik\daterange\DateRangePicker;
-//use kartik\widgets\ActiveForm;
-
 use app\models\Lesson;
 
 /* @var $this yii\web\View */
@@ -105,9 +98,9 @@ $this->params['breadcrumbs'][] = $this->title;
               '{toggleData}',
           ],*/
           // set export properties
-          'export' => [
+          /*'export' => [
               'fontAwesome' => true
-          ],
+          ],*/
           'panel' => [
               'type' => 'default',
               'heading' => $this->title
@@ -117,6 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
           'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
           'headerRowOptions' => ['class' => 'kartik-sheet-style'],
           'filterRowOptions' => ['class' => 'kartik-sheet-style'],
+          'rowOptions' => WidgetHelper::stripeGrid(),
           'columns' => [
               [
                   'class' => 'kartik\grid\CheckboxColumn',

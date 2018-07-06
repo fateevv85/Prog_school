@@ -80,7 +80,8 @@ class Product extends \yii\db\ActiveRecord
         return City::getCitiesForCurrentUser();
     }
 
-    public static function getProductName($id) {
+    public static function getProductName($id)
+    {
         return static::find()->where(['id' => $id])->one();
     }
 }

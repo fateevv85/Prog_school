@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use yii\helpers\Url;
 use kartik\daterange\DateRangePicker;
 use app\models\TrialLesson;
+use app\components\WidgetHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TrialLessonSearch */
@@ -112,6 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
           'filterRowOptions' => ['class' => 'kartik-sheet-style'],
           //'emptyCell' => Yii::t('app','not set'),
           //'persistResize'=>false,
+          'rowOptions' => WidgetHelper::stripeGrid(),
           'columns' => [
               //['class' => 'yii\grid\CheckboxColumn'],
               /* [

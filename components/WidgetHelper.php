@@ -93,6 +93,14 @@ HTML;
         ]);
     }
 
+    public static function stripeGrid () {
+        return function ($data, $key, $index, $grid) {
+            if ($index % 2 !== 0) {
+                return ['style' => 'background-color:#E6E6E6;'];
+            }
+        };
+    }
+
     //Виджет выбора даты с указанием даты начала и конца одновременно, фича- пред-выбранные периоды 'presetDropdown'=>true
     /*      $addon = <<< HTML
       <span class="input-group-addon">

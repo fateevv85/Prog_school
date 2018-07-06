@@ -33,7 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'course_id',
             'title:ntext',
-            'description:ntext',
+            [
+                'attribute' => 'description',
+                'content' => function ($data) {
+                    if ($desc = $data->description) {
+                        return mb_substr($desc, 0, 50).'...';
+                    }
+                },
+            ],
             //'synopses_link:ntext',
             [
                 'attribute' => 'synopses_link',

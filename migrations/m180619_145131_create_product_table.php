@@ -16,7 +16,7 @@ class m180619_145131_create_product_table extends Migration
         $this->createTable('product', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'city_id' => $this->integer()->notNull()->unsigned(),
+            'city_id' => $this->integer(10)->notNull()->unsigned(),
             'amo_view' => $this->boolean()
         ]);
 

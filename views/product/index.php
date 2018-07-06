@@ -22,6 +22,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($data, $key, $index, $grid) {
+            if (!$data->amo_paid_view && !$data->amo_trial_view) {
+                return ['style' => 'background-color:#858585;'];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -30,13 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => Yii::t('app', 'City'),
 //                'attribute' => 'city_id',
-                'value' => function ($model) {
-                    return $model->cityName->title;
+                'value' => function ($data) {
+                    return $data->cityName->title;
                 }
             ],
             [
-                'label' =>Yii::t('app','Show paid in AMO'),
-                'format'=>'html',
+                'label' => Yii::t('app', 'Show paid in AMO'),
+                'format' => 'html',
                 'content' => function ($data) {
                     if ($data->amo_paid_view == 1) {
                         return '</i><i class="fas fa-eye"></i> Да';
@@ -45,8 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' =>Yii::t('app','Show trial in AMO'),
-                'format'=>'html',
+                'label' => Yii::t('app', 'Show trial in AMO'),
+                'format' => 'html',
                 'content' => function ($data) {
                     if ($data->amo_trial_view == 1) {
                         return '<i class="fas fa-eye"></i> Да';

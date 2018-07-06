@@ -2,35 +2,40 @@
 
 namespace app\controllers;
 
-use app\models\tables\Students;
 use Yii;
-use app\models\Group;
-use app\models\GroupSearch;
-//use yii\web\Controller;
-use yii\data\ActiveDataProvider;
+use app\models\tables\Students;
+use app\models\tables\StudentsSearch;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GroupController implements the CRUD actions for Group model.
+ * StudentsController implements the CRUD actions for Students model.
  */
-class GroupController extends MyAppController
+class StudentsController extends Controller
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function behaviors()
     {
-        return parent::behaviors();
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
     /**
-     * Lists all Group models.
+     * Lists all Students models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GroupSearch();
+        $searchModel = new StudentsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -40,69 +45,62 @@ class GroupController extends MyAppController
     }
 
     /**
-     * Displays a single Group model.
+     * Displays a single Students model.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $dataProviderStudents = new ActiveDataProvider([
-            'query' => Students::find()->where(['group_id' => $id]),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'dataProviderStudents' => $dataProviderStudents
         ]);
     }
 
     /**
-     * Creates a new Group model.
+     * Creates a new Students model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Group();
+        $model = new Students();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->group_id]);
-            return $this->redirect(['group/index']);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing Group model.
+     * Updates an existing Students model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->group_id]);
-            return $this->redirect(['group/index']);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing Group model.
+     * Deletes an existing Students model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -112,18 +110,18 @@ class GroupController extends MyAppController
     }
 
     /**
-     * Finds the Group model based on its primary key value.
+     * Finds the Students model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Group the loaded model
+     * @return Students the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Group::findOne($id)) !== null) {
+        if (($model = Students::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
