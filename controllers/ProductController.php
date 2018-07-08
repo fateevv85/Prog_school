@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\Course;
+use app\models\CourseSearch;
 use app\models\tables\ProductSearch;
 use Yii;
 use app\models\tables\Product;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,8 +56,18 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $courseSearchModel = new CourseSearch();
+        $courseDataProvider = new ActiveDataProvider([
+            'query' => Course::find()->where(['product_id' => $id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ]
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'courseDataProvider' => $courseDataProvider,
+            'courseSearchModel'=> $courseSearchModel
         ]);
     }
 
