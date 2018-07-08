@@ -162,10 +162,11 @@ $this->params['breadcrumbs'][] = $this->title;
                   'label' => 'Адрес',
                   'format' => 'html', // Возможные варианты: raw, html
                   'content' => function ($data) {
-                      $string = $data->getLectureHallAddress();
-                      $mapLink = preg_match('#(?P<link>http?s:\/\/.+)#', $string, $matches);
-                      $address = preg_replace('#http?s:\/\/.+#', "\n ", $string);
-                      return $address . Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
+                      if ($string = $data->getLectureHallAddress()) {
+                          $mapLink = preg_match('#(?P<link>http?s:\/\/.+)#', $string, $matches);
+                          $address = preg_replace('#http?s:\/\/.+#', "\n ", $string);
+                          return $address . '<br>' . Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
+                      }
                   },
                   'filter' => TrialLesson::getLectureHallsList(),
 

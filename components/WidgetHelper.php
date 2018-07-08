@@ -3,6 +3,7 @@
 namespace app\components;
 
 use kartik\daterange\DateRangePicker;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 class WidgetHelper
@@ -54,12 +55,20 @@ HTML;
             'dataProvider' => $dataProvider,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
-                $lessonIdColumn,
+//                $lessonIdColumn,
+                [
+                    'attribute' => $lessonIdColumn,
+                    'format' => 'text',
+                    'content' => function ($data) use ($lessonIdColumn) {
+                        $url = ($lessonIdColumn == 'lesson_id') ? 'lesson/view' : 'trial-lesson/view';
+                        return Html::a($data->$lessonIdColumn, [$url, 'id' => $data->$lessonIdColumn]);
+                    },
+                ],
                 [
                     'attribute' => 'group_id',
                     'format' => 'text', // Возможные варианты: raw, html
                     'content' => function ($data) {
-                        return $data->getGroupName();
+                        return Html::a($data->getGroupName(), ['group/view', 'id' => $data->group_id]);
                     },
                     'headerOptions' => ['style' => 'white-space: normal;'],
                     'contentOptions' => ['style' => 'width: 100px;'],
@@ -93,7 +102,8 @@ HTML;
         ]);
     }
 
-    public static function stripeGrid () {
+    public static function stripeGrid()
+    {
         return function ($data, $key, $index, $grid) {
             if ($index % 2 !== 0) {
                 return ['style' => 'background-color:#E6E6E6;'];

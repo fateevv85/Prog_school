@@ -105,12 +105,12 @@ $this->params['breadcrumbs'][] = $this->title;
     $form::end();
 
     if ($dataProviderPaid) {
-        echo "<h3>Платные занятия: {$dataProviderPaid->totalCount}</h3>";
+        echo "<h3>Платных занятий: {$dataProviderPaid->totalCount}</h3>";
         echo WidgetHelper::widgetGridTeacher($dataProviderPaid, 'lesson_id');
     }
 
     if ($dataProviderTrial) {
-        echo "<h3>Пробные занятия: {$dataProviderTrial->totalCount}</h3>";
+        echo "<h3>Пробных занятий: {$dataProviderTrial->totalCount}</h3>";
         echo WidgetHelper::widgetGridTeacher($dataProviderTrial, 'trial_lesson_id');
     }
 

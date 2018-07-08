@@ -37,6 +37,7 @@ $config = [
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'rteacher'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'rlesson'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'rgroup'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'rstudents'],
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
