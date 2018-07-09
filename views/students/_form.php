@@ -16,9 +16,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
-<!--    --><?//= $form->field($model, 'group_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'group_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'lead_id')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'control_sum')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

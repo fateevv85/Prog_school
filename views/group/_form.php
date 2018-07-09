@@ -18,9 +18,9 @@ use app\models\City;
         $id = \Yii::$app->user->id;
         if ( $id === 5) {
             echo($form->field($model, 'participants_num')->textInput() );
-        } else {
+        } /*else {
             echo("<div> <label class='control-label'>Записано учеников: {$model->participants_num}</label></div>");
-        }
+        }*/
     ?>
 
     <?= $form->field($model, 'participants_num_max')->textInput() ?>

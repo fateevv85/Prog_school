@@ -13,6 +13,7 @@ use Yii;
  * @property string $first_name
  * @property string $group_id
  * @property string $lead_id
+ * @property string $control_sum
  *
  * @property Group $group
  */
@@ -32,9 +33,9 @@ class Students extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['group_id', 'lead_id'], 'integer'],
+            [['group_id', 'lead_id', 'control_sum'], 'integer'],
             [['last_name', 'first_name'], 'string', 'max' => 255],
-            [['lead_id'], 'unique'],
+            [['control_sum'], 'unique'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'group_id']],
         ];
     }
@@ -50,6 +51,7 @@ class Students extends \yii\db\ActiveRecord
             'first_name' => 'First Name',
             'group_id' => 'Group ID',
             'lead_id' => 'Lead ID',
+            'control_sum' => 'Control Sum',
         ];
     }
 

@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name',
             'group_id',
             'lead_id',
+            //'control_sum',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
