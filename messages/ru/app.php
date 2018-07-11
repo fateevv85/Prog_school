@@ -10,6 +10,7 @@ return [
     'Synopses Link' => 'Ссылка на материалы',
     'Lessons Num' => 'Количество занятий',
 
+    // Продукты
     'Products' => 'Продукты',
     'Product' => 'Продукт',
     'Name' => 'Название',
@@ -21,7 +22,7 @@ return [
     'Create Product' => 'Создать продукт',
     'Update Product' => 'Обновить данные',
 
-
+    // Занятия
     'Trial Lessons' => 'Пробные занятия',
     'Create Trial Lesson' => 'Создать новое занятие',
     'Trial Lesson ID' => 'ID Пробного занятия',
@@ -30,6 +31,7 @@ return [
     'Lecture Hall ID' => 'ID Площадки',
     'Settings' => 'Настройки',
 
+    // Преподаватели
     'Teachers' => 'Преподаватели',
     'Teacher summary' => 'Сводка по преподавателю',
     'Create Teacher' => 'Добавить Преподавателя',
@@ -43,8 +45,10 @@ return [
     'Quantity paid' => 'Платных занятий',
     'Quantity trial' => 'Демо занятий',
     'Quantity total' => 'Всего',
+    'No lessons' => 'Нет',
+    'Teacher Report' => 'Отчет',
 
-
+    // Площадки
     'Lecture Halls' => 'Площадки',
     'Create Lecture Hall' => 'Добавить площадку',
     'City' => 'Город',
@@ -52,6 +56,7 @@ return [
     'Street' => 'Улица',
     'Address' => 'Дом, корпус, офис',
 
+    // Группы
     'Groups' => 'Группы учащихся',
     'Create Group' => 'Создать группу',
     'Participants Num' => 'Записано учеников',
@@ -82,6 +87,7 @@ return [
     'Apply' => 'Готово',
     'Clear' => 'Отмена',
 
+    // Города
     'Cities' => 'Города',
     'Create City' => 'Добавить город',
     'City Title' => 'Название города',
@@ -98,6 +104,7 @@ return [
     'Teacher' => 'Преподаватель',
     'Duration' => 'Продолжительность (минуты)',
 
+    // Пользователи
     'Users' => 'Пользователи',
     'Create User' => 'Добавить Пользователя',
     'Full Name' => 'Имя',

@@ -3,7 +3,9 @@
 use \yii\helpers\Html;
 use \kartik\select2\Select2;
 use \kartik\daterange\DateRangePicker;
-use \app\components\WidgetHelper;
+use \yii\helpers\ArrayHelper;
+
+//$this->registerCssFile('../css/checkboxes.css');
 
 $this->title = Yii::t('app', 'Report');
 if (!Yii::$app->user->isGuest) {
@@ -12,7 +14,6 @@ if (!Yii::$app->user->isGuest) {
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Teachers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-//var_dump($_GET);
 ?>
 
 <?php
@@ -31,7 +32,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
 <div class="form-group">
   <label class="control-label">Выберите город</label>
   <br>
-    <?= Html::checkboxList('cities', 1, \app\models\City::getCitiesForCurrentUser(), [
+    <?= Html::checkboxList('cities', ($_GET['cities']) ?: 1, \app\models\City::getCitiesForCurrentUser(), [
         'separator' => '<br>',
     ]);
     ?>
@@ -56,7 +57,7 @@ echo '<div class="drp-container input-group">';
 echo DateRangePicker::widget([
     'name' => 'date_range',
     'presetDropdown' => true,
-    'value' => '01.01.2017 - 31.07.2018',
+    'value' => $dateValue,
     'hideInput' => false,
     'pluginOptions' => [
         'locale' => [
@@ -74,11 +75,18 @@ echo $afterHtml;
 echo sprintf($preHtml, 'Выберите преподавателей');
 echo Select2::widget([
     'name' => 'teacher_select',
-    'data' => $teacherList,
+    'data' => \app\models\LessonTypeModel::getTeachersList(),
     'options' => [
-        'placeholder' => 'Choose teacher ...',
+//        'placeholder' => 'если не выбраны, поиск ведется по всем',
         'multiple' => true
     ],
+    'value' => $_GET['teacher_select'],
+//    'initValueText'=>
+    'addon' => [
+        'prepend' => [
+            'content' => \kartik\helpers\Html::icon('user')
+        ],
+    ]
 ]);
 echo $afterHtml;
 
@@ -96,7 +104,14 @@ echo Html::tag('div',
         'data-toggle' => 'buttons',
         'unselect' => 'paid',
         'item' => function ($index, $label, $name, $checked, $value) {
-            if ($value == 'paid') {
+            if ($lessons = $_GET['lessons']) {
+                foreach ($lessons as $key => $type) {
+                    if ($value == $type) {
+                        $active = 'active';
+                        $checked = 'checked';
+                    }
+                }
+            } elseif ($value == 'paid') {
                 $active = 'active';
                 $checked = 'checked';
             }
@@ -116,7 +131,11 @@ $form::end();
 if ($dataProviderTeacher) {
     echo \yii\grid\GridView::widget([
         'dataProvider' => $dataProviderTeacher,
-        'rowOptions' => WidgetHelper::stripeGrid(),
+        'rowOptions' => \app\components\WidgetHelper::stripeGrid(),
+//        'emptyText'=>"<tbody>\n</tbody>",
+//        'caption' => 'Table',
+//    'showOnEmpty'=>false,
+//    'emptyCell'=>'No',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -126,8 +145,8 @@ if ($dataProviderTeacher) {
                     return Html::a($data->last_name, ['teacher/view', 'id' => $data->teacher_id]);
                 },
             ],
-            'middle_name:ntext',
             'first_name:ntext',
+            'middle_name:ntext',
             [
                 'attribute' => 'city_id',
                 'label' => 'Город',
@@ -141,26 +160,37 @@ if ($dataProviderTeacher) {
             [
                 'label' => Yii::t('app', 'Quantity paid'),
                 'format' => 'text', // Возможные варианты: raw, html
+                'visible' => (ArrayHelper::isIn('paid', $_GET['lessons'])),
                 'content' => function ($data) use ($countPaid, $dateStart, $dateEnd) {
                     if ($countPaid && array_key_exists($data->teacher_id, $countPaid)) {
-                        return Html::a("{$countPaid[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => $_GET['lessons']], ['target' => '_blank']);
+                        return Html::a("{$countPaid[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => ['paid']], ['target' => '_blank', 'title' => 'Подробная информация']);
+                    } else {
+                        return Yii::t('app', 'No lessons');
                     }
                 },
             ],
             [
                 'label' => Yii::t('app', 'Quantity trial'),
                 'format' => 'text', // Возможные варианты: raw, html
-                'content' => function ($data) use ($countTrial) {
+                'visible' => (ArrayHelper::isIn('trial', $_GET['lessons'])),
+                'content' => function ($data) use ($countTrial, $dateStart, $dateEnd) {
                     if ($countTrial && array_key_exists($data->teacher_id, $countTrial)) {
-                        return Html::a("{$countTrial[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id], ['target' => '_blank']);
+                        return Html::a("{$countTrial[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => ['trial']], ['target' => '_blank', 'title' => 'Подробная информация']);
+                    } else {
+                        return Yii::t('app', 'No lessons');
                     }
                 },
             ],
             [
                 'label' => Yii::t('app', 'Quantity total'),
                 'format' => 'text', // Возможные варианты: raw, html
-                'content' => function ($data) use ($countTrial, $countPaid) {
-                    return Html::a($countTrial[$data->teacher_id] + $countPaid[$data->teacher_id], ['teacher/view', 'id' => $data->teacher_id]);
+                'visible' => (ArrayHelper::isIn('trial', $_GET['lessons']) && ArrayHelper::isIn('paid', $_GET['lessons'])),
+                'content' => function ($data) use ($countTrial, $countPaid, $dateStart, $dateEnd) {
+                    if ($countTrial[$data->teacher_id] + $countPaid[$data->teacher_id]) {
+                        return Html::a($countTrial[$data->teacher_id] + $countPaid[$data->teacher_id] . ' <i class=\'fas fa-external-link-alt\'></i>', ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => $_GET['lessons']], ['target' => '_blank', 'title' => 'Подробная информация']);
+                    } else {
+                        return Yii::t('app', 'No lessons');
+                    }
                 },
             ],
         ],

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\WidgetHelper;
 use app\models\Lesson;
 use app\models\LessonTypeModel;
 use app\models\TrialLesson;
@@ -46,13 +47,10 @@ class TeacherController extends MyAppController
     {
 
         preg_match_all('#\d{2}\.\d{2}\.\d{4}#', $_GET['date_range'], $dates);
-        $dateStart = $dates[0][0];
-        $dateEnd = $dates[0][1];
+        $dateStart = WidgetHelper::convertDate($dates[0][0]);
+        $dateEnd = WidgetHelper::convertDate($dates[0][1]);
 
-//            $teacherId = implode(',', $post['teacher_select']);
-//            $cityId = implode(',', $_GET['cities']);
-        $teacherId = $_GET['teacher_select'];
-        $cityId = $_GET['cities'];
+        $dateValue = ($_GET['date_range']) ?: "01.01.2017 - " . date('d.m.Y');
 
         function createQuery($item, $fieldName)
         {
@@ -64,7 +62,9 @@ class TeacherController extends MyAppController
             return ['not', [$fieldName => null]];
         }
 
-        $queryTeacher = createQuery($teacherId, 'teacher_id');
+        $queryTeacher = createQuery($_GET['teacher_select'], 'teacher_id');
+
+        $queryCity = createQuery($_GET['cities'], 'city_id');
 
         function getCount($lessonType, $dateStart, $dateEnd, $queryTeacher)
         {
@@ -90,23 +90,22 @@ class TeacherController extends MyAppController
 
             $dataProviderTeacher = new ActiveDataProvider([
                 'query' =>
-                    Teacher::find()->
-                    where(createQuery($teacherId, 'teacher_id')),
+                    Teacher::find()
+                        ->where($queryTeacher)
+                        ->andWhere($queryCity),
                 'pagination' => [
                     'pageSize' => 20,
                 ],
             ]);
         }
 
-        $teacherList = LessonTypeModel::getTeachersList();
-
         return $this->render('report', [
-            'teacherList' => $teacherList,
             'dataProviderTeacher' => $dataProviderTeacher,
             'countPaid' => $countPaid,
             'countTrial' => $countTrial,
             'dateStart' => $dateStart,
-            'dateEnd' => $dateEnd
+            'dateEnd' => $dateEnd,
+            'dateValue' => $dateValue
         ]);
     }
 
@@ -118,8 +117,8 @@ class TeacherController extends MyAppController
     public function actionView($id)
     {
 
-        $dateStart = $_GET['dateStart'];
-        $dateEnd = $_GET['dateEnd'];
+        $dateStart = WidgetHelper::convertDate($_GET['dateStart']);
+        $dateEnd = WidgetHelper::convertDate($_GET['dateEnd']);
 
         function options($id, $dateStart, $dateEnd, $lessonType)
         {

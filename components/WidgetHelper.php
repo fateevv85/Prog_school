@@ -149,6 +149,11 @@ HTML;
         };
     }
 
+    public static function convertDate($date)
+    {
+        return preg_replace('#(\d{2})\.(\d{2})\.(\d{4})#', '$3-$2-$1', $date);
+    }
+
     //Виджет выбора даты с указанием даты начала и конца одновременно, фича- пред-выбранные периоды 'presetDropdown'=>true
     /*      $addon = <<< HTML
       <span class="input-group-addon">
