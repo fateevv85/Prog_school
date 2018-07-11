@@ -113,61 +113,58 @@ $form::end();
 ?>
 
 <?php
-
-echo \yii\grid\GridView::widget([
-    'dataProvider' => $dataProviderTeacher,
-    /*'panel' => [
-        'type' => 'default',
-        'heading' => 'Table'
-    ],*/
-    'rowOptions' => WidgetHelper::stripeGrid(),
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
-        [
-            'attribute' => 'last_name',
-            'format' => 'html', // Возможные варианты: raw, html
-            'content' => function ($data) {
-                return Html::a($data->last_name, ['teacher/view', 'id' => $data->teacher_id]);
-            },
+if ($dataProviderTeacher) {
+    echo \yii\grid\GridView::widget([
+        'dataProvider' => $dataProviderTeacher,
+        'rowOptions' => WidgetHelper::stripeGrid(),
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'last_name',
+                'format' => 'html', // Возможные варианты: raw, html
+                'content' => function ($data) {
+                    return Html::a($data->last_name, ['teacher/view', 'id' => $data->teacher_id]);
+                },
+            ],
+            'middle_name:ntext',
+            'first_name:ntext',
+            [
+                'attribute' => 'city_id',
+                'label' => 'Город',
+                'format' => 'text', // Возможные варианты: raw, html
+                'content' => function ($data) {
+                    return $data->getCityTitle();
+                },
+                'filter' => \app\models\Teacher::getCitiesList(),
+                'headerOptions' => ['style' => 'white-space: normal;'],
+            ],
+            [
+                'label' => Yii::t('app', 'Quantity paid'),
+                'format' => 'text', // Возможные варианты: raw, html
+                'content' => function ($data) use ($countPaid, $dateStart, $dateEnd) {
+                    if ($countPaid && array_key_exists($data->teacher_id, $countPaid)) {
+                        return Html::a("{$countPaid[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => $_GET['lessons']], ['target' => '_blank']);
+                    }
+                },
+            ],
+            [
+                'label' => Yii::t('app', 'Quantity trial'),
+                'format' => 'text', // Возможные варианты: raw, html
+                'content' => function ($data) use ($countTrial) {
+                    if ($countTrial && array_key_exists($data->teacher_id, $countTrial)) {
+                        return Html::a("{$countTrial[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id], ['target' => '_blank']);
+                    }
+                },
+            ],
+            [
+                'label' => Yii::t('app', 'Quantity total'),
+                'format' => 'text', // Возможные варианты: raw, html
+                'content' => function ($data) use ($countTrial, $countPaid) {
+                    return Html::a($countTrial[$data->teacher_id] + $countPaid[$data->teacher_id], ['teacher/view', 'id' => $data->teacher_id]);
+                },
+            ],
         ],
-        'middle_name:ntext',
-        'first_name:ntext',
-        [
-            'attribute' => 'city_id',
-            'label' => 'Город',
-            'format' => 'text', // Возможные варианты: raw, html
-            'content' => function ($data) {
-                return $data->getCityTitle();
-            },
-            'filter' => \app\models\Teacher::getCitiesList(),
-            'headerOptions' => ['style' => 'white-space: normal;'],
-        ],
-        [
-            'label' => Yii::t('app', 'Quantity paid'),
-            'format' => 'text', // Возможные варианты: raw, html
-            'content' => function ($data) use ($countPaid, $dateStart, $dateEnd) {
-                if (array_key_exists($data->teacher_id, $countPaid)) {
-                    return  Html::a("{$countPaid[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id, 'dateStart' => $dateStart, 'dateEnd' => $dateEnd, 'lessons' => $_GET['lessons']], ['target' => '_blank']);
-                }
-            },
-        ],
-        [
-            'label' => Yii::t('app', 'Quantity trial'),
-            'format' => 'text', // Возможные варианты: raw, html
-            'content' => function ($data) use ($countTrial) {
-                if (array_key_exists($data->teacher_id, $countTrial)) {
-                    return  Html::a("{$countTrial[$data->teacher_id]} <i class='fas fa-external-link-alt'></i>", ['teacher/view', 'id' => $data->teacher_id], ['target' => '_blank']);
-                }
-            },
-        ],
-        [
-            'label' => Yii::t('app', 'Quantity total'),
-            'format' => 'text', // Возможные варианты: raw, html
-            'content' => function ($data) use ($countTrial, $countPaid) {
-                return Html::a($countTrial[$data->teacher_id] + $countPaid[$data->teacher_id], ['teacher/view', 'id' => $data->teacher_id]);
-            },
-        ],
-    ],
-]);
+    ]);
+}
 
 ?>
