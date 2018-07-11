@@ -2,6 +2,8 @@
 
 namespace app\components;
 
+use app\models\Lesson;
+use kartik\checkbox\CheckboxX;
 use kartik\daterange\DateRangePicker;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -10,7 +12,6 @@ class WidgetHelper
 {
     public static function widgetDate($label, $name, $date)
     {
-
         $preHtml = <<< HTML
     <!--<div class="col-sm-4">-->
     <div class="col-sm-3">
@@ -83,6 +84,43 @@ HTML;
                     'contentOptions' => ['style' => 'width: 20%;'],
                 ],
                 'date_start',
+                [
+                    'attribute' => 'city_id',
+                    'label' => 'Город',
+                    'format' => 'text', // Возможные варианты: raw, html
+                    'content' => function ($data) {
+                        return $data->getCityTitle();
+                    },
+                    'headerOptions' => ['style' => 'white-space: normal;'],
+                ],
+                [
+                    'label' => \Yii::t('app', 'Product'),
+                    'content' => function ($data) {
+                        return \app\models\Course::findOne(['course_id' => $data->course_id])->getProductName();
+                    }
+                ]
+            ],
+        ]);
+    }
+
+    public static function widgetGridReport($dataProvider, $lessonIdColumn)
+    {
+        return \yii\grid\GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+//                $lessonIdColumn,
+                [
+                    'attribute' => 'teacher_id',
+                    'label' => 'Преподаватель',
+                    'format' => 'text', // Возможные варианты: raw, html
+                    'content' => function ($data) {
+                        return $data->getTeacherName();
+                    },
+                    'filter' => Lesson::getTeachersList(),
+                    'options' => ['width' => '150']
+                ],
+//                'date_start',
                 [
                     'attribute' => 'city_id',
                     'label' => 'Город',

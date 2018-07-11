@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use \yii\widgets\ActiveForm;
-use \yii\helpers\Url;
 use \app\components\WidgetHelper;
 
 /* @var $this yii\web\View */
@@ -19,7 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="teacher-view">
 
   <h1><?= Html::encode($this->title) ?></h1>
-
+<?php
+var_dump($_GET);
+?>
   <p>
       <?php
       if (!Yii::$app->user->isGuest) {
@@ -60,8 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
     $form = ActiveForm::begin([
         'id' => 'view_sum',
-        //    'action' => [''],
-        'method' => 'post',
+            'action' => [''],
+//        'method' => 'post',
+        'method' => 'get',
         'options' => [
 //            'class' => 'form-horizontal'
             'class' => 'form-vertical'
@@ -99,6 +101,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]),
         ['class' => 'form-group']);
 
+    echo Html::hiddenInput('id',$_GET['id']);
+
     echo Html::tag('div', Html::submitButton(\Yii::t('app', 'Show'),
         ['class' => 'btn btn-success']), ['class' => 'form-group']);
 
@@ -113,7 +117,6 @@ $this->params['breadcrumbs'][] = $this->title;
         echo "<h3>Пробных занятий: {$dataProviderTrial->totalCount}</h3>";
         echo WidgetHelper::widgetGridTeacher($dataProviderTrial, 'trial_lesson_id');
     }
-
     ?>
 
 </div>

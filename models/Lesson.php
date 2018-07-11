@@ -25,6 +25,9 @@ use app\models\LessonTypeModel;
  */
 class Lesson extends LessonTypeModel
 {
+
+    public $cnt;
+
     /**
      * @inheritdoc
      */

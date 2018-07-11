@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php
       if (!Yii::$app->user->isGuest) {
           echo(Html::a(Yii::t('app', 'Create Teacher'), ['create'], ['class' => 'btn btn-success']));
+          echo(Html::a(Yii::t('app', 'Teacher Report'), ['report'], ['class' => 'btn btn-info']));
+
       }
       ?>
   </p>
@@ -35,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'teacher_id',
+//            'teacher_id',
 //            'last_name:ntext',
             [
                 'attribute' => 'last_name',
@@ -59,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'contentOptions'=>['style'=>'width: 200px;'],
             ],
             'email:ntext',
-            'resume:ntext',
+//            'resume:ntext',
             // 'photo:ntext',
         ],
     ];

@@ -39,6 +39,10 @@ return [
     'Last Name' => 'Фамилия',
     'Resume' => 'Резюме',
     'Photo' => 'Ссылка на фото',
+    'Report' => 'Отчет',
+    'Quantity paid' => 'Платных занятий',
+    'Quantity trial' => 'Демо занятий',
+    'Quantity total' => 'Всего',
 
 
     'Lecture Halls' => 'Площадки',

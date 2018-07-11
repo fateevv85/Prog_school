@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Lesson;
+use app\models\LessonTypeModel;
 use app\models\TrialLesson;
 use Yii;
 use app\models\Teacher;
@@ -41,6 +42,74 @@ class TeacherController extends MyAppController
         ]);
     }
 
+    public function actionReport()
+    {
+
+        preg_match_all('#\d{2}\.\d{2}\.\d{4}#', $_GET['date_range'], $dates);
+        $dateStart = $dates[0][0];
+        $dateEnd = $dates[0][1];
+
+//            $teacherId = implode(',', $post['teacher_select']);
+//            $cityId = implode(',', $_GET['cities']);
+        $teacherId = $_GET['teacher_select'];
+        $cityId = $_GET['cities'];
+
+        function createQuery($item, $fieldName)
+        {
+            if (count($item) > 1) {
+                return ['in', $fieldName, $item];
+            } elseif ($item) {
+                return [$fieldName => $item];
+            }
+            return ['not', [$fieldName => null]];
+        }
+
+        $queryTeacher = createQuery($teacherId, 'teacher_id');
+
+        function getCount($lessonType, $dateStart, $dateEnd, $queryTeacher)
+        {
+            $query = $lessonType::find()
+                ->select(['teacher_id', 'COUNT(*) AS cnt'])
+                ->where($queryTeacher)
+                ->andWhere(['between', 'date_start', $dateStart, $dateEnd])
+                ->groupBy('teacher_id')
+                ->asArray()
+                ->all();
+
+            return ArrayHelper::map($query, 'teacher_id', 'cnt');
+        }
+
+        if ($_GET['lessons']) {
+            if (ArrayHelper::isIn('paid', $_GET) || ArrayHelper::isIn('paid', $_GET['lessons'])) {
+                $countPaid = getCount(Lesson::className(), $dateStart, $dateEnd, $queryTeacher);
+            }
+
+            if (ArrayHelper::isIn('trial', $_GET['lessons'])) {
+                $countTrial = getCount(TrialLesson::className(), $dateStart, $dateEnd, $queryTeacher);
+            }
+
+            $dataProviderTeacher = new ActiveDataProvider([
+                'query' =>
+                    Teacher::find()->
+                    where(createQuery($teacherId, 'teacher_id')),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+        }
+
+        $teacherList = LessonTypeModel::getTeachersList();
+
+        return $this->render('report', [
+            'teacherList' => $teacherList,
+            'dataProviderTeacher' => $dataProviderTeacher,
+            'countPaid' => $countPaid,
+            'countTrial' => $countTrial,
+            'dateStart' => $dateStart,
+            'dateEnd' => $dateEnd
+        ]);
+    }
+
     /**
      * Displays a single Teacher model.
      * @param integer $id
@@ -48,7 +117,33 @@ class TeacherController extends MyAppController
      */
     public function actionView($id)
     {
-        if ($post = Yii::$app->request->post()) {
+
+        $dateStart = $_GET['dateStart'];
+        $dateEnd = $_GET['dateEnd'];
+
+        function options($id, $dateStart, $dateEnd, $lessonType)
+        {
+            return [
+                'query' => $lessonType::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ];
+        }
+
+        if ($_GET['lessons']) {
+            if (ArrayHelper::isIn('paid', $_GET) || ArrayHelper::isIn('paid', $_GET['lessons'])) {
+                $dataProviderPaid = new ActiveDataProvider(
+                    options($id, $dateStart, $dateEnd, Lesson::className()));
+            }
+
+            if (ArrayHelper::isIn('trial', $_GET['lessons'])) {
+                $dataProviderTrial = new ActiveDataProvider(
+                    options($id, $dateStart, $dateEnd, TrialLesson::className()));
+            }
+        }
+
+        /*if ($post = Yii::$app->request->post()) {
 
             $dateStart = $post['dateStart'];
             $dateEnd = $post['dateEnd'];
@@ -74,16 +169,10 @@ class TeacherController extends MyAppController
                         options($id, $dateStart, $dateEnd, TrialLesson::className()));
                 }
             }
-        }
+        }*/
 
-//        $post = Yii::$app->request->post();
         return $this->render('view', [
             'model' => $this->findModel($id),
-//            'post' => $post,
-//            'paid' => $paid,
-//            'trial' => $trial,
-//            'dateStart' => $dateStart,
-//            'dateEnd' => $dateEnd,
             'dataProviderPaid' => $dataProviderPaid,
             'dataProviderTrial' => $dataProviderTrial
         ]);
