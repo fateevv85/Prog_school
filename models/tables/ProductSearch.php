@@ -32,6 +32,11 @@ class ProductSearch extends Product
         return Model::scenarios();
     }
 
+    public function formName()
+    {
+        return '';
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -39,16 +44,28 @@ class ProductSearch extends Product
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $noLimit = null)
     {
         //у авторизованных пользователей показываем данные только по их городу
         $query = \app\custom\CustomSearch::filterByUserCity(Product::find());
 
         // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
+        $dataProviderParams = [
             'query' => $query,
-        ]);
+        ];
+
+        if ($noLimit) {
+            $dataProviderParams['pagination'] = false;
+        }
+
+        $dataProvider = new ActiveDataProvider($dataProviderParams);
+
+        /*$dataProvider = ($limit) ? new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]) : new ActiveDataProvider([
+            'query' => $query,
+        ]);*/
 
         $this->load($params);
 

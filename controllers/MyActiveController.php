@@ -60,7 +60,6 @@ class MyActiveController extends ActiveController
     {
         $actions = parent::actions();
 
-
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 
         return $actions;
@@ -70,7 +69,6 @@ class MyActiveController extends ActiveController
     {
         date_default_timezone_set('Europe/Moscow');
         $modelClass = $this->modelClass;
-        //return Lesson::find()->all();
         $query = $modelClass::find();
         return new ActiveDataProvider([
             'query' => $query,

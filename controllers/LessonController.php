@@ -32,7 +32,6 @@ class LessonController extends LessonTypeController
      */
      public function behaviors()
     {
-        
         return [
             'access' => [
                 'class' => AccessControl::className(),

@@ -30,9 +30,9 @@ $form = \yii\bootstrap\ActiveForm::begin([
 ?>
 
 <div class="form-group">
-  <label class="control-label">Выберите город</label>
+  <label class="control-label">Выберите город <span style="color: red" title="если не указан, то поиск по всем">*</span></label>
   <br>
-    <?= Html::checkboxList('cities', ($_GET['cities']) ?: 1, \app\models\City::getCitiesForCurrentUser(), [
+    <?= Html::checkboxList('cities', ($_GET['cities']) ?: null, \app\models\City::getCitiesForCurrentUser(), [
         'separator' => '<br>',
     ]);
     ?>
@@ -43,7 +43,7 @@ $preHtml = <<< HTML
 <div class="row">
 <div class="col-sm-6">
 <div class="form-group">
-<label class="control-label">%s</label>
+<label class="control-label">%s %s</label>
 HTML;
 
 $afterHtml = <<< HTML
@@ -52,7 +52,8 @@ $afterHtml = <<< HTML
 </div>
 HTML;
 
-echo sprintf($preHtml, 'Выберите диапазон дат');
+echo sprintf($preHtml, 'Выберите диапазон дат',' ');
+
 echo '<div class="drp-container input-group">';
 echo DateRangePicker::widget([
     'name' => 'date_range',
@@ -72,7 +73,7 @@ echo DateRangePicker::widget([
 echo '</div>';
 echo $afterHtml;
 
-echo sprintf($preHtml, 'Выберите преподавателей');
+echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
 echo Select2::widget([
     'name' => 'teacher_select',
     'data' => \app\models\LessonTypeModel::getTeachersList(),
