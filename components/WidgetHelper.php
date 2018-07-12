@@ -83,7 +83,12 @@ HTML;
                     'headerOptions' => ['style' => 'white-space: normal;'],
                     'contentOptions' => ['style' => 'width: 20%;'],
                 ],
-                'date_start',
+                [
+                    'attribute' => 'date_start',
+                    'content' => function ($data) {
+                        return preg_replace('#(\d{4})\-(\d{2})\-(\d{2})#', '$3.$2.$1', $data->date_start);
+                    }
+                ],
                 [
                     'attribute' => 'city_id',
                     'label' => 'Город',

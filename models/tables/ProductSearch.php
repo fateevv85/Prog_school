@@ -60,13 +60,6 @@ class ProductSearch extends Product
 
         $dataProvider = new ActiveDataProvider($dataProviderParams);
 
-        /*$dataProvider = ($limit) ? new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => false,
-        ]) : new ActiveDataProvider([
-            'query' => $query,
-        ]);*/
-
         $this->load($params);
 
         if (!$this->validate()) {

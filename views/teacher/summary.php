@@ -1,80 +1,56 @@
 <?php
 
-use \yii\widgets\ActiveForm;
+use kartik\depdrop\DepDrop;
+use \yii\helpers\Url;
 use \yii\helpers\Html;
 
-$this->title = Yii::t('app', 'Teachers');
-if (!Yii::$app->user->isGuest) {
-    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['site/settings']];
-}
-$this->params['breadcrumbs'][] = ['label' => $this->title, 'url' => ['teacher/index']];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Teacher summary');
-?>
 
-<h1><?= $model->last_name . ' ' . $model->first_name . ' ' . $model->middle_name; ?></h1>
-<h5><?= \app\models\City::getCityName($model->city_id) ?></h5>
-<h5><?= $model->email ?></h5>
-
-<?php
-$form = ActiveForm::begin([
+$form = \yii\bootstrap\ActiveForm::begin([
     'id' => 'view_sum',
-//    'action' => [''],
-    'method' => 'post',
+    'action' => [''],
+//    'method' => 'post',
+    'method' => 'get',
     'options' => [
+//            'class' => 'form-horizontal'
         'class' => 'form-vertical'
     ],
 ]);
 
-$addon = <<< HTML
-<span class="input-group-addon">
-    <i class="glyphicon glyphicon-calendar"></i>
-</span>
-HTML;
-
-echo '<div class="form-group">';
-echo '<label class="control-label">Выберите дату</label>';
-echo '<div class="input-group drp-container col-xs-4">';
-echo \kartik\daterange\DateRangePicker::widget([
-        'name' => 'date',
-        'attribute' => 'date_start',
-        'convertFormat' => false,
-        //'presetDropdown'=>true,
-        'pluginOptions' => [
-            'opens' => 'right',
-            'locale' => [
-                'cancelLabel' => 'Отмена',
-                'applyLabel' => 'Готово',
-                'format' => 'DD.MM.YYYY',
-            ],
-            //'format' => 'DD.MM.YYYY',
-            //'format' => 'YYYY-MM-DD',
+echo \kartik\select2\Select2::widget([
+    'name' => 'city_select',
+    'data' => \app\models\City::getCitiesForCurrentUser(),
+    'options' => [
+        'multiple' => true,
+        'id' => 'city-select',
+    ],
+//    'value' => $_GET['teacher_select'],
+    'addon' => [
+        'prepend' => [
+            'content' => \kartik\helpers\Html::icon('user')
         ],
-        'options' => [
-            'required' => true,
-            'class' => 'form-control'
-        ],
-        'i18n' => [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@app/vendor/yiisoft/yii2/messages',
-            'forceTranslation' => true
-        ]
-    ]) . $addon;
-echo '</div>';
-echo '</div>';
+    ]
+]);
 
-echo Html::tag('div',
-    Html::label('Показать занятия', null, ['class' => 'control-label']) .
-    Html::checkboxList('lessons', 0, ['платные', 'пробные'], ['separator' => '<br>',]),
-    ['class' => 'form-group']);
+echo '<br>';
 
-echo Html::submitButton(\Yii::t('app', 'Show'),
-    ['class' => 'btn btn-success']);
+echo DepDrop::widget([
+    'name' => 'teachers',
+    'type' => DepDrop::TYPE_SELECT2,
+//    'data' => [2 => 'Tablets'],
+    'options' => ['multiple'=>true],
+//    'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+    'pluginOptions' => [
+        'depends' => ['city-select'],
+        'url' => Url::to(['/teacher/subcat']),
+    ]]);
+
+
+echo Html::tag('div', Html::submitButton(\Yii::t('app', 'Show'),
+    ['class' => 'btn btn-success']), ['class' => 'form-group']);
 
 $form::end();
-
-var_dump($post);
-
-
-//var_dump($model);
-
+//var_dump(\app\models\City::getCitiesForCurrentUser());
+//var_dump($_GET);
 ?>
+
+

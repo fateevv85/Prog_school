@@ -4,6 +4,8 @@ use \yii\helpers\Html;
 use \kartik\select2\Select2;
 use \kartik\daterange\DateRangePicker;
 use \yii\helpers\ArrayHelper;
+use \kartik\depdrop\DepDrop;
+use \yii\helpers\Url;
 
 //$this->registerCssFile('../css/checkboxes.css');
 
@@ -14,9 +16,6 @@ if (!Yii::$app->user->isGuest) {
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Teachers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-?>
-
-<?php
 $form = \yii\bootstrap\ActiveForm::begin([
     'id' => 'view_sum',
     'action' => [''],
@@ -27,18 +26,7 @@ $form = \yii\bootstrap\ActiveForm::begin([
         'class' => 'form-vertical'
     ],
 ]);
-?>
 
-<div class="form-group">
-  <label class="control-label">Выберите город <span style="color: red" title="если не указан, то поиск по всем">*</span></label>
-  <br>
-    <?= Html::checkboxList('cities', ($_GET['cities']) ?: null, \app\models\City::getCitiesForCurrentUser(), [
-        'separator' => '<br>',
-    ]);
-    ?>
-</div>
-
-<?php
 $preHtml = <<< HTML
 <div class="row">
 <div class="col-sm-6">
@@ -52,8 +40,83 @@ $afterHtml = <<< HTML
 </div>
 HTML;
 
-echo sprintf($preHtml, 'Выберите диапазон дат',' ');
+if ($user = \Yii::$app->user->identity->role == 'main_admin') {
 
+    echo sprintf($preHtml, 'Выберите город', '<span style="color: red" title="если не указан, то поиск по всем">*</span>');
+    echo \kartik\select2\Select2::widget([
+        'name' => 'city_select',
+        'data' => \app\models\City::getCitiesForCurrentUser(),
+        'options' => [
+            'multiple' => true,
+            'id' => 'city-select',
+        ],
+//    'value' => $_GET['city_select'],
+        'addon' => [
+            'prepend' => [
+                'content' => \kartik\helpers\Html::icon('globe')
+            ],
+        ]
+    ]);
+
+    echo $afterHtml;
+
+    echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
+
+    echo DepDrop::widget([
+        'name' => 'teacher_select',
+        'type' => DepDrop::TYPE_SELECT2,
+        /*        'data' => [
+                    'opt1' =>
+                        [
+                            1 => 'opt1',
+                            2 => 'opt2'
+                        ],
+                    'opt2' =>
+                        [
+                            'id' => 3,
+                            'text' => 'opt2'
+                        ]
+
+                ],*/
+//    'data' => [2 => 'Tablets'],
+        'options' => [
+            'multiple' => true,
+        ],
+//    'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+        'pluginOptions' => [
+            'depends' => ['city-select'],
+            'url' => Url::to(['/teacher/subcat']),
+            'loadingText' => 'Загрузка данных ...',
+            'placeholder' => 'Выбрать ...'
+        ],
+    ]);
+
+    echo $afterHtml;
+
+} elseif ($user == "regional_admin") {
+
+    echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
+
+    echo Select2::widget([
+        'name' => 'teacher_select',
+        'data' => \app\models\LessonTypeModel::getTeachersList(),
+        'options' => [
+//        'placeholder' => 'если не выбраны, поиск ведется по всем',
+            'multiple' => true
+        ],
+        'value' => $_GET['teacher_select'],
+//    'initValueText'=>
+        'addon' => [
+            'prepend' => [
+                'content' => \kartik\helpers\Html::icon('user')
+            ],
+        ]
+    ]);
+
+    echo $afterHtml;
+}
+
+echo sprintf($preHtml, 'Выберите диапазон дат', ' ');
 echo '<div class="drp-container input-group">';
 echo DateRangePicker::widget([
     'name' => 'date_range',
@@ -71,24 +134,6 @@ echo DateRangePicker::widget([
     ],
 ]);
 echo '</div>';
-echo $afterHtml;
-
-echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
-echo Select2::widget([
-    'name' => 'teacher_select',
-    'data' => \app\models\LessonTypeModel::getTeachersList(),
-    'options' => [
-//        'placeholder' => 'если не выбраны, поиск ведется по всем',
-        'multiple' => true
-    ],
-    'value' => $_GET['teacher_select'],
-//    'initValueText'=>
-    'addon' => [
-        'prepend' => [
-            'content' => \kartik\helpers\Html::icon('user')
-        ],
-    ]
-]);
 echo $afterHtml;
 
 echo Html::tag('div',

@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($data->last_name, ['teacher/view', 'id' => $data->teacher_id]);
                 },
             ],
-            'middle_name:ntext',
             'first_name:ntext',
+            'middle_name:ntext',
             [
                 'attribute' => 'city_id',
                 'label' => 'Город',

@@ -3,16 +3,15 @@
 namespace app\controllers;
 
 use app\components\WidgetHelper;
+use app\models\City;
 use app\models\Lesson;
-use app\models\LessonTypeModel;
 use app\models\TrialLesson;
 use Yii;
 use app\models\Teacher;
 use app\models\TeacherSearch;
-//use yii\web\Controller;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -43,6 +42,52 @@ class TeacherController extends MyAppController
         ]);
     }
 
+    public function actionSubcat()
+    {
+        function getSubCatList($cat_id)
+        {
+            if (count($cat_id) > 1) {
+                $cityArray = ['in', 'city_id', $cat_id];
+            } elseif ($cat_id) {
+                $cityArray = ['city_id' => $cat_id];
+            } else {
+                $cityArray = ['not', ['city_id' => null]];
+            }
+
+            $array = Teacher::find()
+                ->select(['teacher_id AS id', "concat(last_name,' ',first_name,' ',middle_name) as name, city_id"])
+                ->where($cityArray)
+                ->asArray()
+                ->all();
+
+            if (is_array($cat_id)) {
+                foreach ($cat_id as $key => $value) {
+                    foreach ($array as $key2) {
+                        if ($value == $key2['city_id']) {
+                            $newArr[City::getCityName($value)][] = ['id' => $key2['id'], 'name' => $key2['name']];
+                        }
+                    }
+                }
+                return $newArr;
+            }
+            return $array;
+        }
+
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = getSubCatList($cat_id);
+
+                return Json::encode([
+                    'output' => $out, 'selected' => ''
+                ]);
+            }
+        }
+        return Json::encode(['output' => '', 'selected' => '']);
+    }
+
     public function actionReport()
     {
 
@@ -64,7 +109,11 @@ class TeacherController extends MyAppController
 
         $queryTeacher = createQuery($_GET['teacher_select'], 'teacher_id');
 
-        $queryCity = createQuery($_GET['cities'], 'city_id');
+        if ($user = \Yii::$app->user->identity->role == 'regional_admin') {
+            $queryCity = ['city_id' => array_keys(\app\models\City::getCitiesForCurrentUser())];
+        } elseif ($user = 'main_admin') {
+            $queryCity = createQuery($_GET['city_select'], 'city_id');
+        }
 
         function getCount($lessonType, $dateStart, $dateEnd, $queryTeacher)
         {
@@ -142,49 +191,10 @@ class TeacherController extends MyAppController
             }
         }
 
-        /*if ($post = Yii::$app->request->post()) {
-
-            $dateStart = $post['dateStart'];
-            $dateEnd = $post['dateEnd'];
-
-            function options($id, $dateStart, $dateEnd, $lessonType)
-            {
-                return [
-                    'query' => $lessonType::find()->where(['teacher_id' => $id])->andWhere(['between', 'date_start', $dateStart, $dateEnd]),
-                    'pagination' => [
-                        'pageSize' => 20,
-                    ],
-                ];
-            }
-
-            if ($post['lessons']) {
-                if (ArrayHelper::isIn('paid', $post) || ArrayHelper::isIn('paid', $post['lessons'])) {
-                    $dataProviderPaid = new ActiveDataProvider(
-                        options($id, $dateStart, $dateEnd, Lesson::className()));
-                }
-
-                if (ArrayHelper::isIn('trial', $post['lessons'])) {
-                    $dataProviderTrial = new ActiveDataProvider(
-                        options($id, $dateStart, $dateEnd, TrialLesson::className()));
-                }
-            }
-        }*/
-
         return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProviderPaid' => $dataProviderPaid,
             'dataProviderTrial' => $dataProviderTrial
-        ]);
-    }
-
-    public function actionSummary($id)
-    {
-
-        $post = Yii::$app->request->post();
-
-        return $this->render('summary', [
-            'model' => $this->findModel($id),
-            'post' => $post
         ]);
     }
 
