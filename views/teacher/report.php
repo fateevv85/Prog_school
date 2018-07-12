@@ -40,7 +40,7 @@ $afterHtml = <<< HTML
 </div>
 HTML;
 
-if ($user = \Yii::$app->user->identity->role == 'main_admin') {
+if (\Yii::$app->user->identity->role == 'main_admin') {
 
     echo sprintf($preHtml, 'Выберите город', '<span style="color: red" title="если не указан, то поиск по всем">*</span>');
     echo \kartik\select2\Select2::widget([
@@ -93,7 +93,7 @@ if ($user = \Yii::$app->user->identity->role == 'main_admin') {
 
     echo $afterHtml;
 
-} elseif ($user == "regional_admin") {
+} elseif (\Yii::$app->user->identity->role == "regional_admin") {
 
     echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
 
