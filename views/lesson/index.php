@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use app\components\WidgetHelper;
 use kartik\daterange\DateRangePicker;
 use app\models\Lesson;
+use \kartik\dropdown\DropdownX;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\LessonSearch */
@@ -17,22 +18,33 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
   <div class="lesson-index">
 
+      <?php
+//      var_dump($_GET);
+      $this->registerCss(".my-options {
+      top: 33px;
+      min-width: 151px; }"
+      );
+      ?>
 
-      <?php // echo $this->render('_search', ['model' => $searchModel]);?>
+      <?php
+      /*if ($name = Yii::$app->request->get('product_name')) {
+          $panelHeader = 'для продукта' . $name;
+      } else {
 
-      <?php if ($name = Yii::$app->request->get('product_name')) : ?>
-        <div class="btn-group">
+      }*/
+      $panelHeader = ($name = Yii::$app->request->get('product_name'))?' для продукта "' . $name.'"':'';
+      ?>
+    <!--<div class="btn-group">
           <a href="#" class="btn btn-default active" role="button" aria-pressed="true">Платные занятия</a>
-          <a href="<?= Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+          <a href="<? /*= Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
               'TrialLessonSearch[course_id]' => Yii::$app->request->get('LessonSearch')['course_id'],
-              'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-default" role="button"
+              'product_name' => Yii::$app->request->get('product_name')]) */ ?>" class="btn btn-default" role="button"
              aria-pressed="true">Пробные
             занятия</a>
-        </div>
-        <h4> для продукта "<?= $name ?>" </h4>
-      <?php else: ?>
-        <h1><?= Html::encode($this->title) ?></h1>
-      <?php endif; ?>
+        </div>-->
+
+    <!--        <h4> для продукта "--><?//= $name ?><!--" </h4>-->
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <p class="controls-block">
         <?php
@@ -82,6 +94,21 @@ $this->params['breadcrumbs'][] = $this->title;
               'target' => GridView::TARGET_BLANK
           ],
           'toolbar' => [
+              [
+                  'content' =>
+                      Html::beginTag('div', ['class' => 'dropdown']) .
+                      Html::button('Платные занятия <span class="caret"></span></button>',
+                          ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
+                      . DropdownX::widget([
+                          'options' => ['class' => 'my-options'],
+                          'items' => [
+                              ['label' => 'Демо занятия', 'url' => Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+                                  'TrialLessonSearch[course_id]' => Yii::$app->request->get('LessonSearch')['course_id'],
+                                  'product_name' => Yii::$app->request->get('product_name')])],
+                          ],
+                      ])
+                      . Html::endTag('div')
+              ],
               '{export}',
               [
                   'content' =>
@@ -103,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ],*/
           'panel' => [
               'type' => 'default',
-              'heading' => $this->title
+              'heading' => $this->title.$panelHeader
           ],
           //'panelHeadingTemplate'=> '{heading}',
           'resizableColumns' => true,
@@ -142,7 +169,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       if ($string = $data->getLectureHallAddress()) {
                           $mapLink = preg_match('#(?P<link>http?s:\/\/.+)#', $string, $matches);
                           $address = preg_replace('#http?s:\/\/.+#', ' ', $string);
-                          return $address .'<br>'. Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
+                          return $address . '<br>' . Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
                       }
                   },
                   'filter' => Lesson::getLectureHallsList(),

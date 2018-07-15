@@ -42,15 +42,17 @@ HTML;
 
 if (\Yii::$app->user->identity->role == 'main_admin') {
 
-    echo sprintf($preHtml, 'Выберите город', '<span style="color: red" title="если не указан, то поиск по всем">*</span>');
+    echo sprintf($preHtml, 'Выберите город', '');
     echo \kartik\select2\Select2::widget([
         'name' => 'city_select',
         'data' => \app\models\City::getCitiesForCurrentUser(),
+//        'showToggleAll'=>false,
         'options' => [
             'multiple' => true,
             'id' => 'city-select',
+            'tags' => true,
         ],
-//    'value' => $_GET['city_select'],
+        'value' => $_GET['city_select'],
         'addon' => [
             'prepend' => [
                 'content' => \kartik\helpers\Html::icon('globe')
@@ -65,20 +67,6 @@ if (\Yii::$app->user->identity->role == 'main_admin') {
     echo DepDrop::widget([
         'name' => 'teacher_select',
         'type' => DepDrop::TYPE_SELECT2,
-        /*        'data' => [
-                    'opt1' =>
-                        [
-                            1 => 'opt1',
-                            2 => 'opt2'
-                        ],
-                    'opt2' =>
-                        [
-                            'id' => 3,
-                            'text' => 'opt2'
-                        ]
-
-                ],*/
-//    'data' => [2 => 'Tablets'],
         'options' => [
             'multiple' => true,
         ],
@@ -86,8 +74,9 @@ if (\Yii::$app->user->identity->role == 'main_admin') {
         'pluginOptions' => [
             'depends' => ['city-select'],
             'url' => Url::to(['/teacher/subcat']),
-            'loadingText' => 'Загрузка данных ...',
-            'placeholder' => 'Выбрать ...'
+//            'loadingText' => 'Загрузка данных ...',
+            'placeholder' => 'Выбрать ...',
+            'initialize' => true
         ],
     ]);
 

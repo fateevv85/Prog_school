@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\tables\ProductSearch;
-use Yii;
 
 //use app\models\Group;
 

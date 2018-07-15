@@ -18,22 +18,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <div class="trial-lesson-index">
 
-      <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+      <?php // echo $this->render('_search', ['model' => $searchModel]);
+      $this->registerCss(".my-options {
+      top: 33px;
+      min-width: 151px; }"
+      );
+      $panelHeader = ($name = Yii::$app->request->get('product_name')) ? ' для продукта "' . $name . '"' : '';
+      ?>
 
-      <?php if ($name = Yii::$app->request->get('product_name')) : ?>
+      <?php /*if ($name = Yii::$app->request->get('product_name')) : */ ?><!--
         <div class="btn-group">
-          <a href="<?= Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+          <a href="<? /*= Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
               'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
-              'product_name' => Yii::$app->request->get('product_name')]) ?>" class="btn btn-default" role="button"
+              'product_name' => Yii::$app->request->get('product_name')]) */ ?>" class="btn btn-default" role="button"
              aria-pressed="true">Платные занятия</a>
           <a href="#" class="btn btn-default active" role="button"
              aria-pressed="true">Пробные
             занятия</a>
         </div>
-        <h4> для продукта "<?= $name ?>" </h4>
-      <?php else: ?>
+        <h4> для продукта "<? /*= $name */ ?>" </h4>-->
+      <?php /*else: */ ?>
         <h1><?= Html::encode($this->title) ?></h1>
-      <?php endif; ?>
+      <?php /*endif; */ ?>
 
     <p class="controls-block">
         <?php
@@ -83,6 +89,22 @@ $this->params['breadcrumbs'][] = $this->title;
               'target' => GridView::TARGET_BLANK
           ],
           'toolbar' => [
+              [
+                  'content' =>
+                      Html::beginTag('div', ['class' => 'dropdown']) .
+                      Html::button('Демо занятия <span class="caret"></span></button>',
+                          ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
+                      . \kartik\dropdown\DropdownX::widget([
+                          'options' => ['class' => 'my-options'],
+                          'items' => [
+                              ['label' => 'Платные занятия', 'url' => Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
+                                  'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
+                                  'product_name' => Yii::$app->request->get('product_name')])
+                              ],
+                          ],
+                      ])
+                      . Html::endTag('div')
+              ],
               '{export}',
               [
                   'content' =>
@@ -99,12 +121,9 @@ $this->params['breadcrumbs'][] = $this->title;
               '{toggleData}',
           ],*/
           // set export properties
-          'export' => [
-              'fontAwesome' => true
-          ],
           'panel' => [
               'type' => 'default',
-              'heading' => $this->title
+              'heading' => $this->title . $panelHeader
           ],
           //'panelHeadingTemplate'=> '{heading}',
           'resizableColumns' => true,
