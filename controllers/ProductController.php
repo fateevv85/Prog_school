@@ -8,6 +8,7 @@ use app\models\tables\ProductSearch;
 use Yii;
 use app\models\tables\Product;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -40,6 +41,38 @@ class ProductController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionTest()
+    {
+        $query = Product::find()
+            ->select(['product.name', 'lesson_id'])
+//            ->select(['product.name', 'product.id', 'COUNT(*) as cnt'])
+//            ->select(['product.name, COUNT(*) as cnt'])
+            ->leftJoin('course', 'course.product_id = product.id')
+            ->leftJoin('lesson', 'lesson.course_id = course.course_id')
+            ->where(['amo_paid_view' => 1,
+                'amo_trial_view' => 1])
+//            ->groupBy(['product.name'])
+            ->asArray()
+            ->all();
+
+        $products = array_keys(array_count_values(ArrayHelper::map($query, 'lesson_id', 'name')));
+        $newArr = [];
+        foreach ($products as $k=>$name) {
+            foreach ($query as $key => $value) {
+                if ($name == $value['name'] && isset($value['lesson_id'])) {
+                    unset($value['name']);
+                    $newArr[$name][] = $value['lesson_id'];
+                }
+            }
+        }
+
+        var_dump($newArr);
+//        var_dump($query);
+//        var_dump($result);
+//        var_dump($products);
+        exit;
     }
 
     /**
@@ -76,7 +109,7 @@ class ProductController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'courseDataProvider' => $courseDataProvider,
-            'courseSearchModel'=> $courseSearchModel
+            'courseSearchModel' => $courseSearchModel
         ]);
     }
 

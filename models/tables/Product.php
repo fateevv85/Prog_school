@@ -19,6 +19,21 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
+
+    public $lesson_id;
+
+    public function fields()
+    {
+        return [
+//            'id',
+            'name',
+            'city_id',
+            'amo_paid_view',
+            'amo_trial_view',
+            'lesson_id',
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

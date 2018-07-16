@@ -70,13 +70,18 @@ if (\Yii::$app->user->identity->role == 'main_admin') {
         'options' => [
             'multiple' => true,
         ],
-//    'select2Options' => ['pluginOptions' => ['allowClear' => true]],
+        'select2Options' => [
+            'showToggleAll' => false,
+            'pluginOptions' => [
+                'allowClear' => true,
+            ]
+        ],
         'pluginOptions' => [
             'depends' => ['city-select'],
             'url' => Url::to(['/teacher/subcat']),
 //            'loadingText' => 'Загрузка данных ...',
             'placeholder' => 'Выбрать ...',
-            'initialize' => true
+            'initialize' => true,
         ],
     ]);
 
@@ -175,13 +180,14 @@ if ($dataProviderTeacher) {
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'last_name',
+                'label' => Yii::t('app', 'Teachers'),
                 'format' => 'html', // Возможные варианты: raw, html
                 'content' => function ($data) {
-                    return Html::a($data->last_name, ['teacher/view', 'id' => $data->teacher_id]);
+                    return Html::a($data->last_name . ' ' . $data->first_name . ' ' . $data->middle_name, ['teacher/view', 'id' => $data->teacher_id]);
                 },
             ],
-            'first_name:ntext',
-            'middle_name:ntext',
+//            'first_name:ntext',
+//            'middle_name:ntext',
             [
                 'attribute' => 'city_id',
                 'label' => 'Город',

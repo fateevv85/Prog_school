@@ -18,7 +18,8 @@ class RproductsController extends MyActiveController
     public function prepareDataProvider()
     {
         $searchModel = new ProductSearch();
-        return $searchModel->search(\Yii::$app->request->queryParams, 1);
+
+        return $searchModel->productSearch(\Yii::$app->request->queryParams);
     }
 
 }
