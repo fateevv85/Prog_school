@@ -100,14 +100,19 @@ class ProductSearch extends Product
             return $dataProvider;
         }
 
+        $amoQuery = ($this->amo_paid_view) ?
+            ['amo_paid_view' => $this->amo_paid_view] :
+            ['amo_trial_view' => $this->amo_trial_view];
+        
         // grid filtering conditions
         $query
             ->select(['product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', 'lesson.lesson_id'])
 //            ->select(['product.name','product.city_id','product.amo_paid_view','product.amo_trial_view','group_concat(lesson.lesson_id) as lesson_id'])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin('lesson', 'lesson.course_id = course.course_id')
-            ->where(['amo_paid_view' => $this->amo_paid_view,
-                'amo_trial_view' => $this->amo_trial_view]);
+            /*->where(['amo_paid_view' => $this->amo_paid_view,
+                'amo_trial_view' => $this->amo_trial_view]);*/
+            ->where($amoQuery);
 
         return $dataProvider;
     }
