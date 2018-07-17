@@ -103,13 +103,16 @@ class ProductSearch extends Product
         $amoQuery = ($this->amo_paid_view) ?
             ['amo_paid_view' => $this->amo_paid_view] :
             ['amo_trial_view' => $this->amo_trial_view];
-        
+
         // grid filtering conditions
         $query
-            ->select(['product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', 'lesson.lesson_id'])
+//            ->select(['product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', 'lesson.*'])
+            ->select(['product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', 'lesson.*', 'group.title AS group_title', 'group.participants_num AS group_participants_num', 'course.title AS course_title', 'lecture_hall.place_description as lecture_desc'])
 //            ->select(['product.name','product.city_id','product.amo_paid_view','product.amo_trial_view','group_concat(lesson.lesson_id) as lesson_id'])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin('lesson', 'lesson.course_id = course.course_id')
+            ->leftJoin('group', 'lesson.group_id = group.group_id')
+            ->leftJoin('lecture_hall', 'lesson.lecture_hall_id = lecture_hall.lecture_hall_id')
             /*->where(['amo_paid_view' => $this->amo_paid_view,
                 'amo_trial_view' => $this->amo_trial_view]);*/
             ->where($amoQuery);

@@ -4,13 +4,6 @@ namespace app\models;
 
 use Yii;
 
-use yii\helpers\ArrayHelper;
-use app\models\Teacher;
-use app\models\LectureHall;
-use app\models\Group;
-use app\models\Course;
-use app\models\LessonTypeModel;
-
 /**
  * This is the model class for table "lesson".
  *
@@ -284,11 +277,27 @@ class Lesson extends LessonTypeModel
 
     public function fields()
     {
-        return ['lesson_id', 'date_start', 'time_start', 'group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'lead_link', 'calendar_event_id'];
+        return [
+            'lesson_id',
+            'date_start',
+            'time_start',
+            'group_id',
+            'lecture_hall_id',
+            'course_id',
+            'teacher_id',
+            'duration',
+            'lead_link',
+            'calendar_event_id'
+        ];
     }
 
     public function extraFields()
     {
-        return ['group', 'lectureHall', 'course', 'teacher'];
+        return [
+            'group',
+            'lectureHall',
+            'course',
+            'teacher'
+        ];
     }
 }

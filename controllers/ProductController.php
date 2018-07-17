@@ -46,18 +46,18 @@ class ProductController extends Controller
     public function actionTest()
     {
         $query = Product::find()
-            ->select(['product.name', 'lesson_id'])
+            ->select(['product.*', 'lesson.*', 'group.title', 'group.participants_num'])
 //            ->select(['product.name', 'product.id', 'COUNT(*) as cnt'])
 //            ->select(['product.name, COUNT(*) as cnt'])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin('lesson', 'lesson.course_id = course.course_id')
-            ->where(['amo_paid_view' => 1,
-                'amo_trial_view' => 1])
+            ->leftJoin('group', 'lesson.group_id = group.group_id')
+            ->where(['amo_paid_view' => 1])
 //            ->groupBy(['product.name'])
-            ->asArray()
+//            ->asArray()
             ->all();
 
-        $products = array_keys(array_count_values(ArrayHelper::map($query, 'lesson_id', 'name')));
+        /*$products = array_keys(array_count_values(ArrayHelper::map($query, 'lesson_id', 'name')));
         $newArr = [];
         foreach ($products as $k=>$name) {
             foreach ($query as $key => $value) {
@@ -66,10 +66,10 @@ class ProductController extends Controller
                     $newArr[$name][] = $value['lesson_id'];
                 }
             }
-        }
+        }*/
 
-        var_dump($newArr);
-//        var_dump($query);
+//        var_dump($newArr);
+        var_dump($query);
 //        var_dump($result);
 //        var_dump($products);
         exit;

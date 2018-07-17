@@ -19,8 +19,17 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
-
     public $lesson_id;
+    public $date_start;
+    public $time_start;
+    public $group_id;
+    public $group_title;
+    public $group_participants_num;
+    public $course_id;
+    public $course_title;
+    public $teacher_id;
+    public $lecture_hall_id;
+    public $lecture_desc;
 
     public function fields()
     {
@@ -30,7 +39,15 @@ class Product extends \yii\db\ActiveRecord
             'city_id',
             'amo_paid_view',
             'amo_trial_view',
-            'lesson_id',
+            'lesson' => function ($data) {
+                $product = new Product($this);
+                $reflect = new \ReflectionClass($product);
+                $public = $reflect->getProperties(\ReflectionProperty::IS_PUBLIC);
+                foreach ($public as $prop) {
+                    $arr[$prop->name] = $this->{$prop->name};
+                }
+                return $arr;
+            }
         ];
     }
 
