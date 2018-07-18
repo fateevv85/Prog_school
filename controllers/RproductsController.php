@@ -48,12 +48,14 @@ class RproductsController extends MyActiveController
                 'group.participants_num_max AS group_participants_num_max',
                 'course.title AS course_title',
                 'course.synopses_link AS course_synopses_link',
-                'lecture_hall.place_description as lecture_desc'
+                'lecture_hall.place_description as lecture_desc',
+                'concat(teacher.last_name," ",teacher.first_name," ",teacher.middle_name) as `teacher_name`'
             ])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
             ->leftJoin('group', "{$lesson}.group_id = group.group_id")
             ->leftJoin('lecture_hall', "{$lesson}.lecture_hall_id = lecture_hall.lecture_hall_id")
+            ->leftJoin( 'teacher', "{$lesson}.teacher_id = teacher.teacher_id")
             ->where([$amo => 1])
             ->andWhere('date_start > now()')
             ->asArray()
