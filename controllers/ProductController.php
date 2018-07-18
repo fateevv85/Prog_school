@@ -2,13 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\City;
 use app\models\Course;
 use app\models\CourseSearch;
 use app\models\tables\ProductSearch;
+use app\models\User;
 use Yii;
 use app\models\tables\Product;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -43,36 +46,56 @@ class ProductController extends Controller
         ];
     }
 
-    public function actionTest()
+    public function actionResponse()
     {
+
+        $request = Yii::$app->request->get('paid') == 1;
+        $token = Yii::$app->request->get('access-token');
+        $userId = User::findIdentityByAccessToken($token);
+        $city = City::getCitiesByIdentity($userId);
+
+
+        /*if (!$userId) {
+            return Json::encode('Not authorized');
+        }*/
+//        var_dump($userId);
+//        var_dump($city);
+//        exit;
+        $amo = ($request) ?
+            'amo_paid_view' :
+            'amo_trial_view';
+
+        $lesson = ($request) ?
+            'lesson' : 'trial_lesson';
+
         $query = Product::find()
-            ->select(['product.*', 'lesson.*', 'group.title', 'group.participants_num'])
-//            ->select(['product.name', 'product.id', 'COUNT(*) as cnt'])
-//            ->select(['product.name, COUNT(*) as cnt'])
+            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.*", 'group.title AS group_title', 'group.participants_num AS group_participants_num', 'course.title AS course_title', 'lecture_hall.place_description as lecture_desc'])
             ->leftJoin('course', 'course.product_id = product.id')
-            ->leftJoin('lesson', 'lesson.course_id = course.course_id')
-            ->leftJoin('group', 'lesson.group_id = group.group_id')
-            ->where(['amo_paid_view' => 1])
-//            ->groupBy(['product.name'])
-//            ->asArray()
+            ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
+            ->leftJoin('group', "{$lesson}.group_id = group.group_id")
+            ->leftJoin('lecture_hall', "{$lesson}.lecture_hall_id = lecture_hall.lecture_hall_id")
+            ->where([$amo => 1])
+            ->andWhere('date_start > now()')
+            ->asArray()
             ->all();
 
-        /*$products = array_keys(array_count_values(ArrayHelper::map($query, 'lesson_id', 'name')));
+        $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'name')));
         $newArr = [];
-        foreach ($products as $k=>$name) {
+        foreach ($products as $k => $name) {
             foreach ($query as $key => $value) {
-                if ($name == $value['name'] && isset($value['lesson_id'])) {
+                if ($name == $value['name'] && isset($value[$lesson . '_id'])) {
                     unset($value['name']);
-                    $newArr[$name][] = $value['lesson_id'];
+                    $newArr[$name][$value[$lesson . '_id']] = $value;
                 }
             }
-        }*/
+        }
 
+        return Json::encode($newArr);
 //        var_dump($newArr);
-        var_dump($query);
+//        var_dump($query);
 //        var_dump($result);
 //        var_dump($products);
-        exit;
+//        exit;
     }
 
     /**

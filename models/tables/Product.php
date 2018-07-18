@@ -19,7 +19,7 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    public $lesson_id;
+    /*public $lesson_id;
     public $trial_lesson_id;
     public $date_start;
     public $time_start;
@@ -50,7 +50,7 @@ class Product extends \yii\db\ActiveRecord
                 return $arr;
             }
         ];
-    }
+    }*/
 
     /**
      * {@inheritdoc}
