@@ -39,7 +39,7 @@ class RproductsController extends MyActiveController
         $query = Product::find()
             ->select([
                 'product.id as product_id',
-                'product.name',
+                'product.name as product_name',
                 'product.city_id',
                 'product.amo_paid_view',
                 'product.amo_trial_view',
@@ -59,12 +59,12 @@ class RproductsController extends MyActiveController
             ->asArray()
             ->all();
 
-        $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'name')));
+        $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'product_name')));
         $newArr = [];
         foreach ($products as $k => $name) {
             foreach ($query as $key => $value) {
-                if ($name == $value['name'] && isset($value[$lesson . '_id'])) {
-                    unset($value['name']);
+                if ($name == $value['product_name'] && isset($value[$lesson . '_id'])) {
+//                    unset($value['name']);
                     $newArr[$name][$value[$lesson . '_id']] = $value;
                 }
             }
