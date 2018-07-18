@@ -1,4 +1,4 @@
-$('.delete-selected').on('click', function() {
+$('.delete-selected').on('click', function () {
   var sure = confirm('Удалить записи?');
   if (!sure) {
     return;
@@ -12,20 +12,21 @@ $('.delete-selected').on('click', function() {
   data.redirect = location.href;
   $.ajax({
     //url: 'index.php?r=lesson/delete-selected',
-    url: '/lesson/delete-selected',
+    url: 'delete-selected',
     type: 'POST',
     data: data,
-    success: function(data) {
+    success: function (data) {
       //console.log('success');
       //console.log(data);
     },
-    error: function() {
+    error: function () {
       //console.log('error');
       //console.log(data);
     }
   });
 });
-$('.copy-selected').on('click', function() {
+
+$('.copy-selected').on('click', function () {
   var keys = $('#w0').yiiGridView('getSelectedRows');
   var data = {};
   data.ids = {};
@@ -38,17 +39,17 @@ $('.copy-selected').on('click', function() {
     url: '/lesson/copy-selected',
     type: 'POST',
     data: data,
-    success: function(data) {
+    success: function (data) {
       //console.log('success');
       //console.log(data);
     },
-    error: function(data) {
+    error: function (data) {
       //console.log('error');
       //console.log(data);
     }
   });
 });
-$('#w0').on('click', '.actionClick', function(event) {
+$('#w0').on('click', '.actionClick', function (event) {
   var td = $(event.target).closest('td');
   if ($(td).hasClass('date')) {
     var className = 'ajaxChange';
@@ -68,12 +69,13 @@ $('#w0').on('click', '.actionClick', function(event) {
   var newdate = date.getFullYear() + '-'
     + (month < 10 ? '0' : '') + month + '-'
     + date.getDate();*/
-  $(td).html('<input style="width:200px;" type="' + type + '" class="form-control ' + className + '" data-action="' + action + '" data-id="' + id + '" value="'+content +'">');
+  $(td).html('<input style="width:200px;" type="' + type + '" class="form-control ' + className + '" data-action="' + action + '" data-id="' + id + '" value="' + content + '">');
   $(td).find('input').focus();
   //console.log(id);
   //console.log(event.target);
-})
-$('#w0').on('blur', '.ajaxChange', function(event) {
+});
+
+$('#w0').on('blur', '.ajaxChange', function (event) {
   var id = $(event.target).data('id');
   var action = $(event.target).data('action');
   var value = $(event.target).val();
@@ -87,15 +89,14 @@ $('#w0').on('blur', '.ajaxChange', function(event) {
     //url: 'index.php?r=lesson/' + action,
     type: 'POST',
     data: data,
-    success: function(data) {
+    success: function (data) {
       $(td).addClass('actionClick');
       $(td).html(value);
     },
-    error: function(data) {
+    error: function (data) {
       //console.log('error');
       //console.log(data);
     }
   });
-
 });
 // $('#Lessonsearch-date_start').daterangepicker();

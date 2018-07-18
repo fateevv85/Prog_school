@@ -100,7 +100,10 @@ $this->params['breadcrumbs'][] = $this->title;
                       Html::button('Платные занятия <span class="caret"></span></button>',
                           ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
                       . DropdownX::widget([
-                          'options' => ['class' => 'my-options'],
+                          'options' => [
+                                'class' => 'my-options',
+                              'id'=> 'drop-down-type'
+                          ],
                           'items' => [
                               ['label' => 'Демо занятия', 'url' => Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
                                   'TrialLessonSearch[course_id]' => Yii::$app->request->get('LessonSearch')['course_id'],
