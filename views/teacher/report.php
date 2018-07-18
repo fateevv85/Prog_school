@@ -64,6 +64,13 @@ if (\Yii::$app->user->identity->role == 'main_admin') {
 
     echo sprintf($preHtml, 'Выберите преподавателей', '<span style="color: red" title="если не указаны, то поиск по всем">*</span>');
 
+
+    /*todo
+    fix js script for widget;
+    H:\OpenServer\OSPanel\domains\cod-beget\web\assets\c0274e41\js\dependent-dropdown.js
+    string 97
+    krajeeselect2:selectall krajeeselect2:unselectall
+    */
     echo DepDrop::widget([
         'name' => 'teacher_select',
         'type' => DepDrop::TYPE_SELECT2,

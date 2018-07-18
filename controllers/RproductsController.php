@@ -45,6 +45,7 @@ class RproductsController extends MyActiveController
                 'product.amo_trial_view',
                 "{$lesson}.*", 'group.title AS group_title',
                 'group.participants_num AS group_participants_num',
+                'group.participants_num_max AS group_participants_num_max',
                 'course.title AS course_title',
                 'course.synopses_link AS course_synopses_link',
                 'lecture_hall.place_description as lecture_desc'
