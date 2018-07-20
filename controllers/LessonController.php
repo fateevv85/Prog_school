@@ -92,7 +92,10 @@ class LessonController extends LessonTypeController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $params = self::getLessonEntityParams($model);
             $params['link'] = Url::toRoute(['lesson/index', 'LessonSearch[lesson_id]' => $model->lesson_id], true);
-            $result = GoogleCalendarHelper::createEvent($params);
+//            $result = GoogleCalendarHelper::createEvent($params);
+            $result = [
+                'eventId' =>
+                    '1111111111'];
 
             //для франшизы, добавление параметра город в соответствии с городом создающего пользователя, будет использоваться для фильтрации занятий по городу
             $userRole = User::getCurrentUserRole();
@@ -115,6 +118,63 @@ class LessonController extends LessonTypeController
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionCreateFew()
+    {
+        $model = new Lesson();
+
+        $test = '123';
+        if ($post = Yii::$app->request->post()) {
+//            if ($count = $post['lesson-count'] && $interval = $post['lesson-next']) {
+            $count = $post['lesson-count'];
+            $interval = $post['lesson-next'];
+                $dateStart = $post['Lesson']['date_start'];
+
+                $date = new \DateTime($dateStart);
+                /*for ($i = 0; $i <= $count; $i++) {
+                    $dates[] = $date->add(new \DateInterval("P{$interval}D"));
+                }*/
+
+//            }
+
+
+//            echo $date->format('Y-m-d') . "\n";
+        }
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      $params = self::getLessonEntityParams($model);
+      $params['link'] = Url::toRoute(['lesson/index', 'LessonSearch[lesson_id]' => $model->lesson_id], true);
+//            $result = GoogleCalendarHelper::createEvent($params);
+      $result = [
+          'eventId' =>
+              '1111111111'];
+
+      //для франшизы, добавление параметра город в соответствии с городом создающего пользователя, будет использоваться для фильтрации занятий по городу
+      $userRole = User::getCurrentUserRole();
+      if ($userRole === 'regional_admin') {
+          $identity = Yii::$app->user->identity;
+          if (isset($identity->city_id)) {
+              $model->city_id = $identity->city_id;
+          }
+      }
+
+      $model->calendar_event_id = $result['eventId'];
+      $model->save();
+
+      return $this->redirect(['view', 'id' => $model->lesson_id]);
+  } else {
+      return $this->render('createFew', [
+          'model' => $model,
+      ]);
+  }*/
+
+        return $this->render('createFew', [
+            'model' => $model,
+//            'dates' => $dates
+            'count' => $count,
+            'interval' => $interval,
+            'test' => $test
+        ]);
     }
 
     /**

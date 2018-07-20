@@ -12,16 +12,16 @@ use yii\data\ActiveDataProvider;
 class RuserController extends MyActiveController
 {
     public $modelClass = 'app\models\User';
-    
+
     public function actions()
     {
         $actions = parent::actions();
-
 
         $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 
         return $actions;
     }
+
     public function prepareDataProvider()
     {
         $query = $this->modelClass::find();
@@ -32,4 +32,5 @@ class RuserController extends MyActiveController
             'pagination' => false,
         ]);
     }
+
 }

@@ -36,7 +36,16 @@ class RproductsController extends MyActiveController
         $lesson = ($request) ?
             'lesson' : 'trial_lesson';
 
+
         $query = Product::find()
+            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.{$lesson}_id"])
+            ->leftJoin('course', 'course.product_id = product.id')
+            ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
+            ->where([$amo => 1])
+            ->andWhere('date_start > now()')
+            ->asArray()
+            ->all();
+        /*$query = Product::find()
             ->select([
                 'product.id as product_id',
                 'product.name as product_name',
@@ -59,19 +68,20 @@ class RproductsController extends MyActiveController
             ->where([$amo => 1])
             ->andWhere('date_start > now()')
             ->asArray()
-            ->all();
+            ->all();*/
 
-        $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'product_name')));
+        $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'name')));
         $newArr = [];
         foreach ($products as $k => $name) {
             foreach ($query as $key => $value) {
-                if ($name == $value['product_name'] && isset($value[$lesson . '_id'])) {
-//                    unset($value['name']);
+                if ($name == $value['name'] && isset($value[$lesson . '_id'])) {
+                    unset($value['name']);
                     $newArr[$name][$value[$lesson . '_id']] = $value;
                 }
             }
         }
 
-        return Json::encode($newArr);
+//        return Json::encode($newArr);
+        return $newArr;
     }
 }

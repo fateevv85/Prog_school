@@ -182,7 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function fields()
     {
-        return ['full_name', 'city_id', 'access_token'];
+        return ['full_name', 'city_id', 'access_token', 'username', 'user_id'];
     }
 
     public function extraFields()

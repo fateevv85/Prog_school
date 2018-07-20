@@ -50,9 +50,9 @@ class ProductController extends Controller
     {
 
         $request = Yii::$app->request->get('paid') == 1;
-        $token = Yii::$app->request->get('access-token');
+        /*$token = Yii::$app->request->get('access-token');
         $userId = User::findIdentityByAccessToken($token);
-        $city = City::getCitiesByIdentity($userId);
+        $city = City::getCitiesByIdentity($userId);*/
 
 
         /*if (!$userId) {
@@ -69,6 +69,14 @@ class ProductController extends Controller
             'lesson' : 'trial_lesson';
 
         $query = Product::find()
+            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.{$lesson}_id"])
+            ->leftJoin('course', 'course.product_id = product.id')
+            ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
+            ->where([$amo => 1])
+            ->andWhere('date_start > now()')
+            ->asArray()
+            ->all();
+        /*$query = Product::find()
             ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.*", 'group.title AS group_title', 'group.participants_num AS group_participants_num', 'course.title AS course_title', 'lecture_hall.place_description as lecture_desc'])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
@@ -77,7 +85,7 @@ class ProductController extends Controller
             ->where([$amo => 1])
             ->andWhere('date_start > now()')
             ->asArray()
-            ->all();
+            ->all();*/
 
         $products = array_keys(array_count_values(ArrayHelper::map($query, 'product_id', 'name')));
         $newArr = [];
@@ -90,8 +98,9 @@ class ProductController extends Controller
             }
         }
 
-        return Json::encode($newArr);
-//        var_dump($newArr);
+//        return Json::encode($newArr);
+        var_dump($newArr);
+        exit;
 //        var_dump($query);
 //        var_dump($result);
 //        var_dump($products);
