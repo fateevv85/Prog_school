@@ -75,7 +75,7 @@ class RproductsController extends MyActiveController
         foreach ($products as $k => $name) {
             foreach ($query as $key => $value) {
                 if ($name == $value['name'] && isset($value[$lesson . '_id'])) {
-                    unset($value['name']);
+//                    unset($value['name']);
                     $newArr[$name][$value[$lesson . '_id']] = $value;
                 }
             }
