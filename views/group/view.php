@@ -43,15 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-  <?php if($dataProviderStudents) {
-      echo "<h3>Список учеников: </h3>";
-      echo GridView::widget([
-          'dataProvider' => $dataProviderStudents,
-          'columns' => [
-              ['class' => 'yii\grid\SerialColumn'],
-              'last_name',
-              'first_name'
-          ]
-      ]);
-  }?>
+    <?php if ($dataProviderStudents) {
+        echo "<h3>Список учеников: </h3>";
+        echo GridView::widget([
+            'dataProvider' => $dataProviderStudents,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'last_name',
+                'first_name'
+            ]
+        ]);
+    } ?>
 </div>

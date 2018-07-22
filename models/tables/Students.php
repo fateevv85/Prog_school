@@ -47,8 +47,8 @@ class Students extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'last_name' => 'Last Name',
-            'first_name' => 'First Name',
+            'last_name' => Yii::t('app', 'Last Name'),
+            'first_name' => Yii::t('app', 'First Name'),
             'group_id' => 'Group ID',
             'lead_id' => 'Lead ID',
             'control_sum' => 'Control Sum',
