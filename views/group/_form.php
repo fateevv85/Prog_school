@@ -23,7 +23,7 @@ use app\models\City;
         }*/
     ?>
 
-    <?= $form->field($model, 'participants_num_max')->textInput() ?>
+<!--    --><?//= $form->field($model, 'participants_num_max')->textInput() ?>
     <?php 
     echo(
         $form->field($model, 'city_id')->dropdownList(

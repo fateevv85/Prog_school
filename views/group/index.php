@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width: 100px;'],
             ],
             'participants_num',
-            'participants_num_max',
+//            'participants_num_max',
             [
                 'attribute' => 'city_id',
                 'label' => 'Город',

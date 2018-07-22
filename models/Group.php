@@ -29,9 +29,11 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'city_id', 'participants_num_max'], 'required'],
+//            [['title', 'city_id', 'participants_num_max'], 'required'],
+            [['title', 'city_id'], 'required'],
             [['title'], 'string'],
-            [['participants_num', 'participants_num_max'], 'integer'],
+//            [['participants_num', 'participants_num_max'], 'integer'],
+            [['participants_num'], 'integer'],
         ];
     }
 
@@ -45,7 +47,7 @@ class Group extends \yii\db\ActiveRecord
             'city_id' => Yii::t('app', 'Select City'),
             'title' => Yii::t('app', 'Title'),
             'participants_num' => Yii::t('app', 'Participants Num'),
-            'participants_num_max' => Yii::t('app', 'Participants Num Max'),
+//            'participants_num_max' => Yii::t('app', 'Participants Num Max'),
         ];
     }
     public static function getTitles()

@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'participants_num') ?>
 
-    <?= $form->field($model, 'participants_num_max') ?>
+<!--    --><?//= $form->field($model, 'participants_num_max') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

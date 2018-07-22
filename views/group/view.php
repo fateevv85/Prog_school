@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'group_id',
             'title:ntext',
             'participants_num',
-            'participants_num_max',
+//            'participants_num_max',
         ],
     ]) ?>
 
