@@ -20,6 +20,7 @@ class Lesson extends LessonTypeModel
 {
 
     public $cnt;
+    public $few_lesson_id;
 
     /**
      * @inheritdoc
@@ -36,10 +37,11 @@ class Lesson extends LessonTypeModel
     {
         return [
             //[['cost'], 'number'],
-            [['group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
+            [['group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'city_id', 'capacity', 'start'], 'integer'],
             [['date_start'], 'date', 'format' => 'php:Y-m-d'],
             [['time_start', 'calendar_event_id'], 'safe'],
             [['lead_link'], 'string'],
+            [['capacity'], 'required']
             //[['date_start', 'time_start'], 'safe'],
         ];
     }
@@ -63,6 +65,8 @@ class Lesson extends LessonTypeModel
             'lead_link' => Yii::t('app', 'Lead Link'),
             'cost' => Yii::t('app', 'Cost'),
             'city_id' => Yii::t('app', 'City ID'),
+            'capacity' => Yii::t('app', 'Capacity'),
+            'start' => Yii::t('app', 'Start'),
         ];
     }
 
@@ -287,7 +291,9 @@ class Lesson extends LessonTypeModel
             'teacher_id',
             'duration',
             'lead_link',
-            'calendar_event_id'
+            'calendar_event_id',
+            'capacity',
+            'start'
         ];
     }
 

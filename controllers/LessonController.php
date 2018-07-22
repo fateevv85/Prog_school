@@ -124,23 +124,34 @@ class LessonController extends LessonTypeController
     {
         $model = new Lesson();
 
-        $test = '123';
         if ($post = Yii::$app->request->post()) {
-//            if ($count = $post['lesson-count'] && $interval = $post['lesson-next']) {
+
             $count = $post['lesson-count'];
-            $interval = $post['lesson-next'];
-                $dateStart = $post['Lesson']['date_start'];
+            $interval = (int)$post['lesson-next'];
+            $dateStart = $post['Lesson']['date_start'];
 
+            for ($i = 0; $i < $count; $i++, $dateStart = $date->add(new \DateInterval("P{$interval}D"))->format('Y-m-d')) {
+                $model = new Lesson();
                 $date = new \DateTime($dateStart);
-                /*for ($i = 0; $i <= $count; $i++) {
-                    $dates[] = $date->add(new \DateInterval("P{$interval}D"));
-                }*/
 
-//            }
+                $post['Lesson']['date_start'] = $date->format('Y-m-d');
 
+                $post['Lesson']['start'] = ($i == 0) ? 1 : 0;
 
-//            echo $date->format('Y-m-d') . "\n";
+                $dates[$i] = $date->format('Y-m-d');
+
+                if ($model->load($post) && $model->save()) {
+                    $lessonsList[] = $model->lesson_id;
+                }
+            }
+
+            return $this->redirect([
+                'index',
+                'few_lesson_id' => $lessonsList
+            ]);
         }
+
+
         /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
       $params = self::getLessonEntityParams($model);
       $params['link'] = Url::toRoute(['lesson/index', 'LessonSearch[lesson_id]' => $model->lesson_id], true);
@@ -170,10 +181,6 @@ class LessonController extends LessonTypeController
 
         return $this->render('createFew', [
             'model' => $model,
-//            'dates' => $dates
-            'count' => $count,
-            'interval' => $interval,
-            'test' => $test
         ]);
     }
 

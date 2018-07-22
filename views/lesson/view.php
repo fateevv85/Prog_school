@@ -48,6 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'date_start',
             'time_start',
             'duration:ntext',
+            'capacity',
+            'start'
         ],
     ]) ?>
 

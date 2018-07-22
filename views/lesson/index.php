@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="lesson-index">
 
       <?php
-//      var_dump($_GET);
       $this->registerCss(".my-options {
       top: 33px;
       min-width: 151px; }"
@@ -32,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
       } else {
 
       }*/
-      $panelHeader = ($name = Yii::$app->request->get('product_name'))?' для продукта "' . $name.'"':'';
+      $panelHeader = ($name = Yii::$app->request->get('product_name')) ? ' для продукта "' . $name . '"' : '';
       ?>
     <!--<div class="btn-group">
           <a href="#" class="btn btn-default active" role="button" aria-pressed="true">Платные занятия</a>
@@ -103,8 +102,8 @@ $this->params['breadcrumbs'][] = $this->title;
                           ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
                       . DropdownX::widget([
                           'options' => [
-                                'class' => 'my-options',
-                              'id'=> 'drop-down-type'
+                              'class' => 'my-options',
+                              'id' => 'drop-down-type'
                           ],
                           'items' => [
                               ['label' => 'Демо занятия', 'url' => Url::to(['trial-lesson/index', 'TrialLessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
@@ -135,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ],*/
           'panel' => [
               'type' => 'default',
-              'heading' => $this->title.$panelHeader
+              'heading' => $this->title . $panelHeader
           ],
           //'panelHeadingTemplate'=> '{heading}',
           'resizableColumns' => true,
@@ -229,7 +228,8 @@ $this->params['breadcrumbs'][] = $this->title;
                   'contentOptions' => ['style' => 'width: 50px;'],
                   'filter' => Lesson::getParticipantsNumsList()
               ],
-              [
+              'capacity',
+              /*[
                   'attribute' => 'participants_num_max',
                   'label' => 'Вмести- мость',
                   'format' => 'text', // Возможные варианты: raw, html
@@ -239,8 +239,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   'contentOptions' => ['style' => 'width: 50px;'],
                   'filter' => Lesson::getParticipantsNumsMaxList()
-              ],
-
+              ],*/
 
               [
                   'attribute' => 'course_id',
@@ -298,6 +297,17 @@ $this->params['breadcrumbs'][] = $this->title;
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   //'contentOptions'=>['style'=>'width: 200px;'],
               ],
+              [
+                  'attribute' => 'start',
+                  'content' => function ($data) {
+                      if ($data->start == 1) {
+                          return 'Да';
+                      }
+
+                      return 'Нет';
+                  }
+              ]
+
           ],
       ];
       if (!Yii::$app->user->isGuest) {

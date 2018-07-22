@@ -18,9 +18,9 @@ class LessonSearch extends Lesson
     public function rules()
     {
         return [
-            [['lesson_id', 'group_id', 'lecture_hall_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
+            [['lesson_id', 'group_id', 'lecture_hall_id', 'teacher_id', 'duration', 'city_id', 'capacity', 'start'], 'integer'],
 //            [['cost'], 'number'],
-            [['date_start', 'time_start', 'course_id'], 'safe'],
+            [['date_start', 'time_start', 'course_id', 'few_lesson_id'], 'safe'],
         ];
     }
 
@@ -44,6 +44,10 @@ class LessonSearch extends Lesson
     {
         $query = Lesson::find();
 
+        $lessons = ($str = $params['few_lesson_id']) ? ['in', 'lesson_id', $str] : $this->lesson_id;
+
+        $query->where($lessons);
+
         //у авторизованных пользователей показываем данные только по их городу
         $query = \app\custom\CustomSearch::filterByUserCity($query);
 
@@ -63,8 +67,6 @@ class LessonSearch extends Lesson
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'lesson_id' => $this->lesson_id,
-            //'cost' => $this->cost,
             'group_id' => $this->group_id,
             'lecture_hall_id' => $this->lecture_hall_id,
             'course_id' => $this->course_id,
@@ -73,6 +75,8 @@ class LessonSearch extends Lesson
             //'date_start' => $this->date_start,
             'time_start' => $this->time_start,
             'city_id' => $this->city_id,
+            'capacity' => $this->capacity,
+            'start' => $this->start
         ]);
 
         if (!is_null($this->date_start)) {

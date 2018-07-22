@@ -47,6 +47,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'time_start',
             'duration:ntext',
             'num_trial:ntext',
+            'capacity',
+            'start'
             //'trial_lesson_id',
             /*'group_id',
             'lesson_id',

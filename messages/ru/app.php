@@ -25,6 +25,8 @@ return [
     // Занятия
     'Trial Lessons' => 'Пробные занятия',
     'Create Trial Lesson' => 'Создать новое занятие',
+    'Create Lesson' => 'Создать платное занятие',
+    'Create Several Lessons' => 'Создать несколько занятий',
     'Trial Lesson ID' => 'ID Пробного занятия',
     'Group ID' => 'ID',
     'Lesson ID' => 'ID Занятия',
@@ -33,6 +35,9 @@ return [
     'Lessons' => 'Платные занятия',
     'Lesson' => 'Платное занятие',
     'Create Few Lessons' => 'Создать несколько',
+    'Capacity' => 'Вместимость',
+    'Start' => 'Стартовое',
+
 
     // Преподаватели
     'Teachers' => 'Преподаватели',
@@ -97,7 +102,6 @@ return [
 
     'Course Date Start' => 'Дата старта полного курса',
     'Cost' => 'Цена',
-    'Create Lesson' => 'Создать платное занятие',
     'link Yandex Map' => 'Ссылка на Яндекс.Карту',
     'Place Description' => 'Адрес',
     'Lecture Hall' => 'Площадка',

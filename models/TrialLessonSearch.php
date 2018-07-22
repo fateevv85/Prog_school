@@ -22,7 +22,7 @@ class TrialLessonSearch extends TrialLesson
     public function rules()
     {
         return [
-            [['trial_lesson_id', 'group_id', 'lecture_hall_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
+            [['trial_lesson_id', 'group_id', 'lecture_hall_id', 'teacher_id', 'duration', 'city_id', 'capacity', 'start'], 'integer'],
             [['course_date_start', 'date_start', 'time_start', 'num_trial', 'course_id'], 'safe'],
             //[['date_start'], 'date'],
         ];
@@ -83,6 +83,8 @@ class TrialLessonSearch extends TrialLesson
             'time_start' => $this->time_start,
             'course_date_start' => $this->course_date_start,
             'city_id' => $this->city_id,
+            'capacity'=> $this->capacity,
+            'start'=> $this->start
         ]);
 
         if (!is_null($this->date_start)) {

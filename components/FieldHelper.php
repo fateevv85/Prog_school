@@ -23,7 +23,7 @@ class FieldHelper
             Html::input('number', $name, null, [
                 'class' => 'form-control',
                 'id' => $id,
-                'min' => 0,
+                'min' => 1,
                 'max' => 10
             ]) .
 

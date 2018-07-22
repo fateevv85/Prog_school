@@ -45,13 +45,14 @@ class TrialLesson extends LessonTypeModel
     public function rules()
     {
         return [
-            [['group_id'/*, 'lesson_id'*/, 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'city_id'], 'integer'],
+            [['group_id', 'lecture_hall_id', 'course_id', 'teacher_id', 'duration', 'city_id', 'capacity', 'start'], 'integer'],
             // [['date_start', 'time_start'], 'safe'],
             [['date_start', 'course_date_start'], 'date', 'format' => 'php:Y-m-d'],
             //[['course_date_start'], 'date', 'format' => 'php:Y-m-d'],
             //[['time_start'], 'time', 'format' => 'php:H:i'],
             [['time_start', 'calendar_event_id'], 'safe'],
             [['num_trial', 'lead_link'], 'string'],
+            [['capacity'], 'required']
         ];
     }
 
@@ -74,6 +75,8 @@ class TrialLesson extends LessonTypeModel
             'duration' => Yii::t('app', 'Duration'),
             'course_date_start' => Yii::t('app', 'Course Date Start'),
             'city_id' => Yii::t('app', 'City ID'),
+            'capacity' => Yii::t('app', 'Capacity'),
+            'start' => Yii::t('app', 'Start'),
         ];
     }
 
@@ -258,11 +261,31 @@ class TrialLesson extends LessonTypeModel
 
     public function fields()
     {
-        return ['trial_lesson_id', 'course_date_start', 'date_start', 'time_start', 'num_trial', 'group_id'/*, 'lesson_id'*/, 'lecture_hall_id', 'course_id', 'teacher_id', 'lead_link', 'calendar_event_id', 'duration'];
+        return [
+            'trial_lesson_id',
+            'course_date_start',
+            'date_start',
+            'time_start',
+            'num_trial',
+            'group_id',
+            'lecture_hall_id',
+            'course_id',
+            'teacher_id',
+            'lead_link',
+            'calendar_event_id',
+            'duration',
+            'capacity',
+            'start'
+        ];
     }
 
     public function extraFields()
     {
-        return ['group', 'lectureHall', 'course', 'teacher', 'lesson'];
+        return ['group',
+            'lectureHall',
+            'course',
+            'teacher',
+            'lesson'
+        ];
     }
 }

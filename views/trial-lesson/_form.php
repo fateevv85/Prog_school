@@ -52,6 +52,12 @@ use app\models\TrialLesson;
 
     <?= $form->field($model, 'lead_link')->textarea(['rows' => 1]) ?>
 
+    <?= $form->field($model, 'capacity')->input('number', [
+        'min' => 1,
+    ]) ?>
+
+    <?= $form->field($model, 'start')->checkbox() ?>
+
     <?php
     if (!$model->isNewRecord && Yii::$app->user->identity->role === 'main_admin') {
         echo(

@@ -14,18 +14,14 @@ use \app\components\FieldHelper;
 <div class="lesson-form">
 
 
-
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'group_id')->dropdownList(
-    // Group::getTitles(),
         Lesson::getGroupsList(),
         ['prompt' => 'Выберите группу учащихся']
     ) ?>
 
     <?= $form->field($model, 'lecture_hall_id')->dropdownList(
-    //LectureHall::find()->select(['lecture_hall_id', 'lecture_hall_id'])->indexBy('lecture_hall_id')->column(),
-    // LectureHall::getAddresses(),
         Lesson::getLectureHallsList(),
         ['prompt' => 'Выберите площадку']
     ) ?>
@@ -47,15 +43,16 @@ use \app\components\FieldHelper;
 
     <?= $form->field($model, 'duration')->textarea(['rows' => 1]) ?>
 
+    <?= $form->field($model, 'capacity')->input('number', [
+        'min' => 1,
+    ]); ?>
+
     <?php
 
     echo FieldHelper::generateInput('lesson-count', 'Количество занятий');
 
     echo FieldHelper::generateInput('lesson-next', 'Интервал занятий');
 
-    ?>
-
-    <?php
     if (!$model->isNewRecord && Yii::$app->user->identity->role === 'main_admin') {
         echo(
         $form->field($model, 'city_id')->dropdownList(
@@ -63,12 +60,69 @@ use \app\components\FieldHelper;
             ['prompt' => 'Выберите город']
         ));
     }
-    ?>
 
+    \yii\bootstrap\Modal::begin([
+        'header' => '<h4>Список занятий</h4>',
+        'toggleButton' => [
+            'label' => 'Предпросмотр дат',
+            'tag' => 'button',
+            'class' => 'btn btn-success',
+            'id' => 'modal'
+        ],
+//        'footer' => 'Низ окна',
+    ]);
+
+    echo Html::tag('div', null, [
+        'id' => 'result'
+    ]);
+
+
+    ?>
   <div class="form-group">
-      <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+      <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
   </div>
+    <?php
+    \yii\bootstrap\Modal::end();
+    ?>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$js = <<<JS
+$('#modal').click(()=>{
+			const start = new Date ($('#lesson-date_start').val());
+			const number = parseInt($('#lesson-count').val());
+			const interval = parseInt($('#lesson-next').val());
+
+			let dateList = [];
+			let dayInt = 0;
+			for (let i = 1; i <= number; i++) {
+
+				let date = new Date();
+				date.setDate(start.getDate()+ dayInt);
+				dateList.push(date.getDate() + '.' + (date.getMonth()+1) + '.' + date.getFullYear());
+				dayInt += interval;
+			}
+
+			$('#date-list').remove();
+			
+			let ul = $('<ul/>', {
+			  id: 'date-list'
+			});
+			
+			dateList.forEach((el,i)=>{
+				let li = $('<li/>');
+				let isStart = (i===0)?' стартовое':'';
+				
+				li.text('Занятие №'+ ++i + ': ' + el + isStart);
+				ul.append(li);
+			});
+			
+			$('#result').append(ul);
+		});
+JS;
+
+$this->registerJs($js, yii\web\View::POS_READY);
+?>
