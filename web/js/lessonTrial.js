@@ -12,7 +12,8 @@ $('.delete-selected').on('click', function () {
   data.redirect = location.href;
   $.ajax({
     //url: 'index.php?r=trial-lesson/delete-selected',
-    url: '/trial-lesson/delete-selected',
+    // url: '/trial-lesson/delete-selected',
+    url: 'delete-selected',
     type: 'POST',
     data: data,
     success: function (data) {
@@ -25,6 +26,7 @@ $('.delete-selected').on('click', function () {
     }
   });
 });
+
 $('.copy-selected').on('click', function () {
   var keys = $('#w0').yiiGridView('getSelectedRows');
   var data = {};

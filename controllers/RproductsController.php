@@ -25,8 +25,6 @@ class RproductsController extends MyActiveController
 
         return $searchModel->productSearch(\Yii::$app->request->queryParams);*/
 
-
-//        var_dump(\Yii::$app->request->queryParams);
         $request = Yii::$app->request->get('paid') == 1;
 
         $amo = ($request) ?
@@ -36,9 +34,17 @@ class RproductsController extends MyActiveController
         $lesson = ($request) ?
             'lesson' : 'trial_lesson';
 
-
         $query = Product::find()
-            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.{$lesson}_id", "{$lesson}.start", "{$lesson}.capacity"])
+            ->select([
+                'product.id as product_id',
+                'product.name',
+                'product.city_id',
+                'product.amo_paid_view',
+                'product.amo_trial_view',
+                "{$lesson}.{$lesson}_id",
+                "{$lesson}.start",
+                "{$lesson}.capacity"
+            ])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
             ->where([$amo => 1])

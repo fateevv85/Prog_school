@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
 
-      <?php Pjax::begin(); ?>
+    <!--      --><?php //Pjax::begin(); ?>
       <?php
       $daterange = [
           'model' => $searchModel,
@@ -95,7 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
                       Html::button('Демо занятия <span class="caret"></span></button>',
                           ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
                       . \kartik\dropdown\DropdownX::widget([
-                          'options' => ['class' => 'my-options'],
+                          'options' => [
+                              'class' => 'my-options',
+                              'id' => 'drop-down-type'
+                          ],
                           'items' => [
                               ['label' => 'Платные занятия', 'url' => Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
                                   'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
@@ -343,7 +346,17 @@ $this->params['breadcrumbs'][] = $this->title;
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   //'contentOptions'=>['style'=>'width: 200px;'],
               ],
-              'start'
+              [
+                  'attribute' => 'start',
+                  'content' => function ($data) {
+                      if ($data->start == 1) {
+                          return 'Да';
+                      }
+                      return 'Нет';
+                  },
+                  'filter' => [1 => 'Да',
+                      0 => 'Нет']
+              ]
               //'lead_link:ntext',
 
               // 'num_trial:ntext',
@@ -355,10 +368,11 @@ $this->params['breadcrumbs'][] = $this->title;
       }
 
       echo(GridView::widget($params)); ?>
-      <?php Pjax::end(); ?></div>
+    <!--      --><?php //Pjax::end(); ?>
+  </div>
 
 <?php
 if (!Yii::$app->user->isGuest) {
-    $this->registerJsFile('/web/js/lessonTrial.js', ['depends' => 'yii\web\YiiAsset']);
+    $this->registerJsFile('@web/js/lessonTrial.js', ['depends' => 'yii\web\YiiAsset']);
 }
 ?>

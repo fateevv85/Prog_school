@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
 
-      <?php Pjax::begin(); ?>
+<!--      --><?php //Pjax::begin(); ?>
       <?php
       $daterange = [
           'model' => $searchModel,
@@ -303,9 +303,10 @@ $this->params['breadcrumbs'][] = $this->title;
                       if ($data->start == 1) {
                           return 'Да';
                       }
-
                       return 'Нет';
-                  }
+                  },
+                  'filter' => [1 => 'Да',
+                      0 => 'Нет']
               ]
 
           ],
@@ -315,9 +316,10 @@ $this->params['breadcrumbs'][] = $this->title;
       }
 
       echo(GridView::widget($params)); ?>
-      <?php Pjax::end(); ?></div>
+<!--      --><?php //Pjax::end(); ?>
+  </div>
 
 <?php
 if (!Yii::$app->user->isGuest) {
-    $this->registerJsFile('/web/js/lessonPaid.js', ['depends' => 'yii\web\YiiAsset']);
+    $this->registerJsFile('@web/js/lessonPaid.js', ['depends' => 'yii\web\YiiAsset']);
 }

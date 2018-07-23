@@ -47,7 +47,7 @@ use app\models\City;
 
     <?= $form->field($model, 'time_start')->textInput()->input('time'/*, ['placeholder' => "14:15"]*/) ?>
 
-    <?= $form->field($model, 'duration')->textarea(['rows' => 1]) ?>
+    <?= $form->field($model, 'duration')->input('number', ['min' => 0]) ?>
 
     <?= $form->field($model, 'capacity')->input('number', [
         'min' => 1,
