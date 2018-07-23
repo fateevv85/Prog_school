@@ -38,10 +38,11 @@ class RproductsController extends MyActiveController
 
 
         $query = Product::find()
-            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.{$lesson}_id"])
+            ->select(['product.id as product_id', 'product.name', 'product.city_id', 'product.amo_paid_view', 'product.amo_trial_view', "{$lesson}.{$lesson}_id", "{$lesson}.start", "{$lesson}.capacity"])
             ->leftJoin('course', 'course.product_id = product.id')
             ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
             ->where([$amo => 1])
+            ->andWhere("{$lesson}.start = 1")
             ->andWhere('date_start > now()')
             ->asArray()
             ->all();
