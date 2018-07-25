@@ -149,7 +149,7 @@ echo Html::tag('div',
 //            'separator' => '<br>',
         'class' => 'btn-group',
         'data-toggle' => 'buttons',
-        'unselect' => 'paid',
+//        'unselect' => 'paid',
         'item' => function ($index, $label, $name, $checked, $value) {
             if ($lessons = $_GET['lessons']) {
                 foreach ($lessons as $key => $type) {

@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
 
-<!--      --><?php //Pjax::begin(); ?>
+    <!--      --><?php //Pjax::begin(); ?>
       <?php
       $daterange = [
           'model' => $searchModel,
@@ -286,6 +286,17 @@ $this->params['breadcrumbs'][] = $this->title;
                   },
               ],
               [
+                  'label' => 'Списки',
+                  'content' => function ($data) {
+                      if ($data->start == 1) {
+                          return
+                              Html::a('Преподавателю', ['report/index', ['lesson_id' => $data->lesson_id, 'lesson_type' => 'paid', 'list_type' => 'teacher']], ['target' => '_blank']) .
+                              "<br>" .
+                              Html::a('Менеджеру', ['report/index', ['lesson_id' => $data->lesson_id, 'lesson_type' => 'paid', 'list_type' => 'manager']], ['target' => '_blank']);
+                      }
+                  }
+              ],
+              [
                   'attribute' => 'city_id',
                   'label' => 'Город',
                   'format' => 'text', // Возможные варианты: raw, html
@@ -316,7 +327,7 @@ $this->params['breadcrumbs'][] = $this->title;
       }
 
       echo(GridView::widget($params)); ?>
-<!--      --><?php //Pjax::end(); ?>
+    <!--      --><?php //Pjax::end(); ?>
   </div>
 
 <?php

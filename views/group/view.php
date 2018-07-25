@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
       <?php
       if (!Yii::$app->user->isGuest) {
           echo(Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->group_id], ['class' => 'btn btn-primary']));
+          echo ' ';
           echo(Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->group_id], [
               'class' => 'btn btn-danger',
               'data' => [

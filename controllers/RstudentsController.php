@@ -13,5 +13,4 @@ use app\models\tables\Students;
 class RstudentsController extends MyActiveController
 {
     public $modelClass = 'app\models\tables\Students';
-
 }

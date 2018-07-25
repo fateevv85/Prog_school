@@ -5,6 +5,7 @@ namespace app\components;
 use app\models\Lesson;
 use kartik\checkbox\CheckboxX;
 use kartik\daterange\DateRangePicker;
+use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -143,6 +144,154 @@ HTML;
                 ]
             ],
         ]);
+    }
+
+    public static function widgetGridList($type, $dataProvider)
+    {
+
+        $optionArr = [
+            'dataProvider' => $dataProvider,
+            'autoXlFormat' => true,
+            'export' => [
+                'showConfirmAlert' => false,
+                'target' => GridView::TARGET_SELF,
+                'label' => 'Экспорт в Excel',
+                'header' => ' '
+            ],
+            'exportConfig' => [
+                GridView::EXCEL => [
+                    'label' => 'Сохранить',
+                    'icon' => 'floppy-disk',
+                    'filename' => ($type == 'teacher') ? 'Отчет для преподавателя' : 'Отчет для менеджера',
+                    'showHeader' => true,
+                    'showPageSummary' => true,
+                    'showFooter' => true,
+                    'showCaption' => true,
+                    'options' => [
+                        'title' => ' '
+                    ],
+                ],
+            ],
+            'pjax' => true,
+            'striped' => true,
+//        'showPageSummary' => true,
+            'panel' => [
+                'type' => 'primary',
+//            'heading' => 'Отчет'
+            ]
+        ];
+
+        // options for teacher
+        if ($type == 'teacher') {
+            $columns = ['columns' => [
+                [
+                    'class' => '\kartik\grid\SerialColumn',
+//                    'format' => 'integer',
+                    'header' => '№'
+                ],
+                [
+                    'attribute' => 'group_title',
+                    'format' => 'text',
+                    'width' => '100px',
+                    'content' => function ($data) {
+                        return 'Группа: ' . "<strong>" . $data->group_title . "</strong>" . ' Дата: ' . "<strong>" . $data->date_start . ' ' . $data->time_start . "</strong>";
+                    },
+                    'group' => true,  // enable grouping,
+                    'groupedRow' => true,                    // move grouped column to a single grouped row
+                    'groupOddCssClass' => 'kv-grouped-row',  // configure odd group cell css class
+                    'groupEvenCssClass' => 'kv-grouped-row',
+                ],
+                [
+                    'attribute' => 'p_last_name',
+                    'label' => 'Фамилия',
+                    'format' => 'text',
+                    'width' => '100px',
+                ],
+                [
+                    'attribute' => 'p_first_name',
+                    'label' => 'Имя',
+                    'format' => 'text',
+                    'width' => '100px',
+                ],
+                [
+                    'label' => 'ФИ ребенка',
+                    'content' => function ($data) {
+                        return $data->student_ln . ' ' . $data->student_fn;
+                    },
+                    'format' => 'text',
+                    'width' => '150px',
+                ],
+                [
+                    'attribute' => 'budget',
+                    'label' => 'Бюджет',
+                    'format' => 'integer',
+                    'width' => '70px',
+                ],
+                [
+                    'attribute' => 'notebook',
+                    'label' => 'Ноутбук',
+                    'format' => 'text',
+                    'width' => '70px',
+                ],
+                [
+                    'label' => 'Комментарии',
+                    'format' => 'text',
+                    'width' => '100px',
+                ],
+            ],
+            ];
+        } // options for manager
+        elseif ($type == 'manager') {
+            $columns = ['columns' =>
+                [
+                    ['class' => '\kartik\grid\SerialColumn'],
+                    [
+                        'attribute' => 'group_title',
+                        'format' => 'text',
+                        'width' => '100px',
+                        'content' => function ($data) {
+                            return 'Группа: ' . "<strong>" . $data->group_title . "</strong>" . ' Дата: ' . "<strong>" . $data->date_start . ' ' . $data->time_start . "</strong>";
+                        },
+                        'group' => true,  // enable grouping,
+                        'groupedRow' => true,                    // move grouped column to a single grouped row
+                        'groupOddCssClass' => 'kv-grouped-row',  // configure odd group cell css class
+                        'groupEvenCssClass' => 'kv-grouped-row',
+                    ],
+                    [
+                        'attribute' => 'p_last_name',
+                        'label' => 'Фамилия',
+                        'format' => 'text',
+                        'width' => '100px',
+                    ],
+                    [
+                        'attribute' => 'p_first_name',
+                        'label' => 'Имя',
+                        'format' => 'text',
+                        'width' => '100px',
+                    ],
+                    [
+                        'label' => 'ФИ ребенка',
+                        'content' => function ($data) {
+                            return $data->student_ln . ' ' . $data->student_fn;
+                        },
+                        'format' => 'text',
+                        'width' => '150px',
+                    ],
+                    [
+                        'label' => 'Отметка',
+                        'format' => 'text',
+                        'width' => '70px',
+                    ],
+                    [
+                        'label' => 'Комментарии',
+                        'format' => 'text',
+                        'width' => '100px',
+                    ],
+                ]
+            ];
+        }
+
+        return array_merge($optionArr, $columns);
     }
 
     public static function stripeGrid()

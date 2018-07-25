@@ -33,8 +33,8 @@ class Students extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['group_id', 'lead_id', 'control_sum'], 'integer'],
-            [['last_name', 'first_name'], 'string', 'max' => 255],
+            [['group_id', 'lead_id', 'control_sum', 'budget'], 'integer'],
+            [['last_name', 'first_name', 'p_last_name', 'p_first_name', 'p_mid_name', 'notebook', 'email'], 'string', 'max' => 255],
             [['control_sum'], 'unique'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'group_id']],
         ];
@@ -52,6 +52,12 @@ class Students extends \yii\db\ActiveRecord
             'group_id' => 'Group ID',
             'lead_id' => 'Lead ID',
             'control_sum' => 'Control Sum',
+            'p_last_name' => 'Parent Last Name',
+            'p_first_name' => 'Parent First Name',
+            'p_mid_name' => 'Parent Mid Name',
+            'budget' => 'Budget',
+            'notebook' => 'Notebook',
+            'email' => 'e-mail'
         ];
     }
 
