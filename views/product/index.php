@@ -8,6 +8,9 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Products');
+if (!Yii::$app->user->isGuest) {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['site/settings']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="product-index">

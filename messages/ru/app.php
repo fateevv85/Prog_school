@@ -23,7 +23,7 @@ return [
     'Update Product' => 'Обновить данные',
 
     // Занятия
-    'Trial Lessons' => 'Пробные занятия',
+    'Trial Lessons' => 'Демо занятия',
     'Create Trial Lesson' => 'Создать новое занятие',
     'Create Lesson' => 'Создать платное занятие',
     'Create Several Lessons' => 'Создать несколько занятий',
@@ -37,7 +37,8 @@ return [
     'Create Few Lessons' => 'Создать несколько',
     'Capacity' => 'Вместимость',
     'Start' => 'Стартовое',
-
+    'trial' => 'Демо',
+    'paid' => 'Платное',
 
     // Преподаватели
     'Teachers' => 'Преподаватели',

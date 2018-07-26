@@ -146,7 +146,7 @@ HTML;
         ]);
     }
 
-    public static function widgetGridList($type, $dataProvider)
+    public static function widgetGridList($type, $dataProvider, $lessonType)
     {
 
         $optionArr = [
@@ -162,7 +162,7 @@ HTML;
                 GridView::EXCEL => [
                     'label' => 'Сохранить',
                     'icon' => 'floppy-disk',
-                    'filename' => ($type == 'teacher') ? 'Отчет для преподавателя' : 'Отчет для менеджера',
+                    'filename' => ($type == 'teacher') ? 'Отчет для преподавателя ' . date('Y-m-d') : 'Отчет для менеджера ' . date('Y-m-d'),
                     'showHeader' => true,
                     'showPageSummary' => true,
                     'showFooter' => true,
@@ -177,7 +177,7 @@ HTML;
 //        'showPageSummary' => true,
             'panel' => [
                 'type' => 'primary',
-//            'heading' => 'Отчет'
+                'heading' => \Yii::t('app', $lessonType) . ' занятие'
             ]
         ];
 
@@ -244,7 +244,10 @@ HTML;
         elseif ($type == 'manager') {
             $columns = ['columns' =>
                 [
-                    ['class' => '\kartik\grid\SerialColumn'],
+                    [
+                        'class' => '\kartik\grid\SerialColumn',
+                        'header' => '№'
+                    ],
                     [
                         'attribute' => 'group_title',
                         'format' => 'text',

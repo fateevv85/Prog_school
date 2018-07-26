@@ -2,9 +2,9 @@
 
 namespace app\components;
 
-use app\models\Lesson;
+use app\models\TrialLesson;
 
-class LessonsExtraFields extends Lesson
+class TrialLessonsExtraFields extends TrialLesson
 {
     use LessonFieldsTrait;
 

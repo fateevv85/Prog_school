@@ -335,6 +335,17 @@ $this->params['breadcrumbs'][] = $this->title;
                   },
               ],
               [
+                  'label' => 'Списки',
+                  'content' => function ($data) {
+                      if ($data->start == 1) {
+                          return
+                              Html::a('Преподавателю', ['report/index', ['lesson_id' => $data->trial_lesson_id, 'lesson_type' => 'trial', 'list_type' => 'teacher']], ['target' => '_blank']) .
+                              "<br>" .
+                              Html::a('Менеджеру', ['report/index', ['lesson_id' => $data->trial_lesson_id, 'lesson_type' => 'trial', 'list_type' => 'manager']], ['target' => '_blank']);
+                      }
+                  }
+              ],
+              [
                   'attribute' => 'city_id',
                   'label' => 'Город',
                   'format' => 'text', // Возможные варианты: raw, html

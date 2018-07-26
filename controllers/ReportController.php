@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\components\LessonsExtraFields;
+use app\components\TrialLessonsExtraFields;
 use app\models\Lesson;
 use yii\data\ActiveDataProvider;
 
@@ -14,13 +15,14 @@ class ReportController extends MyAppController
 {
     public function actionIndex()
     {
-
         if ($get = \Yii::$app->request->get(1)) {
             $listType = $get['list_type'];
             $lessonType = ($get['lesson_type'] == 'paid') ? '' : 'trial_';
             $lessonId = $get['lesson_id'];
 
-            $query = LessonsExtraFields::find()
+            $lessonClass = ($get['lesson_type'] == 'trial') ? TrialLessonsExtraFields::className() : LessonsExtraFields::className();
+
+            $query = $lessonClass::find()
                 ->select(
                     [
 //                        "{$lessonType}lesson_id as id",
@@ -42,7 +44,8 @@ class ReportController extends MyAppController
                 ->leftJoin('group', "`group`.group_id = {$lessonType}lesson.group_id")
                 ->leftJoin('students', "students.group_id = {$lessonType}lesson.group_id")
                 ->where("{$lessonType}lesson_id = {$lessonId}");
-//                ->all();
+                /*->where("{$lessonType}lesson_id = {$lessonId}")
+                ->all();*/
 
             $dataProvider = new ActiveDataProvider([
                 'query' => $query,

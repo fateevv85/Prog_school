@@ -57,7 +57,7 @@ class Students extends \yii\db\ActiveRecord
             'p_mid_name' => 'Parent Mid Name',
             'budget' => 'Budget',
             'notebook' => 'Notebook',
-            'email' => 'e-mail'
+            'email' => 'E-mail'
         ];
     }
 
