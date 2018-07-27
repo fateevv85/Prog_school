@@ -30,8 +30,7 @@ class MenuHelper
                     'label' => $item['name'],
                     'url' => Url::to(['lesson/index',
                         'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
-                        'LessonSearch[course_id]' => $courses,
-                        'product_name' => $item['name']
+                        'LessonSearch[product_id]' => $item['id'],
                     ]),
                     '<li class="divider"></li>',
                 ];

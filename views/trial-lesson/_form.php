@@ -3,10 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Teacher;
-use app\models\LectureHall;
-use app\models\Group;
-use app\models\Course;
 use app\models\TrialLesson;
+use \kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TrialLesson */
@@ -17,15 +15,22 @@ use app\models\TrialLesson;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'group_id')->dropdownList(
+    <? /*= $form->field($model, 'group_id')->dropdownList(
         TrialLesson::getGroupsList(),
         ['prompt' => 'Выберите группу учащихся']
-    ) ?>
+    ) */ ?>
 
-
+    <?= $form->field($model, 'group_id')->widget(Select2::classname(), [
+        'data' => TrialLesson::getGroupsList(),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите группу учащихся'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'lecture_hall_id')->dropdownList(
-    //LectureHall::find()->select(['lecture_hall_id', 'lecture_hall_id'])->indexBy('lecture_hall_id')->column(),
         TrialLesson::getLectureHallsList(),
         ['prompt' => 'Выберите площадку']
     ) ?>

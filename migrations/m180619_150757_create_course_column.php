@@ -12,7 +12,7 @@ class m180619_150757_create_course_column extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('course', 'product_id', $this->integer()->notNull());
+        $this->addColumn('course', 'product_id', $this->integer());
     }
 
     /**

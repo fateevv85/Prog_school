@@ -3,11 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Teacher;
-use app\models\LectureHall;
-use app\models\Group;
-use app\models\Course;
 use app\models\Lesson;
-use app\models\City;
+use \kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Lesson */
@@ -19,11 +16,22 @@ use app\models\City;
     <?php $form = ActiveForm::begin(); ?>
 
 
-    <?= $form->field($model, 'group_id')->dropdownList(
+    <?/*= $form->field($model, 'group_id')->dropdownList(
     // Group::getTitles(),
         Lesson::getGroupsList(),
         ['prompt' => 'Выберите группу учащихся']
-    ) ?>
+    ) */?>
+
+  <?=
+  $form->field($model, 'group_id')->widget(Select2::classname(), [
+      'data' => Lesson::getGroupsList(),
+      'language' => 'ru',
+      'options' => ['placeholder' => 'Выберите группу учащихся'],
+      'pluginOptions' => [
+          'allowClear' => true
+      ],
+  ]);
+  ?>
 
     <?= $form->field($model, 'lecture_hall_id')->dropdownList(
     //LectureHall::find()->select(['lecture_hall_id', 'lecture_hall_id'])->indexBy('lecture_hall_id')->column(),
@@ -32,11 +40,21 @@ use app\models\City;
         ['prompt' => 'Выберите площадку']
     ) ?>
 
-    <?= $form->field($model, 'course_id')->dropdownList(
-    // Course::getCourses(),
+    <? /*= $form->field($model, 'course_id')->dropdownList(
         Lesson::getCoursesList(),
         ['prompt' => 'Выберите курс обучения']
-    ) ?>
+    ) */ ?>
+
+    <?=
+    $form->field($model, 'course_id')->widget(Select2::classname(), [
+        'data' => Lesson::getCoursesList(),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите курс обучения'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'teacher_id')->dropdownList(
         Teacher::getNames(),

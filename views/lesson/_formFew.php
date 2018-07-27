@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use app\models\Teacher;
 use app\models\Lesson;
 use \app\components\FieldHelper;
+use \kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Lesson */
@@ -16,21 +17,32 @@ use \app\components\FieldHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'group_id')->dropdownList(
-        Lesson::getGroupsList(),
-        ['prompt' => 'Выберите группу учащихся']
-    ) ?>
+    <?=
+    $form->field($model, 'group_id')->widget(Select2::classname(), [
+        'data' => Lesson::getGroupsList(),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите группу учащихся'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'lecture_hall_id')->dropdownList(
         Lesson::getLectureHallsList(),
         ['prompt' => 'Выберите площадку']
     ) ?>
 
-    <?= $form->field($model, 'course_id')->dropdownList(
-    // Course::getCourses(),
-        Lesson::getCoursesList(),
-        ['prompt' => 'Выберите курс обучения']
-    ) ?>
+    <?=
+    $form->field($model, 'course_id')->widget(Select2::classname(), [
+        'data' => Lesson::getCoursesList(),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите курс обучения'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'teacher_id')->dropdownList(
         Teacher::getNames(),

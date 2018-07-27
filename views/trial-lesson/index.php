@@ -2,11 +2,12 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use yii\widgets\Pjax;
 use yii\helpers\Url;
 use kartik\daterange\DateRangePicker;
 use app\models\TrialLesson;
 use app\components\WidgetHelper;
+use \app\models\tables\Product;
+use \kartik\dropdown\DropdownX;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TrialLessonSearch */
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
       top: 33px;
       min-width: 151px; }"
       );
-      $panelHeader = ($name = Yii::$app->request->get('product_name')) ? ' для продукта "' . $name . '"' : '';
+      $panelHeader = ($productId = Yii::$app->request->get('TrialLessonSearch')['product_id']) ? ' для продукта "' . Product::getProductName($productId) . '"' : '';
       ?>
 
       <?php /*if ($name = Yii::$app->request->get('product_name')) : */ ?><!--
@@ -94,15 +95,14 @@ $this->params['breadcrumbs'][] = $this->title;
                       Html::beginTag('div', ['class' => 'dropdown']) .
                       Html::button('Демо занятия <span class="caret"></span></button>',
                           ['type' => 'button', 'class' => 'btn btn-default', 'data-toggle' => 'dropdown'])
-                      . \kartik\dropdown\DropdownX::widget([
+                      . DropdownX::widget([
                           'options' => [
                               'class' => 'my-options',
                               'id' => 'drop-down-type'
                           ],
                           'items' => [
                               ['label' => 'Платные занятия', 'url' => Url::to(['lesson/index', 'LessonSearch[date_start]' => date('d.m.Y', time() + 3 * 60 * 60) . ' - ' . date('d.m.Y', time() + 364 * 24 * 60 * 60),
-                                  'LessonSearch[course_id]' => Yii::$app->request->get('TrialLessonSearch')['course_id'],
-                                  'product_name' => Yii::$app->request->get('product_name')])
+                                  'LessonSearch[product_id]' => $productId])
                               ],
                           ],
                       ])
@@ -155,8 +155,6 @@ $this->params['breadcrumbs'][] = $this->title;
                   'contentOptions' => ['style' => 'width: 10px;'],
               ],
               //['class' => 'yii\grid\SerialColumn'],
-
-
               //'trial_lesson_id',
               //'group_id',
               [
@@ -166,7 +164,12 @@ $this->params['breadcrumbs'][] = $this->title;
                   'content' => function ($data) {
                       return Html::a($data->getGroupName(), ['group/view', 'id' => $data->group_id]);
                   },
-                  'filter' => TrialLesson::getGroupsList(),
+                  'filterType' => GridView::FILTER_SELECT2,
+                  'filter' => ($productId) ? Product::getItemListByProduct($productId, 'group', 'trial_') : TrialLesson::getGroupsList(),
+                  'filterWidgetOptions' => [
+                      'options' => ['placeholder' => 'Выбрать'],
+                      'pluginOptions' => ['allowClear' => true],
+                  ],
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   'contentOptions' => ['style' => 'width: 100px;'],
               ],
@@ -190,8 +193,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           return $address . '<br>' . Html::a("Карта <i class=\"fas fa-external-link-alt\"></i>", $matches['link'], ['target' => '_blank']);
                       }
                   },
-                  'filter' => TrialLesson::getLectureHallsList(),
-
+                  'filter' => ($productId) ? Product::getItemListByProduct($productId, 'lecture_hall', 'trial_') : TrialLesson::getLectureHallsList(),
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   'contentOptions' => ['style' => 'width: 20%;'],
               ],
@@ -271,7 +273,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       //return '<a href="http://207.154.239.87/index.php?r=course%2Fview&id=' . $data->course_id . '">' .$data->getCourseName() . '</a>';
                       return '<a href="' . Url::to(['course/view', 'id' => $data->course_id]) . '">' . $data->getCourseName() . '</a>';
                   },
-                  'filter' => TrialLesson::getCoursesList(),
+                  'filter' => ($productId) ? Product::getItemListByProduct($productId, 'course', 'trial_') : TrialLesson::getCoursesList(),
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   'contentOptions' => ['style' => 'width: 20%;'],
               ],
@@ -284,11 +286,12 @@ $this->params['breadcrumbs'][] = $this->title;
                   'content' => function ($data) {
                       return $data->getTeacherName();
                   },
-                  'filter' => TrialLesson::getTeachersList(),
+                  'filter' => ($productId) ? Product::getItemListByProduct($productId, 'teacher', 'trial_') : TrialLesson::getTeachersList(),
                   'options' => ['width' => '150']
               ],
               [
                   'attribute' => 'course_date_start',
+                  'label' => 'Cтарт полного курса',
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   //'contentOptions'=>['style'=>'width: 100px;', 'type' => 'date', 'class' => 'actionClick date'],
                   'contentOptions' => ['style' => 'width: 100px;', 'type' => 'date'],
@@ -365,13 +368,13 @@ $this->params['breadcrumbs'][] = $this->title;
                       }
                       return 'Нет';
                   },
-                  'filter' => [1 => 'Да',
-                      0 => 'Нет']
+                  'filter' => [
+                      1 => 'Да',
+                      0 => 'Нет'
+                  ]
               ]
               //'lead_link:ntext',
-
               // 'num_trial:ntext',
-
           ],
       ];
       if (!Yii::$app->user->isGuest) {

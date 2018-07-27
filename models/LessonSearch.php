@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\custom\CustomSearch;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -49,7 +50,11 @@ class LessonSearch extends Lesson
         $query->where($lessons);
 
         //у авторизованных пользователей показываем данные только по их городу
-        $query = \app\custom\CustomSearch::filterByUserCity($query);
+        $query = CustomSearch::filterByUserCity($query);
+
+        if ($productId = $params['LessonSearch']['product_id']) {
+            $query = CustomSearch::filterByProduct($query, $productId);
+        }
 
         // add conditions that should always apply here
 
@@ -69,7 +74,7 @@ class LessonSearch extends Lesson
         $query->andFilterWhere([
             'group_id' => $this->group_id,
             'lecture_hall_id' => $this->lecture_hall_id,
-            'course_id' => $this->course_id,
+            'lesson.course_id' => $this->course_id,
             'teacher_id' => $this->teacher_id,
             'duration' => $this->duration,
             //'date_start' => $this->date_start,
