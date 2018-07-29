@@ -18,7 +18,6 @@ use app\models\CourseTypes;
  * @property string $cost
  * @property string $city_id
  * @property integer $product_id
- *
  * @property City $city
  * @property CourseInCity[] $courseInCities
  */
@@ -134,11 +133,87 @@ class Course extends \yii\db\ActiveRecord
         $cities = ArrayHelper::toArray($cities);
         $citiesTitles = ArrayHelper::getColumn($cities, 'title');
         $citiesString = implode(', ', $citiesTitles);
-        return $citiesString;
 
+        return $citiesString;
     }
 
-    public function setCities($citiesIds)
+    public function getCitiesIdArr()
+    {
+        $cities = $this->cities;
+        $cities = ArrayHelper::toArray($cities);
+        return $citiesIds = ArrayHelper::getColumn($cities, 'city_id');
+    }
+
+    public function setCities($citiesIds, $productsId)
+    {
+        $identity = \Yii::$app->user->identity;
+        //региональному админу всегда доступны курсы с его городом
+
+        if ($identity->role === 'regional_admin') {
+            if (!is_null($identity) && isset($identity->city_id) && !is_null($identity->city_id) && is_numeric($identity->city_id)) {
+
+                $item = CourseInCity::findOne([
+                    'course_id' => $this->course_id,
+                    'city_id' => $identity->city_id,
+                ]);
+                $item->product_id = array_values($productsId)[0];
+                $item->save();
+                if (!$item) {
+                    $item = new CourseInCity();
+                    $item->city_id = $identity->city_id;
+                    $item->course_id = $this->course_id;
+                    $item->product_id = array_values($productsId)[0];
+                    $item->save();
+                }
+            }
+        } else {
+            $prevCities = $this->cities;
+            $prevCitiesIds = array();
+
+            if (is_array($prevCities) && count($prevCities) > 0) {
+                foreach ($prevCities as $city) {
+                    $prevCitiesIds[] = $city->city_id;
+                }
+            }
+
+            foreach ($prevCitiesIds as $id) {
+                $item = CourseInCity::findOne([
+                    'course_id' => $this->course_id,
+                    'city_id' => $id,
+                ]);
+                $item->delete();
+            }
+
+            foreach ($citiesIds as $id) {
+                $item = new CourseInCity();
+                $item->city_id = $id;
+                $item->course_id = $this->course_id;
+                $item->product_id = $productsId[$id];
+                $item->save();
+            }
+        }
+
+        /*$toDelete = array_diff($prevCitiesIds, $citiesIds);
+        $toAdd = array_diff($citiesIds, $prevCitiesIds);
+
+        foreach ($toDelete as $id) {
+            $item = CourseInCity::findOne([
+                'course_id' => $this->course_id,
+                'city_id' => $id,
+            ]);
+            $item->delete();
+        }
+
+        foreach ($toAdd as $id) {
+            $item = new CourseInCity();
+            $item->city_id = $id;
+            $item->course_id = $this->course_id;
+            $item->product_id = $productsId[$id];
+            $item->save();
+        }*/
+    }
+
+    /*public function setCities($citiesIds)
     {
         $prevCities = $this->cities;
         $prevCitiesIds = array();
@@ -153,7 +228,6 @@ class Course extends \yii\db\ActiveRecord
         $toAdd = array_diff($citiesIds, $prevCitiesIds);
 
         foreach ($toDelete as $id) {
-            //$item = CourseTypeInPlace::find()->where(['course_type_id'])->one();
             $item = CourseInCity::findOne([
                 'course_id' => $this->course_id,
                 'city_id' => $id,
@@ -183,9 +257,7 @@ class Course extends \yii\db\ActiveRecord
                 }
             }
         }
-        //
-
-    }
+    }*/
 
     public function getCitiesList()
     {
@@ -218,5 +290,14 @@ class Course extends \yii\db\ActiveRecord
     public static function find()
     {
         return new CourseQuery(get_called_class());
+    }
+
+    public static function getCourseAttr($attr, $id)
+    {
+        return static::find()
+            ->select($attr)
+            ->where(['course_id' => $id])
+            ->asArray()
+            ->one();
     }
 }

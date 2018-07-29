@@ -51,9 +51,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'synopses_link:ntext',
             'lessons_num',
             [
-                'attribute' => 'product_id',
+                'label' => 'Город',
                 'value' => function ($data) {
-                    return $data->getProductName();
+                    return $data->getCitiesString();
+                },
+            ],
+            [
+                'label' => 'Продукт',
+                'value' => function ($data) {
+                    return \app\models\tables\Product::getProductsForCourseAndCity($data->course_id, $data->getCitiesIdArr());
                 }
             ],
             'cost',

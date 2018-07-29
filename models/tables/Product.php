@@ -163,4 +163,30 @@ class Product extends \yii\db\ActiveRecord
         }
 
     }
+
+    public static function getProductsForCity($id)
+    {
+        return ArrayHelper::map(static::find()
+            ->select([
+                'id',
+                'name'
+            ])
+            ->where(['city_id' => $id])
+            ->asArray()
+            ->all(), 'id', 'name');
+    }
+
+    public static function getProductsForCourseAndCity($courseId, $cityId)
+    {
+        $a = static::find()
+            ->select('product.name')
+            ->leftJoin('course_in_city', 'course_in_city.product_id = product.id')
+            ->where(['course_id' => $courseId])
+            ->andWhere(['in', 'product.city_id', $cityId])
+            ->asArray()
+            ->all();
+        $a = ArrayHelper::getColumn($a, 'name');
+        $b = implode(', ', $a);
+        return $b;
+    }
 }

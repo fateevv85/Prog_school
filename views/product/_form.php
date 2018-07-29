@@ -18,7 +18,9 @@ use yii\widgets\ActiveForm;
 
     $model->city_id = Yii::$app->user->identity->city_id;
 
-    //    echo $form->field($model, 'city_id')->checkboxList($model->getCities(), ['separator' => '<br>']);
+    if (\Yii::$app->user->identity->role == 'main_admin') {
+        $model->city_id = $model->getOldAttribute('city_id');
+    }
 
     echo $form->field($model, 'city_id')->radioList($model->getCities(), ['separator' => '<br>']) ?>
 

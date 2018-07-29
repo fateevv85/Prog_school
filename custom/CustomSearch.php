@@ -17,9 +17,12 @@ class CustomSearch
 
     public static function filterByProduct($query, $productId, $lessonType = null)
     {
-        return
+        /*return
             $query
                 ->leftJoin('course', "course.course_id = {$lessonType}lesson.course_id")
-                ->where(['product_id' => $productId]);
+                ->where(['product_id' => $productId]);*/
+        return $query
+            ->leftJoin('course_in_city', "course_in_city.course_id = {$lessonType}lesson.course_id")
+            ->where(['product_id' => $productId]);
     }
 }

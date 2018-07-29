@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use kartik\nav\NavX;
+use \app\components\MenuHelper;
 
 AppAsset::register($this);
 ?>
@@ -31,7 +32,7 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    $models = \app\models\tables\Product::find()->all();
+//    $models = \app\models\tables\Product::find()->all();
 
     NavBar::begin([
         'innerContainerOptions' => ['class' => 'container-fluid'],
@@ -45,7 +46,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => Yii::t('app', 'Products'), 'items' => \app\components\MenuHelper::getMenu()],
+            ['label' => Yii::t('app', 'Products'), 'items' => MenuHelper::getMenu()],
             ['label' => Yii::t('app', 'Settings'), 'url' => [Url::to('site/settings')], 'visible' => !Yii::$app->user->isGuest],
             Yii::$app->user->isGuest ? (
             ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]

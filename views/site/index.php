@@ -29,6 +29,8 @@ $this->title = 'Codabra';
                         echo('<li><a href="site/settings">Настройки</a></li>');
                     }
                     */
+
+//          var_dump(\app\components\MenuHelper::getItems());
           ?>
         <!--li><a href="site/calendar">Календарь</a></li-->
       </ul>

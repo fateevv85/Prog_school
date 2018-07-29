@@ -155,7 +155,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'contentOptions' => ['style' => 'width: 10px;'],
               ],
               //['class' => 'yii\grid\SerialColumn'],
-              //'trial_lesson_id',
+              'trial_lesson_id',
               //'group_id',
               [
                   'attribute' => 'group_id',

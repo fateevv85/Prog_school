@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\City;
 use app\models\Course;
+use app\models\CourseInCity;
 use app\models\CourseSearch;
 use app\models\tables\ProductSearch;
 use app\models\User;
@@ -131,8 +132,15 @@ class ProductController extends Controller
     public function actionView($id)
     {
         $courseSearchModel = new CourseSearch();
-        $courseDataProvider = new ActiveDataProvider([
+        /*$courseDataProvider = new ActiveDataProvider([
             'query' => Course::find()->where(['product_id' => $id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ]
+        ]);*/
+
+        $courseDataProvider = new ActiveDataProvider([
+            'query' => CourseInCity::find()->where(['product_id' => $id]),
             'pagination' => [
                 'pageSize' => 20,
             ]

@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'headerOptions' => ['style' => 'white-space: normal;'],
                   'contentOptions' => ['style' => 'width: 10px;'],
               ],
-//            'lesson_id',
+            'lesson_id',
               [
                   'attribute' => 'group_id',
                   'label' => 'Группа',

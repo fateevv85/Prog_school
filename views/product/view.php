@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'city_id',
                 'value' => function ($data) {
-      return \app\models\City::getCityName($data->city_id);
+                    return \app\models\City::getCityName($data->city_id);
                 }
             ],
             [
@@ -67,16 +67,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'course_id',
-            'title:ntext',
             [
+                'label' => 'Название',
+                'content' => function ($data) {
+                    return \app\models\Course::getCourseAttr('title', $data->course_id)['title'];
+                }
+            ],
+            [
+                'label' => 'Город',
+                'content' => function ($data) {
+                    return \app\models\City::getCityName($data->city_id);
+                }
+            ],
+            [
+                'label' => 'Описание',
+                'content' => function ($data) {
+                    return \app\models\Course::getCourseAttr('description', $data->course_id)['description'];
+                }
+            ],
+//            'title:ntext',
+            /*[
                 'attribute' => 'description',
                 'content' => function ($data) {
                     if ($desc = $data->description) {
                         return mb_substr($desc, 0, 50) . '...';
                     }
                 },
-            ],
-            [
+            ],*/
+            /*[
                 'attribute' => 'synopses_link',
                 'content' => function ($data) {
                     if (isset($data->synopses_link)) {
@@ -88,10 +106,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '';
                     }
                 },
-            ],
-            'lessons_num',
-            'cost',
-            [
+            ],*/
+//            'lessons_num',
+//            'cost',
+            /*[
                 'attribute' => 'citiesString',
                 'format' => 'text', // Возможные варианты: raw, html
                 'content' => function ($data) {
@@ -99,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'headerOptions' => ['style' => 'white-space: normal;'],
                 'options' => ['width' => '70']
-            ],
+            ],*/
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete}',
