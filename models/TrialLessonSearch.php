@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\custom\CustomSearch;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -55,6 +56,9 @@ class TrialLessonSearch extends TrialLesson
         //у авторизованных пользователей показываем данные только по их городу
         $query = \app\custom\CustomSearch::filterByUserCity($query);
 
+        if ($productId = $params['TrialLessonSearch']['product_id']) {
+            $query = CustomSearch::filterByProduct($query, $productId, 'trial_');
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

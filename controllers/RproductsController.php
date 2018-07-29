@@ -42,13 +42,35 @@ class RproductsController extends MyActiveController
                     "{$lesson}.start",
                     "{$lesson}.capacity"
                 ])
+                ->rightJoin('course_in_city', 'course_in_city.product_id = product.id')
+                ->rightJoin("{$lesson}", "{$lesson}.course_id = course_in_city.course_id")
+                ->where([$amo => 1])
+                ->andWhere("{$lesson}.start = 1")
+                ->andWhere('date_start > now()')
+                ->asArray()
+                ->all();
+
+            // PREV
+            /*$query = Product::find()
+                ->select([
+                    'product.id as product_id',
+                    'product.name',
+                    'product.city_id',
+                    'product.amo_paid_view',
+                    'product.amo_trial_view',
+                    "{$lesson}.{$lesson}_id",
+                    "{$lesson}.start",
+                    "{$lesson}.capacity"
+                ])
                 ->leftJoin('course', 'course.product_id = product.id')
                 ->leftJoin("{$lesson}", "{$lesson}.course_id = course.course_id")
                 ->where([$amo => 1])
                 ->andWhere("{$lesson}.start = 1")
                 ->andWhere('date_start > now()')
                 ->asArray()
-                ->all();
+                ->all();*/
+
+
             /*$query = Product::find()
                 ->select([
                     'product.id as product_id',

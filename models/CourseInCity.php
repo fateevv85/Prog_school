@@ -72,4 +72,24 @@ class CourseInCity extends \yii\db\ActiveRecord
     {
         return new CourseInCityQuery(get_called_class());
     }
+
+    public static function getProductByCourseAndCity($courseId, $cityId)
+    {
+        return static::find()
+            ->select('product_id')
+            ->where(['course_id'=>$courseId])
+            ->andWhere(['city_id'=>$cityId])
+            ->asArray()
+            ->one();
+    }
+
+    /*public static function getProductsByCourseAndCities($courseId, $cityId)
+    {
+        return static::find()
+            ->select('product_id')
+            ->where(['course_id'=>$courseId])
+            ->andWhere(['city_id'=>$cityId])
+            ->asArray()
+            ->all();
+    }*/
 }

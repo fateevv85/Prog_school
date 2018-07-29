@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\CourseInCity;
 use Yii;
 use yii\filters\AccessControl;
 use app\models\Course;
 use app\models\CourseSearch;
 //use yii\web\Controller;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -66,7 +68,17 @@ class CourseController extends MyAppController
             if (!is_array($citiesIds)) {
                 $citiesIds = array();
             }
-            $model->cities = $citiesIds;
+
+            $productsId = Yii::$app->request->post('Course')['products'];
+
+            if (!is_array($productsId)) {
+                $productsId = array();
+            }
+
+//            $model->cities = $citiesIds;
+            $model->setCities($citiesIds, $productsId);
+//            $model->products = $productsId;
+
             $model->save();
             return $this->redirect(['course/index']);
         } else {
@@ -92,7 +104,16 @@ class CourseController extends MyAppController
             if (!is_array($citiesIds)) {
                 $citiesIds = array();
             }
-            $model->cities = $citiesIds;
+
+            $productsId = Yii::$app->request->post('Course')['products'];
+
+            if (!is_array($productsId)) {
+                $productsId = array();
+            }
+
+//            $model->cities = $citiesIds;
+            $model->setCities($citiesIds, $productsId);
+
             $model->save();
             return $this->redirect(['course/index']);
         } else {
@@ -110,7 +131,16 @@ class CourseController extends MyAppController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $identity = \Yii::$app->user->identity;
+
+        // может удалить только курс для своего города
+        if ($identity->role === 'regional_admin') {
+            CourseInCity::deleteAll(['and', "course_id={$id}", "city_id={$identity->city_id}"]);
+            // удаляет курс целиком
+        } elseif ($identity->role === 'main_admin') {
+            $this->findModel($id)->delete();
+            CourseInCity::deleteAll('course_id=:id', [':id' => $id]);
+        }
 
         return $this->redirect(['index']);
     }

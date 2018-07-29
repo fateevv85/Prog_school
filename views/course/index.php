@@ -12,6 +12,7 @@ $this->title = Yii::t('app', 'Courses');
 if (!Yii::$app->user->isGuest) {
     $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['site/settings']];
 }
+
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">
@@ -37,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'description',
                 'content' => function ($data) {
                     if ($desc = $data->description) {
-                        return mb_substr($desc, 0, 50).'...';
+                        return mb_substr($desc, 0, 50) . '...';
                     }
                 },
             ],
@@ -67,20 +68,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 'options' => ['width' => '70']
             ],
             [
-                'attribute' => 'product_id',
+                'label' => 'Продукт',
                 'format' => 'text', // Возможные варианты: raw, html
                 'content' => function ($data) {
-//                    return $data->product_id;
-                    return $data->getProductName();
+                    return \app\models\tables\Product::getProductsForCourseAndCity($data->course_id, $data->getCitiesIdArr());
                 },
-                'filter' => (Html::activeDropDownList(
+                /*'filter' => (Html::activeDropDownList(
                     $searchModel,
                     'product_id',
                     \app\components\MenuHelper::getDropDownList(),
                     [
                         'class' => 'form-control',
                         'prompt' => 'Все',
-                    ])),
+                    ])),*/
                 'headerOptions' => ['style' => 'width:150px; white-space: normal;'],
             ]
         ],
