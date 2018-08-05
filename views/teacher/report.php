@@ -15,15 +15,14 @@ if (!Yii::$app->user->isGuest) {
 }
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Teachers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
+\yii\widgets\Pjax::begin();
 $form = \yii\bootstrap\ActiveForm::begin([
     'id' => 'view_sum',
     'action' => [''],
-//    'method' => 'post',
     'method' => 'get',
     'options' => [
-//            'class' => 'form-horizontal'
-        'class' => 'form-vertical'
+        'class' => 'form-vertical',
+        'data-pjax' => '',
     ],
 ]);
 
@@ -81,8 +80,10 @@ if (\Yii::$app->user->identity->role == 'main_admin') {
             'showToggleAll' => false,
             'pluginOptions' => [
                 'allowClear' => true,
-            ]
+            ],
+
         ],
+        'data' => [6 => 'Васильев Антон Глебович'],
         'pluginOptions' => [
             'depends' => ['city-select'],
             'url' => Url::to(['/teacher/subcat']),
@@ -175,14 +176,12 @@ $form::end();
 ?>
 
 <?php
+
 if ($dataProviderTeacher) {
+
     echo \yii\grid\GridView::widget([
         'dataProvider' => $dataProviderTeacher,
         'rowOptions' => \app\components\WidgetHelper::stripeGrid(),
-//        'emptyText'=>"<tbody>\n</tbody>",
-//        'caption' => 'Table',
-//    'showOnEmpty'=>false,
-//    'emptyCell'=>'No',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -193,8 +192,6 @@ if ($dataProviderTeacher) {
                     return Html::a($data->last_name . ' ' . $data->first_name . ' ' . $data->middle_name, ['teacher/view', 'id' => $data->teacher_id]);
                 },
             ],
-//            'first_name:ntext',
-//            'middle_name:ntext',
             [
                 'attribute' => 'city_id',
                 'label' => 'Город',
@@ -243,6 +240,7 @@ if ($dataProviderTeacher) {
             ],
         ],
     ]);
+    \yii\widgets\Pjax::end();
 }
 
 ?>

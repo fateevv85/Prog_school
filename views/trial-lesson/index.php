@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p class="controls-block">
         <?php
         if (!Yii::$app->user->isGuest) {
-            echo(Html::a(Yii::t('app', 'Create Trial Lesson'), ['create'], ['class' => 'btn btn-success']));
+            echo(Html::a(Yii::t('app', 'Create New Lesson'), ['create'], ['class' => 'btn btn-success']));
             echo(Html::button(Yii::t('app', 'Copy Trial Lessons'), ['class' => 'btn btn-primary copy-selected']));
             echo(Html::button(Yii::t('app', 'Delete Trial Lessons'), ['class' => 'btn btn-danger delete-selected']));
         }

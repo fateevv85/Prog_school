@@ -160,15 +160,24 @@ class LectureHall extends \yii\db\ActiveRecord
         return $city ? $city->title : '';
     }
 
-    /*public static function getCitiesList()
-    {
-        $cities = City::find()
-            ->all();
-        return ArrayHelper::map($cities, 'city_id', 'title');
-    }*/
     public static function getCitiesList()
     {
         //return City::getCitiesList();
         return City::getCitiesForCurrentUser();
+    }
+
+    public static function getSortLectureList($lessonType)
+    {
+        $lectureHallLIst = $lessonType::getLectureHallsList();
+        asort($lectureHallLIst, SORT_LOCALE_STRING);
+        foreach (\app\models\City::getAllCities() as $key => $city) {
+            foreach ($lectureHallLIst as $key2 => $lectureHall) {
+                preg_match('#[а-яА-Я]*#iu', $lectureHall, $matches);
+                if ($city == $matches[0]) {
+                    $newArr[$city][$key2] = $lectureHall;
+                }
+            }
+        }
+        return $newArr;
     }
 }

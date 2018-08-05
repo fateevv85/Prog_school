@@ -36,6 +36,32 @@ class LessonTypeModel extends \yii\db\ActiveRecord
         return ArrayHelper::map($courses, 'course_id', 'title');
     }
 
+    public static function coursesGroupCities()
+    {
+        $array = CourseInCity::find()
+            ->select(["concat(course.title, ' ', '(',city.title,')') as course_city", 'course_in_city.course_id as course_id', 'course_in_city.city_id', 'course.title'])
+            ->leftJoin('course', 'course.course_id = course_in_city.course_id')
+            ->leftJoin('city', 'city.city_id = course_in_city.city_id')
+            ->where(['not', ['course.title' => null]])
+            ->orderBy('course_in_city.city_id')
+            ->asArray()
+            ->all();
+
+        foreach (City::getAllCities() as $key => $city) {
+            foreach ($array as $item) {
+                if ($key == $item['city_id']) {
+                    $newArr[$city][$item['course_id']] = $item['course_city'];
+                }
+            }
+            if (count($newArr[$city]) > 0) {
+                asort($newArr[$city], SORT_LOCALE_STRING);
+            }
+
+        }
+
+        return $newArr;
+    }
+
     public static function getCoursesDescList()
     {
         /*$courses = Course::find()

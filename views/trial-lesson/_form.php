@@ -15,10 +15,15 @@ use \kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <? /*= $form->field($model, 'group_id')->dropdownList(
-        TrialLesson::getGroupsList(),
-        ['prompt' => 'Выберите группу учащихся']
-    ) */ ?>
+    <?= $form->field($model, 'lecture_hall_id')->widget(Select2::classname(), [
+        'data' => \app\models\LectureHall::getSortLectureList(TrialLesson::className()),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите площадку'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'group_id')->widget(Select2::classname(), [
         'data' => TrialLesson::getGroupsList(),
@@ -30,20 +35,39 @@ use \kartik\select2\Select2;
     ]);
     ?>
 
-    <?= $form->field($model, 'lecture_hall_id')->dropdownList(
-        TrialLesson::getLectureHallsList(),
-        ['prompt' => 'Выберите площадку']
-    ) ?>
+    <?php
+    if (\Yii::$app->user->identity->role == 'main_admin') {
+        echo $form->field($model, 'course_id')->widget(Select2::classname(), [
+            'data' => TrialLesson::coursesGroupCities()
+            ,
+            'language' => 'ru',
+            'options' => ['placeholder' => 'Выберите курс обучения'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+    } elseif (\Yii::$app->user->identity->role == 'regional_admin') {
+        echo $form->field($model, 'course_id')->widget(Select2::classname(), [
+            'data' => TrialLesson::getCoursesList(),
+            'language' => 'ru',
+            'options' => ['placeholder' => 'Выберите курс обучения'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+    }
+    ?>
 
-    <?= $form->field($model, 'course_id')->dropdownList(
-        TrialLesson::getCoursesList(),
-        ['prompt' => 'Выберите курс обучения']
-    ) ?>
-
-    <?= $form->field($model, 'teacher_id')->dropdownList(
-        Teacher::getNames(),
-        ['prompt' => 'Выберите преподавателя']
-    ) ?>
+    <?=
+    $form->field($model, 'teacher_id')->widget(Select2::classname(), [
+        'data' => Teacher::getNames(),
+        'language' => 'ru',
+        'options' => ['placeholder' => 'Выберите преподавателя'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]);
+    ?>
 
     <?= $form->field($model, 'date_start')->textInput()->input('date'/*, ['placeholder' => "2017-10-23"]*/) ?>
 

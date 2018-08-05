@@ -24,7 +24,8 @@ return [
 
     // Занятия
     'Trial Lessons' => 'Демо занятия',
-    'Create Trial Lesson' => 'Создать новое занятие',
+    'Create New Lesson' => 'Создать новое занятие',
+    'Create Trial Lesson' => 'Создать демо занятие',
     'Create Lesson' => 'Создать платное занятие',
     'Create Several Lessons' => 'Создать несколько занятий',
     'Trial Lesson ID' => 'ID Пробного занятия',
