@@ -13,4 +13,15 @@ use app\models\tables\Students;
 class RstudentsController extends MyActiveController
 {
     public $modelClass = 'app\models\tables\Students';
+
+    public function prepareDataProvider()
+    {
+        if ($controlS = Yii::$app->request->get('deleteControlSum')) {
+            Students::deleteAll(['control_sum' => $controlS]);
+
+            return 'Delete is complete ' . $controlS;
+        }
+
+        return parent::prepareDataProvider();
+    }
 }

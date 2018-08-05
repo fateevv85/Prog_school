@@ -125,18 +125,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view' => function ($url, $model) {
                         return Html::a(
                             '<span class="glyphicon glyphicon-eye-open"></span>',
-                            str_ireplace('product', 'course', $url));
+                            // str_ireplace('product', 'course', $url)
+                            ['/course/view', 'id' => $model->course_id]
+                        );
                     },
                     'update' => function ($url, $model) {
                         return Html::a(
                             '<span class="glyphicon glyphicon-pencil"></span>',
-                            str_ireplace('product', 'course', $url));
+                            // str_ireplace('product', 'course', $url)
+                            ['/course/update', 'id' => $model->course_id]
+                        );
                     },
-                    'delete' => function ($url, $model) {
+                    /*'delete' => function ($url, $model) {
                         return Html::a(
                             '<span class="glyphicon glyphicon-trash"></span>',
                             str_ireplace('product', 'course', $url));
-                    },
+                    },*/
+                    'delete' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['/course/delete', 'id' => $model->course_id], [
+                            'class' => '',
+                            'data' => [
+                                'confirm' => 'Are you absolutely sure ? You will lose all the information about this user with this action.',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
                 ],
 
             ]

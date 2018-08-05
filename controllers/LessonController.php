@@ -92,10 +92,10 @@ class LessonController extends LessonTypeController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $params = self::getLessonEntityParams($model);
             $params['link'] = Url::toRoute(['lesson/index', 'LessonSearch[lesson_id]' => $model->lesson_id], true);
-//            $result = GoogleCalendarHelper::createEvent($params);
-            $result = [
+           $result = GoogleCalendarHelper::createEvent($params);
+            /*$result = [
                 'eventId' =>
-                    '1111111111'];
+                    '1111111111'];*/
 
             //для франшизы, добавление параметра город в соответствии с городом создающего пользователя, будет использоваться для фильтрации занятий по городу
             $userRole = User::getCurrentUserRole();

@@ -214,10 +214,31 @@ HTML;
                     'width' => '100px',
                 ],
                 [
-                    'label' => 'ФИ ребенка',
-                    'content' => function ($data) {
+                    'attribute' => 'email',
+//                    'label' => 'Бюджет',
+                    'format' => 'text',
+                    'width' => '70px',
+                ],
+                [
+                    'label' => 'Телефон',
+                    'format' => 'text',
+                    'width' => '100px',
+                ],
+                [
+                    'label' => 'Ф ребенка',
+                    /*'content' => function ($data) {
                         return $data->student_ln . ' ' . $data->student_fn;
-                    },
+                    },*/
+                    'attribute' => 'student_ln',
+                    'format' => 'text',
+                    'width' => '150px',
+                ],
+                [
+                    'label' => 'И ребенка',
+                    /*'content' => function ($data) {
+                        return $data->student_ln . ' ' . $data->student_fn;
+                    },*/
+                    'attribute' => 'student_fn',
                     'format' => 'text',
                     'width' => '150px',
                 ],
@@ -238,6 +259,7 @@ HTML;
                     'format' => 'text',
                     'width' => '100px',
                 ],
+
             ],
             ];
         } // options for manager
@@ -273,10 +295,31 @@ HTML;
                         'width' => '100px',
                     ],
                     [
-                        'label' => 'ФИ ребенка',
-                        'content' => function ($data) {
+                        'attribute' => 'email',
+//                    'label' => 'Бюджет',
+                        'format' => 'text',
+                        'width' => '70px',
+                    ],
+                    [
+                        'label' => 'Телефон',
+                        'format' => 'text',
+                        'width' => '100px',
+                    ],
+                    [
+                        'label' => 'Ф ребенка',
+                        /*'content' => function ($data) {
                             return $data->student_ln . ' ' . $data->student_fn;
-                        },
+                        },*/
+                        'attribute' => 'student_ln',
+                        'format' => 'text',
+                        'width' => '150px',
+                    ],
+                    [
+                        'label' => 'И ребенка',
+                        /*'content' => function ($data) {
+                            return $data->student_ln . ' ' . $data->student_fn;
+                        },*/
+                        'attribute' => 'student_fn',
                         'format' => 'text',
                         'width' => '150px',
                     ],

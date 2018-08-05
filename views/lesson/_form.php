@@ -15,13 +15,6 @@ use \kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(); ?>
 
-
-    <?/*= $form->field($model, 'group_id')->dropdownList(
-    // Group::getTitles(),
-        Lesson::getGroupsList(),
-        ['prompt' => 'Выберите группу учащихся']
-    ) */?>
-
   <?=
   $form->field($model, 'group_id')->widget(Select2::classname(), [
       'data' => Lesson::getGroupsList(),
@@ -39,11 +32,6 @@ use \kartik\select2\Select2;
         Lesson::getLectureHallsList(),
         ['prompt' => 'Выберите площадку']
     ) ?>
-
-    <? /*= $form->field($model, 'course_id')->dropdownList(
-        Lesson::getCoursesList(),
-        ['prompt' => 'Выберите курс обучения']
-    ) */ ?>
 
     <?=
     $form->field($model, 'course_id')->widget(Select2::classname(), [

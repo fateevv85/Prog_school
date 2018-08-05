@@ -31,6 +31,10 @@ class RproductsController extends MyActiveController
             $lesson = ($request) ?
                 'lesson' : 'trial_lesson';
 
+                $cityId = (Yii::$app->user->identity->role === 'regional_admin')
+                ? array_keys(\app\models\City::getCitiesForCurrentUser())[0]
+                : '%';
+
             $query = Product::find()
                 ->select([
                     'product.id as product_id',
@@ -47,6 +51,7 @@ class RproductsController extends MyActiveController
                 ->where([$amo => 1])
                 ->andWhere("{$lesson}.start = 1")
                 ->andWhere('date_start > now()')
+                ->andWhere("product.city_id LIKE '{$cityId}'")
                 ->asArray()
                 ->all();
 

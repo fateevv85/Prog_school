@@ -119,10 +119,10 @@ class TrialLessonController extends LessonTypeController
             //return $this->redirect(['view', 'id' => $trialLesson->trial_lesson_id]);
             $params = self::getLessonEntityParams($model);
             $params['link'] = Url::toRoute(['trial-lesson/index', 'TrialLessonSearch[trial_lesson_id]' => $model->trial_lesson_id], true);
-            $result = [
+            /*$result = [
                 'eventId' =>
-                    '1111111111'];
-//            $result = GoogleCalendarHelper::callConsoleMethod('createEvent', $params);
+                    '1111111111'];*/
+           $result = GoogleCalendarHelper::callConsoleMethod('createEvent', $params);
             //для франшизы, добавление параметра город в соответствии с городом создающего пользователя, будет использоваться для фильтрации занятий по городу
             $userRole = User::getCurrentUserRole();
             if ($userRole === 'regional_admin') {

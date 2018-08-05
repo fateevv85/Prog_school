@@ -131,7 +131,7 @@ class CourseController extends MyAppController
      */
     public function actionDelete($id)
     {
-        $identity = \Yii::$app->user->identity;
+        /*$identity = \Yii::$app->user->identity;
 
         // может удалить только курс для своего города
         if ($identity->role === 'regional_admin') {
@@ -140,8 +140,9 @@ class CourseController extends MyAppController
         } elseif ($identity->role === 'main_admin') {
             $this->findModel($id)->delete();
             CourseInCity::deleteAll('course_id=:id', [':id' => $id]);
-        }
-
+        }*/
+		$this->findModel($id)->delete();
+		
         return $this->redirect(['index']);
     }
 
